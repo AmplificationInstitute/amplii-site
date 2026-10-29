@@ -1,0 +1,24 @@
+/*
+ * Motion tokens. GSAP reads the same values from a TypeScript mirror (phase 3).
+ * No overshooting or bouncing eases.
+ */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-quick: 0.25s;
+  --duration-standard: 0.45s;
+  --duration-exit: 0.35s;
+  --duration-slow: 1.2s;
+  --duration-ambient: 2.4s;
+
+  --motion-blur: 12px;
+  --motion-stagger: 0.08s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-blur: 0px;
+  }
+}

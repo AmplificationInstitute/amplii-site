@@ -1,0 +1,7 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+# Legacy pages are kept byte for byte.
+public/
+CLAUDE.md
