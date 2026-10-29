@@ -1,0 +1,22 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class="pill">{label}</span>
+
+<style>
+  .pill {
+    display: inline-flex;
+    padding: 0.4375rem 0.875rem;
+    border-radius: var(--radius-capsule);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+  }
+</style>

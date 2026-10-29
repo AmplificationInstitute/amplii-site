@@ -1,0 +1,32 @@
+---
+interface Props {
+  as?: 'div' | 'article' | 'li';
+  padding?: 'md' | 'lg';
+  class?: string;
+}
+
+const { as: Tag = 'div', padding = 'md', class: className } = Astro.props;
+---
+
+<Tag class:list={['card', `card--${padding}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    border: 1px solid var(--card-stroke);
+    border-radius: var(--radius-card);
+    background: var(--card-fill);
+    box-shadow: var(--card-shadow);
+    -webkit-backdrop-filter: blur(var(--card-blur));
+    backdrop-filter: blur(var(--card-blur));
+  }
+
+  .card--md {
+    padding: 1.75rem;
+  }
+
+  .card--lg {
+    padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  }
+</style>

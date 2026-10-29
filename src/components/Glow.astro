@@ -1,0 +1,48 @@
+---
+interface Props {
+  /** Center of the glow, as CSS lengths relative to its positioned parent. */
+  x: string;
+  y: string;
+  /** Size of the glowing ellipse (the soft falloff extends past it). */
+  width: string;
+  height: string;
+  /** Peak opacity. Figma glows use 0.26. */
+  intensity?: number;
+}
+
+const { x, y, width, height, intensity = 0.26 } = Astro.props;
+---
+
+<div
+  class="glow"
+  style={`--glow-x: ${x}; --glow-y: ${y}; --glow-w: ${width}; --glow-h: ${height}; --glow-intensity: ${intensity}`}
+  aria-hidden="true"
+></div>
+
+<style>
+  /*
+   * A radial gradient instead of Figma's blurred ellipse (blur 60): no filter to
+   * paint, and the stops follow the blur's soft falloff past the ellipse edge.
+   */
+  .glow {
+    --glow-spread: 7.5rem;
+
+    position: absolute;
+    top: var(--glow-y);
+    left: var(--glow-x);
+    width: calc(var(--glow-w) + 2 * var(--glow-spread));
+    height: calc(var(--glow-h) + 2 * var(--glow-spread));
+    translate: -50% -50%;
+    opacity: var(--glow-intensity);
+    background: radial-gradient(
+      closest-side,
+      var(--color-glow) 0%,
+      color-mix(in srgb, var(--color-glow) 96%, transparent) 50%,
+      color-mix(in srgb, var(--color-glow) 80%, transparent) 62%,
+      color-mix(in srgb, var(--color-glow) 50%, transparent) 75%,
+      color-mix(in srgb, var(--color-glow) 20%, transparent) 88%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+</style>

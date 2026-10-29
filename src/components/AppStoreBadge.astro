@@ -1,0 +1,39 @@
+---
+import badge from '../assets/app-store-badge.svg';
+import { appStoreUrl, type AppStoreCampaign } from '../lib/app-store';
+
+interface Props {
+  campaign: AppStoreCampaign;
+  /** Badge height in px. Apple's minimum on screen is 40. */
+  height?: number;
+  /** Load at once (above the fold) instead of lazily. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { campaign, height = 56, eager = false, class: className } = Astro.props;
+const width = Math.round((badge.width / badge.height) * height);
+---
+
+<!-- Apple's official badge, unmodified (App Store marketing guidelines) -->
+<a href={appStoreUrl(campaign)} class:list={['app-store-badge', className]}>
+  <img
+    src={badge.src}
+    width={width}
+    height={height}
+    alt="Download on the App Store"
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+  />
+</a>
+
+<style>
+  .app-store-badge {
+    display: inline-block;
+    border-radius: 0.5rem;
+  }
+
+  img {
+    display: block;
+  }
+</style>

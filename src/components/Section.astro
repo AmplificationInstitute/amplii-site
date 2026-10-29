@@ -1,0 +1,45 @@
+---
+interface Props {
+  /** Key for the animation loader (`data-section`). */
+  name: string;
+  /** Anchor id, matching the nav links. */
+  id?: string;
+  /** Id of the section's heading. */
+  labelledBy?: string;
+  class?: string;
+}
+
+const { name, id, labelledBy, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  data-section={name}
+  aria-labelledby={labelledBy}
+  class:list={['section', className]}
+>
+  {Astro.slots.has('bleed') && (
+    <div class="section__bleed" aria-hidden="true">
+      <slot name="bleed" />
+    </div>
+  )}
+  <div class="container section__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--space-section);
+  }
+
+  /* Glows and waves run full width; content stays in the container */
+  .section__bleed {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+</style>
