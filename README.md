@@ -36,15 +36,19 @@ public/                 Served as is
   support.html
   terms.html
   assets/fonts/         Fonts used only by the legacy pages
+docs/
+  ARCHITECTURE.md       How the landing is structured, laid out and animated
 src/
   pages/                Routes
   layouts/              Page shell (head, skip link, main landmark)
-  components/           Small reusable components
+  components/           Small reusable components (one per repeating Figma element)
   sections/             Landing page sections
   animations/           GSAP and Lenis code
-  audio/                Web Audio code for the "Hear the beat" section
-  content/              All copy and site settings
-  data/presets/         Mode presets from the app engine
+  audio/                Web Audio code for the "Try the beat" section
+  content/              Site settings; copy per language in content/en/
+  data/presets/         Mode and wave presets from the app engine
+  lib/                  Shared helpers: App Store links, wave maths
+  assets/               Logo and the official App Store badge (SVG)
   styles/tokens/        Design tokens (color, type, space, radius, motion)
   styles/global.css     Base styles
 ```
