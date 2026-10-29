@@ -7,10 +7,11 @@
   --font-display: var(--font-jost);
   --font-text: var(--font-archivo);
 
-  --weight-regular: 400;
-  --weight-medium: 500;
-  /* Figma draws titles in Jost SemiBold; CLAUDE.md §5 loads Jost Regular only. */
-  --weight-display: var(--weight-regular);
+  --weight-light: 300; /* Jost, big numbers */
+  --weight-regular: 400; /* Archivo */
+  --weight-medium: 500; /* Archivo */
+  --weight-semibold: 600; /* Jost, titles */
+  --weight-display: var(--weight-semibold);
 
   /* Fixed text sizes (Archivo) */
   --text-sm: 0.875rem; /* 14 */

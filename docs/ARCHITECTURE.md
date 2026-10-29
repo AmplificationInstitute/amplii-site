@@ -93,6 +93,10 @@ A section only composes these components with its content file.
 
 **App Store links:** one helper, `appStoreUrl(campaign)` in `src/lib/app-store.ts`, builds every link to the App Store: the badges, "Get the app" in the nav and the sticky bar, and "Try Amplii Full". Each call site passes its own campaign name, so downloads can be attributed without tracking visitors. Until phase 6 the provider and campaign tokens are `[TODO]` and the helper returns the plain `https://apps.apple.com/app/id6811405143`. "Try the beat" is an in-page anchor (`#how-it-works`) and needs none.
 
+**Type weights:** Jost SemiBold for the hero and section titles (`--weight-display`, the only preloaded weight), Jost Light for the fact numbers, Archivo Regular and Medium for text. Jost Regular is not loaded.
+
+**Badge size:** the official badge is 56 px tall, lining up with the 56 px secondary button beside it.
+
 **App Store badge rule:** wherever "Download on the App Store" appears (hero, pricing, download, sticky bar), it is Apple's official badge (`AppStoreBadge`), per Apple's marketing guidelines. Custom `Button`s ("Get the app", "Try the beat", "Try Amplii Full") never use the Apple logo or the words "App Store".
 
 **Touch targets:** the 40 px nav button keeps its look and gets a 44 px hit area through a pseudo-element.
@@ -311,7 +315,3 @@ Each is one branch from `develop` (`feat/2a-tokens-components`, `feat/2b-section
 - **LCP:** the hero entrance is CSS from first paint, so LCP doesn't wait for JS. Still measured in phase 3, since an element at opacity 0 isn't counted until it starts to show.
 - **Wave glow cost:** stroked glow, no per-frame blur; verified at 4× CPU throttle on the hero.
 - **Dependencies:** `gsap` and `lenis` are added in phase 3. Estimated initial JS about 50 KB gzipped.
-
-## 11. Open questions
-
-- **Display weight:** Figma draws the hero and section titles in Jost SemiBold and the fact numbers in Jost Light; CLAUDE.md §5 loads Jost Regular only. Titles use `--weight-display` (Regular for now), so switching is one token plus one font weight in `astro.config.mjs`.

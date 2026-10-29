@@ -59,7 +59,7 @@ The App Store listing links to `/privacy.html`, `/support.html` and `/`. `/priva
 
 ## Fonts
 
-Jost and Archivo come from Fontsource through Astro's fonts API (`astro.config.mjs`). They are self-hosted at build time and subset to latin, with a metric-matched fallback. Only Jost Regular (the hero headline) is preloaded.
+Jost and Archivo come from Fontsource through Astro's fonts API (`astro.config.mjs`). They are self-hosted at build time and subset to latin, with a metric-matched fallback. Jost loads Light (big numbers) and SemiBold (titles); only Jost SemiBold, the hero title, is preloaded.
 
 ## Deployment
 
