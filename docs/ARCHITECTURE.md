@@ -238,7 +238,9 @@ envelope  = sin(π · u)^1.6   (u maps envelope.lo…peak…hi to 0…0.5…1; 0
 
 - **Line spacing:** lines share one center line. They separate through the amplitude taper (closeness), `cycleSpread` (extra cycles per line), a fixed 0.55 rad phase step and a 7% faster drift per line. There is no vertical offset.
 - **Colors:** the center line is white at 2 px; the others alternate `--color-wave-1` / `--color-wave-2` at 1.1 px. Alpha is `(0.15 + 0.75 · closeness²) · lineOpacity`.
-- **Glow:** no blur filters per frame. The app blurs two passes (22 and 5 pt); the web draws the same look as **two wider, low-opacity strokes under each main line** (a wide one in `--color-glow` and a narrower one in the line color), with round caps and joins. The same strokes work in the static SVG. If that looks too hard-edged, the fallback is an offscreen layer blurred once and redrawn only when the size changes, which only fits glows that don't move with the drift. Acceptance: steady 60 fps on the hero at 4× CPU throttling.
+- **Glow:** as in Figma, the same lines drawn again under the crisp lines and blurred: a soft layer (Figma layer blur 22, opacity 0.7) and a near layer (blur 8, opacity 0.8), with the lines' own colors and opacities. A Gaussian's standard deviation is about half Figma's radius (`GLOW_LAYERS` in `lib/wave/geometry.ts`).
+  - **Static SVG (phase 2):** each glow layer is its own `<svg>` blurred with a real `feGaussianBlur` (stdDeviation 11 and 4), referenced through CSS `filter: url(#…)`. On an HTML-level element the blur is measured in CSS px, so it stays round although the viewBox stretches sideways. The filter region reaches well past the wave (x −25 %, y −100 %, width 150 %, height 300 %), so the blur never ends in a straight edge.
+  - **Animated canvas (phase 3):** the glow is drawn on its own canvas at about 1/4 resolution, scaled up with CSS, plus a light CSS `filter: blur()` on that glow canvas only. The main lines stay on a full-resolution canvas on top. No per-frame blur on full-resolution layers. Acceptance: steady 60 fps on the hero at 4× CPU throttling.
 - `energy` (0…1) grows the waves from a flat line (hero).
 
 ### Units
@@ -288,7 +290,7 @@ The background strip is 2.8 × the screen width and starts 0.9 widths to the lef
 `preset` (`'background' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId`), `layout: 'strip' | 'box'`, `height`. The hero uses the `background` preset. Always `aria-hidden`.
 
 - **Phase 2:** static inline SVG at `t = 0`, `energy = 1`.
-- **Phase 3:** `animations/waves/renderer.ts` adds a `<canvas>` over the SVG and draws from the shared ticker. Paused off screen (IntersectionObserver), DPR capped at 2, never created under Reduce Motion.
+- **Phase 3:** `animations/waves/renderer.ts` adds two canvases over the SVG (a 1/4-resolution glow canvas with a light CSS blur, and a full-resolution lines canvas on top) and draws from the shared ticker. Paused off screen (IntersectionObserver), DPR capped at 2, never created under Reduce Motion.
 
 ## 7. Assets
 
@@ -313,5 +315,5 @@ Each is one branch from `develop` (`feat/2a-tokens-components`, `feat/2b-section
 ## 10. Known risks
 
 - **LCP:** the hero entrance is CSS from first paint, so LCP doesn't wait for JS. Still measured in phase 3, since an element at opacity 0 isn't counted until it starts to show.
-- **Wave glow cost:** stroked glow, no per-frame blur; verified at 4× CPU throttle on the hero.
+- **Wave glow cost:** phase 2 blurs static SVG layers once (painted, then cached). Phase 3 blurs only the 1/4-resolution glow canvas; verified at 4× CPU throttle on the hero.
 - **Dependencies:** `gsap` and `lenis` are added in phase 3. Estimated initial JS about 50 KB gzipped.

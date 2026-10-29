@@ -1,6 +1,6 @@
 import { DRIFT_STEP, RHYTHM_LIMIT_HZ, type WaveParams } from './params';
 
-export type WaveTint = 'ink' | 'wave-1' | 'wave-2' | 'glow';
+export type WaveTint = 'ink' | 'wave-1' | 'wave-2';
 
 export interface WaveFrame {
   /** Output size, in px (or SVG user units). */
@@ -31,12 +31,13 @@ export const STRIP_WINDOW = [0.9 / 2.8, 1.9 / 2.8] as const;
 export const FULL_WINDOW = [0, 1] as const;
 
 /**
- * The glow, drawn as two wider, low-opacity strokes under each line instead of a
- * blur filter. The wide one is in the glow color, the narrow one in the line color.
+ * The glow: the same lines again, blurred, under the crisp lines. Values from the
+ * Figma "Strip Waves glow soft" and "Strip Waves glow" layers (layer blur radius,
+ * layer opacity). A Gaussian's standard deviation is about half Figma's radius.
  */
-export const GLOW_STROKES = [
-  { extraWidth: 18, opacity: 0.08, tint: 'glow' },
-  { extraWidth: 3, opacity: 0.16, tint: 'line' },
+export const GLOW_LAYERS = [
+  { name: 'soft', blurRadius: 22, opacity: 0.7 },
+  { name: 'near', blurRadius: 8, opacity: 0.8 },
 ] as const;
 
 const PHASE_STEP = 0.55;

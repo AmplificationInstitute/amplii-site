@@ -2,7 +2,7 @@
 import { wavePresets, type WavePresetId } from '../data/presets/waves';
 import {
   FULL_WINDOW,
-  GLOW_STROKES,
+  GLOW_LAYERS,
   STRIP_WINDOW,
   waveStrokes,
   type WaveTint,
@@ -33,7 +33,8 @@ const strokes = waveStrokes(params, {
 });
 const id = uniqueId('wave');
 const color = (tint: WaveTint) => `var(--color-${tint})`;
-const glowLayers = params.glow ? GLOW_STROKES : [];
+const glowLayers = params.glow ? GLOW_LAYERS : [];
+const viewBox = `0 0 ${viewWidth} ${height}`;
 ---
 
 <div
@@ -42,7 +43,30 @@ const glowLayers = params.glow ? GLOW_STROKES : [];
   style={`--wave-height: ${height}px`}
   aria-hidden="true"
 >
-  <svg viewBox={`0 0 ${viewWidth} ${height}`} preserveAspectRatio="none" focusable="false">
+  {
+    /*
+     * Each glow layer is its own <svg>, blurred through CSS `filter: url()`. On an
+     * HTML-level element the blur is measured in CSS px, so it stays round even
+     * though the viewBox is stretched sideways. The filter region reaches well
+     * past the box, so the blur never ends in a straight edge.
+     */
+    glowLayers.map((layer) => (
+      <svg
+        viewBox={viewBox}
+        preserveAspectRatio="none"
+        focusable="false"
+        style={`filter: url(#${id}-${layer.name}); opacity: ${layer.opacity}`}
+      >
+        {strokes.map((stroke, k) => (
+          <use
+            href={`#${id}-${k}`}
+            style={`stroke: ${color(stroke.tint)}; stroke-width: ${stroke.width}; stroke-opacity: ${stroke.alpha}`}
+          />
+        ))}
+      </svg>
+    ))
+  }
+  <svg viewBox={viewBox} preserveAspectRatio="none" focusable="false">
     <defs>
       {strokes.map((stroke, k) => (
         <path
@@ -54,15 +78,19 @@ const glowLayers = params.glow ? GLOW_STROKES : [];
           vector-effect="non-scaling-stroke"
         />
       ))}
+      {glowLayers.map((layer) => (
+        <filter
+          id={`${id}-${layer.name}`}
+          x="-25%"
+          y="-100%"
+          width="150%"
+          height="300%"
+          color-interpolation-filters="sRGB"
+        >
+          <feGaussianBlur stdDeviation={layer.blurRadius / 2} />
+        </filter>
+      ))}
     </defs>
-    {glowLayers.map((layer) =>
-      strokes.map((stroke, k) => (
-        <use
-          href={`#${id}-${k}`}
-          style={`stroke: ${color(layer.tint === 'glow' ? 'glow' : stroke.tint)}; stroke-width: ${stroke.width + layer.extraWidth}; stroke-opacity: ${stroke.alpha * layer.opacity}`}
-        />
-      )),
-    )}
     {strokes.map((stroke, k) => (
       <use
         href={`#${id}-${k}`}
