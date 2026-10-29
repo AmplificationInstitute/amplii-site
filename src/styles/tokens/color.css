@@ -8,6 +8,7 @@
   --color-background: #050b20;
   --color-surface: #0b1738;
   --color-ink: #eef3ff;
+  --color-ink-secondary: #b4c4e8;
   --color-muted: #8fa2d0;
   --color-accent: #bcd6ff;
   --color-on-accent: #071a45;
@@ -15,10 +16,16 @@
   --color-wave-1: #5d8bff;
   --color-wave-2: #a9c8ff;
 
-  --glass-fill: rgb(255 255 255 / 5.5%);
-  --glass-fill-strong: rgb(255 255 255 / 11%);
-  --glass-stroke: rgb(255 255 255 / 12%);
-  --glass-blur: 24px;
+  /* Glass controls (secondary buttons), from the Figma buttons */
+  --glass-fill: rgb(255 255 255 / 5%);
+  --glass-stroke: rgb(255 255 255 / 14%);
+  --glass-blur: 12px;
+
+  /* Cards (mode, fact, demo, plan), from the Figma cards */
+  --card-fill: rgb(14 29 72 / 60%);
+  --card-stroke: rgb(188 214 255 / 45%);
+  --card-shadow: 0 14px 30px rgb(0 0 0 / 45%);
+  --card-blur: 12px;
 
   --color-focus: var(--color-accent);
 }

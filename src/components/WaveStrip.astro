@@ -1,0 +1,120 @@
+---
+import { wavePresets, type WavePresetId } from '../data/presets/waves';
+import {
+  FULL_WINDOW,
+  GLOW_LAYERS,
+  STRIP_WINDOW,
+  waveStrokes,
+  type WaveTint,
+} from '../lib/wave/geometry';
+import { uniqueId } from '../lib/unique-id';
+
+interface Props {
+  preset: WavePresetId;
+  /** strip: full-width background (Figma strip rule). box: fills its container. */
+  layout?: 'strip' | 'box';
+  /** Height in px. */
+  height: number;
+  class?: string;
+}
+
+const { preset, layout = 'box', height, class: className } = Astro.props;
+
+const params = wavePresets[preset];
+// The SVG stretches horizontally only, so every width shows the same part of the wave.
+const viewWidth = 1000;
+const strokes = waveStrokes(params, {
+  width: viewWidth,
+  height,
+  t: 0,
+  energy: 1,
+  amplitudeScale: layout === 'strip' ? 1 : height / params.refHeight,
+  window: layout === 'strip' ? STRIP_WINDOW : FULL_WINDOW,
+});
+const id = uniqueId('wave');
+const color = (tint: WaveTint) => `var(--color-${tint})`;
+const glowLayers = params.glow ? GLOW_LAYERS : [];
+const viewBox = `0 0 ${viewWidth} ${height}`;
+---
+
+<div
+  class:list={['wave', className]}
+  data-wave={preset}
+  style={`--wave-height: ${height}px`}
+  aria-hidden="true"
+>
+  {
+    /*
+     * Each glow layer is its own <svg>, blurred through CSS `filter: url()`. On an
+     * HTML-level element the blur is measured in CSS px, so it stays round even
+     * though the viewBox is stretched sideways. The filter region reaches well
+     * past the box, so the blur never ends in a straight edge.
+     */
+    glowLayers.map((layer) => (
+      <svg
+        viewBox={viewBox}
+        preserveAspectRatio="none"
+        focusable="false"
+        style={`filter: url(#${id}-${layer.name}); opacity: ${layer.opacity}`}
+      >
+        {strokes.map((stroke, k) => (
+          <use
+            href={`#${id}-${k}`}
+            style={`stroke: ${color(stroke.tint)}; stroke-width: ${stroke.width}; stroke-opacity: ${stroke.alpha}`}
+          />
+        ))}
+      </svg>
+    ))
+  }
+  <svg viewBox={viewBox} preserveAspectRatio="none" focusable="false">
+    <defs>
+      {strokes.map((stroke, k) => (
+        <path
+          id={`${id}-${k}`}
+          d={stroke.d}
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          vector-effect="non-scaling-stroke"
+        />
+      ))}
+      {glowLayers.map((layer) => (
+        <filter
+          id={`${id}-${layer.name}`}
+          x="-25%"
+          y="-100%"
+          width="150%"
+          height="300%"
+          color-interpolation-filters="sRGB"
+        >
+          <feGaussianBlur stdDeviation={layer.blurRadius / 2} />
+        </filter>
+      ))}
+    </defs>
+    {strokes.map((stroke, k) => (
+      <use
+        href={`#${id}-${k}`}
+        style={`stroke: ${color(stroke.tint)}; stroke-width: ${stroke.width}; stroke-opacity: ${stroke.alpha}`}
+      />
+    ))}
+  </svg>
+</div>
+
+<style>
+  .wave {
+    position: relative;
+    width: 100%;
+    height: var(--wave-height);
+    pointer-events: none;
+  }
+
+  /* Out of flow, so the 1000-unit viewBox never asks its container for width */
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    overflow: visible;
+  }
+</style>

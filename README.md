@@ -36,15 +36,19 @@ public/                 Served as is
   support.html
   terms.html
   assets/fonts/         Fonts used only by the legacy pages
+docs/
+  ARCHITECTURE.md       How the landing is structured, laid out and animated
 src/
   pages/                Routes
   layouts/              Page shell (head, skip link, main landmark)
-  components/           Small reusable components
+  components/           Small reusable components (one per repeating Figma element)
   sections/             Landing page sections
   animations/           GSAP and Lenis code
-  audio/                Web Audio code for the "Hear the beat" section
-  content/              All copy and site settings
-  data/presets/         Mode presets from the app engine
+  audio/                Web Audio code for the "Try the beat" section
+  content/              Site settings; copy per language in content/en/
+  data/presets/         Mode and wave presets from the app engine
+  lib/                  Shared helpers: App Store links, wave maths
+  assets/               Logo and the official App Store badge (SVG)
   styles/tokens/        Design tokens (color, type, space, radius, motion)
   styles/global.css     Base styles
 ```
@@ -55,7 +59,7 @@ The App Store listing links to `/privacy.html`, `/support.html` and `/`. `/priva
 
 ## Fonts
 
-Jost and Archivo come from Fontsource through Astro's fonts API (`astro.config.mjs`). They are self-hosted at build time and subset to latin, with a metric-matched fallback. Only Jost Regular (the hero headline) is preloaded.
+Jost and Archivo come from Fontsource through Astro's fonts API (`astro.config.mjs`). They are self-hosted at build time and subset to latin, with a metric-matched fallback. Jost loads Light (big numbers) and SemiBold (titles); only Jost SemiBold, the hero title, is preloaded.
 
 ## Deployment
 

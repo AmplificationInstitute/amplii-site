@@ -10,12 +10,15 @@ export default defineConfig({
   build: {
     format: 'file',
   },
+  // Scope as a class, so a class passed to a child component keeps the parent's
+  // scoped styles (the attribute strategy drops them).
+  scopedStyleStrategy: 'class',
   fonts: [
     {
       provider: fontProviders.fontsource(),
       name: 'Jost',
       cssVariable: '--font-jost',
-      weights: [400],
+      weights: [300, 600],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['sans-serif'],

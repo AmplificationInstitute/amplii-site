@@ -13,10 +13,31 @@
   /* Vertical rhythm between sections, phone to desktop */
   --space-section: clamp(4rem, 2.5rem + 6vw, 8rem);
 
-  /* Container */
-  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  /*
+   * Side margins from Figma 214:574: 20 below 390 (iPhone SE), 24 phone,
+   * 48 tablet, 48 to 120 from 1024 to 1440, then a centered 1200 column.
+   */
+  --gutter: 1.5rem;
   --container-max: 75rem; /* 1200 */
 
   --touch-target: 44px;
   --button-height: 56px;
+}
+
+@media (width < 390px) {
+  :root {
+    --gutter: 1.25rem;
+  }
+}
+
+@media (width >= 768px) {
+  :root {
+    --gutter: 3rem;
+  }
+}
+
+@media (width >= 1024px) {
+  :root {
+    --gutter: clamp(3rem, 17.3077vw - 8.0769rem, 7.5rem);
+  }
 }

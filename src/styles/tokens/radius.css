@@ -2,5 +2,6 @@
   --radius-sm: 0.5rem;
   --radius-md: 1rem;
   --radius-lg: 1.5rem;
+  --radius-card: 1.875rem; /* 30, Figma cards */
   --radius-capsule: 999px;
 }
