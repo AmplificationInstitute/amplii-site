@@ -10,7 +10,9 @@
   box-sizing: border-box;
 }
 
+/* Only the page clips sideways, never a section (clip keeps position: sticky working) */
 html {
+  overflow-x: clip;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -21,7 +23,7 @@ body {
   background: var(--color-background);
   color: var(--color-ink);
   font-family: var(--font-text);
-  font-size: var(--text-md);
+  font-size: var(--text-body);
   line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
 }
@@ -36,7 +38,7 @@ p {
 h1,
 h2 {
   font-family: var(--font-display);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-display);
   line-height: var(--leading-tight);
   text-wrap: balance;
 }

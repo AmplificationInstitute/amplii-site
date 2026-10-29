@@ -1,6 +1,7 @@
 /*
  * Motion tokens. GSAP reads the same values from a TypeScript mirror (phase 3).
- * No overshooting or bouncing eases.
+ * No overshooting or bouncing eases. Figma's hover 0.3 s uses quick, the FAQ's
+ * 0.35 s uses exit.
  */
 :root {
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -15,6 +16,9 @@
 
   --motion-blur: 12px;
   --motion-stagger: 0.08s;
+
+  /* The soft white wash on press */
+  --duration-press: 0.15s;
 }
 
 @media (prefers-reduced-motion: reduce) {
