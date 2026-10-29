@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { home } from '../content/home';
+---
+
+<BaseLayout path="/">
+  <section class="container shell">
+    <h1>{home.headline}</h1>
+  </section>
+</BaseLayout>
+
+<style>
+  .shell {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: var(--display-lg);
+  }
+</style>

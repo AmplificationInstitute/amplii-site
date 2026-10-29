@@ -1,0 +1,22 @@
+:root {
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.5rem; /* 24 */
+  --space-6: 2rem; /* 32 */
+  --space-7: 3rem; /* 48 */
+  --space-8: 4rem; /* 64 */
+  --space-9: 6rem; /* 96 */
+  --space-10: 8rem; /* 128 */
+
+  /* Vertical rhythm between sections, phone to desktop */
+  --space-section: clamp(4rem, 2.5rem + 6vw, 8rem);
+
+  /* Container */
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --container-max: 75rem; /* 1200 */
+
+  --touch-target: 44px;
+  --button-height: 56px;
+}
