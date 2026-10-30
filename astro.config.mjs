@@ -18,7 +18,7 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       name: 'Jost',
       cssVariable: '--font-jost',
-      weights: [300, 600],
+      weights: [300, 400, 600],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['sans-serif'],

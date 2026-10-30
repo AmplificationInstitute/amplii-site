@@ -93,7 +93,7 @@ A section only composes these components with its content file.
 
 **App Store links:** one helper, `appStoreUrl(campaign)` in `src/lib/app-store.ts`, builds every link to the App Store: the badges, "Get the app" in the nav and the sticky bar, and "Try Amplii Full". Each call site passes its own campaign name, so downloads can be attributed without tracking visitors. Until phase 6 the provider and campaign tokens are `[TODO]` and the helper returns the plain `https://apps.apple.com/app/id6811405143`. "Try the beat" is an in-page anchor (`#how-it-works`) and needs none.
 
-**Type weights:** Jost SemiBold for the hero and section titles (`--weight-display`, the only preloaded weight), Jost Light for the fact numbers, Archivo Regular and Medium for text. Jost Regular is not loaded.
+**Type weights:** Jost SemiBold only for the hero title "Find your frequency." (`--weight-hero`, the only preloaded weight). Every section title is Jost Regular (`--weight-title`), which overrides the SemiBold titles in Figma. Jost Light for the fact numbers, Archivo Regular and Medium for text.
 
 **Badge size:** the official badge is 56 px tall, lining up with the 56 px secondary button beside it.
 

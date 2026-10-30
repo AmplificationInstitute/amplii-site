@@ -38,9 +38,14 @@ p {
 h1,
 h2 {
   font-family: var(--font-display);
-  font-weight: var(--weight-display);
+  font-weight: var(--weight-title);
   line-height: var(--leading-tight);
   text-wrap: balance;
+}
+
+/* The page's one h1 is the hero title, the only SemiBold text */
+h1 {
+  font-weight: var(--weight-hero);
 }
 
 p {

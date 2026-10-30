@@ -10,8 +10,9 @@
   --weight-light: 300; /* Jost, big numbers */
   --weight-regular: 400; /* Archivo */
   --weight-medium: 500; /* Archivo */
-  --weight-semibold: 600; /* Jost, titles */
-  --weight-display: var(--weight-semibold);
+  --weight-semibold: 600; /* Jost, hero title only */
+  --weight-hero: var(--weight-semibold);
+  --weight-title: var(--weight-regular); /* Jost, section titles */
 
   /* Fixed text sizes (Archivo) */
   --text-sm: 0.875rem; /* 14 */
