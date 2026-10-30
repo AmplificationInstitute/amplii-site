@@ -1,6 +1,5 @@
 ---
 import AppStoreBadge from '../components/AppStoreBadge.astro';
-import Button from '../components/Button.astro';
 import Glow from '../components/Glow.astro';
 import Horizon from '../components/Horizon.astro';
 import Section from '../components/Section.astro';
@@ -68,16 +67,10 @@ import { hero } from '../content/en/hero';
     </p>
     <div class="hero__actions" data-part="buttons">
       <AppStoreBadge campaign="hero" eager />
-      <Button href="#how-it-works" variant="secondary" class="hero__try">
-        {hero.tryTheBeat}
-      </Button>
     </div>
     <p class="hero__note" data-part="note">
       {hero.note}
     </p>
-    <a href="#how-it-works" class="hero__try-link" data-part="link">
-      {hero.tryTheBeatFirst}
-    </a>
   </div>
 </Section>
 
@@ -89,11 +82,11 @@ import { hero } from '../content/en/hero';
    * The hero keeps the Figma heights; its content starts at --section-pad-top.
    */
   .hero {
-    --section-pad-top: clamp(23.75rem, 22.9715rem + 3.1696vw, 25rem); /* 380 to 400 */
+    --section-pad-top: clamp(25rem, 27.13rem - 3.3281vw, 26.3125rem); /* 421 to 400 */
     --section-pad-bottom: 0rem;
-    --hero-height: clamp(50.3125rem, 47.393rem + 11.8859vw, 55rem); /* 805 to 880 */
-    --hero-gap: clamp(1.125rem, 1.0471rem + 0.317vw, 1.25rem); /* 18 to 20 */
-    --hero-spacer: clamp(0.5rem, 0.7029rem - 0.317vw, 0.625rem); /* 10 to 8 */
+    --hero-height: clamp(46.9375rem, 41.916rem + 20.4437vw, 55rem); /* 751 to 880 */
+    --hero-gap: clamp(1.0625rem, 0.9457rem + 0.4754vw, 1.25rem); /* 17 to 20 */
+    --hero-spacer: 0.5rem; /* 8 */
     --hero-strip-y: clamp(10.9375rem, 9.5751rem + 5.5468vw, 13.125rem); /* 175 to 210 */
     --hero-content: 40rem; /* 640 */
 
@@ -117,7 +110,6 @@ import { hero } from '../content/en/hero';
       --section-pad-top: clamp(24.375rem, 26.5385rem - 2.4038vw, 25rem); /* 400 to 390 */
       --hero-height: clamp(55rem, 42.6923rem + 19.2308vw, 60rem); /* 880 to 960 */
       --hero-gap: clamp(1.25rem, 0.6346rem + 0.9615vw, 1.5rem); /* 20 to 24 */
-      --hero-spacer: 0.5rem; /* 8 */
       --hero-strip-y: clamp(13.125rem, 8.5096rem + 7.2115vw, 15rem); /* 210 to 240 */
       --hero-content: clamp(40rem, 21.5385rem + 28.8462vw, 47.5rem); /* 640 to 760 */
       --hero-glow-w: clamp(38rem, 14.6154rem + 36.5385vw, 47.5rem); /* 608 to 760 */
@@ -222,55 +214,16 @@ import { hero } from '../content/en/hero';
     line-height: 1.4;
   }
 
+  /* The App Store badge is the hero's only button */
   .hero__actions {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 0.75rem;
     margin-top: calc(var(--hero-gap) + var(--hero-spacer));
   }
 
   .hero__note {
     color: var(--color-muted);
-    font-size: 0.75rem;
+    font-size: clamp(0.8125rem, 0.9139rem - 0.1585vw, 0.875rem); /* 14 to 13 at 1024 */
     line-height: 1.3;
-  }
-
-  /* Phone: a text link under the note instead of the button */
-  .hero :global(.hero__try) {
-    display: none;
-  }
-
-  /* The 44 px tap area keeps the Figma gap to the 19.5 px line of text */
-  .hero__try-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--touch-target);
-    margin-block: calc((1.21875rem - var(--touch-target)) / 2);
-    color: var(--color-accent);
-    font-size: 0.9375rem;
-    font-weight: var(--weight-medium);
-    line-height: 1.3;
-    text-decoration: none;
-  }
-
-  @media (width >= 768px) {
-    .hero__note {
-      font-size: 0.8125rem;
-    }
-
-    .hero :global(.hero__try) {
-      display: inline-flex;
-    }
-
-    .hero__try-link {
-      display: none;
-    }
-  }
-
-  @media (hover: hover) {
-    .hero__try-link:hover {
-      text-decoration: underline;
-    }
   }
 </style>

@@ -91,7 +91,7 @@ src/
 
 A section only composes these components with its content file.
 
-**App Store links:** one helper, `appStoreUrl(campaign)` in `src/lib/app-store.ts`, builds every link to the App Store: the badges, "Get the app" in the nav and the sticky bar, and "Try Amplii Full". Each call site passes its own campaign name, so downloads can be attributed without tracking visitors. Until phase 6 the provider and campaign tokens are `[TODO]` and the helper returns the plain `https://apps.apple.com/app/id6811405143`. "Try the beat" is an in-page anchor (`#how-it-works`) and needs none.
+**App Store links:** one helper, `appStoreUrl(campaign)` in `src/lib/app-store.ts`, builds every link to the App Store: the badges, "Get the app" in the nav and the sticky bar, and "Try Amplii Full". Each call site passes its own campaign name, so downloads can be attributed without tracking visitors. Until phase 6 the provider and campaign tokens are `[TODO]` and the helper returns the plain `https://apps.apple.com/app/id6811405143`. The hero has no "Try the beat" button (hidden in Figma); the nav's "How it works" link reaches the demo.
 
 **Type weights:** Jost SemiBold only for the hero title "Find your frequency." (`--weight-hero`, the only preloaded weight). Every section title is Jost Regular (`--weight-title`), which overrides the SemiBold titles in Figma. Jost Light for the fact numbers, Archivo Regular and Medium for text.
 
@@ -120,7 +120,7 @@ From Figma `214:574`.
 | Section              | Phone (< 768)                                           | Tablet (768 to 1279)              | Desktop (≥ 1280)                             |
 | -------------------- | ------------------------------------------------------- | --------------------------------- | -------------------------------------------- |
 | Nav                  | wordmark, Get the app                                   | + four section links              | same as tablet                               |
-| Hero                 | stacked, buttons stacked                                | buttons in a row                  | as Figma                                     |
+| Hero                 | stacked; the App Store badge is the only button         | same, larger                      | as Figma                                     |
 | Try the beat         | stacked                                                 | two columns from 1024 (`5fr 7fr`) | two columns                                  |
 | Modes                | one column of row cards                                 | 2 × 2                             | 4 in a row                                   |
 | Science              | scroll-snap carousel (no JS, labelled focusable region) | 2 × 2                             | row of 4                                     |
