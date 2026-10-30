@@ -27,5 +27,10 @@
   --card-shadow: 0 14px 30px rgb(0 0 0 / 45%);
   --card-blur: 12px;
 
+  /* Hero horizon, from the Figma "Horizon" layers */
+  --horizon-glow: #2b62ff;
+  --horizon-rim: #7fb0ff;
+  --horizon-line: rgb(156 194 255 / 90%);
+
   --color-focus: var(--color-accent);
 }

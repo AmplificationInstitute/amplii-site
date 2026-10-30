@@ -1,0 +1,100 @@
+---
+---
+
+<!--
+  The hero's horizon (Figma "Horizon glow", "Horizon rim glow", "Horizon").
+  Clipped to its section: unclipped, the 2800 px circle would reach three
+  sections down.
+-->
+<div class="horizon" aria-hidden="true">
+  <div class="horizon__circle" data-part="horizon">
+    <div class="horizon__layer horizon__glow"></div>
+    <div class="horizon__layer horizon__rim"></div>
+    <div class="horizon__line"></div>
+  </div>
+</div>
+
+<style>
+  /*
+   * Circle size and top edge from the Figma frames (393 / 1024 / 1440 / 1920),
+   * one linear clamp() per segment like the type scale.
+   */
+  .horizon {
+    --horizon-size: clamp(62.5rem, 15.7887rem + 190.1743vw, 137.5rem); /* 1000 to 2200 */
+    --horizon-top: clamp(26.875rem, 10.9152rem + 64.9762vw, 52.5rem); /* 430 to 840 */
+
+    position: absolute;
+    inset: 0;
+    overflow: clip;
+  }
+
+  @media (width >= 1024px) {
+    .horizon {
+      --horizon-size: clamp(137.5rem, 45.1923rem + 144.2308vw, 175rem); /* 2200 to 2800 */
+      --horizon-top: 52.5rem; /* 840 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .horizon {
+      --horizon-size: clamp(175rem, 70rem + 116.6667vw, 210rem); /* 2800 to 3360 */
+      --horizon-top: clamp(52.5rem, 13.5rem + 43.3333vw, 65.5rem); /* 840 to 1048 */
+    }
+  }
+
+  .horizon__circle {
+    position: absolute;
+    top: var(--horizon-top);
+    left: 50%;
+    width: var(--horizon-size);
+    aspect-ratio: 1;
+    translate: -50% 0;
+  }
+
+  /*
+   * Figma blurs filled circles (layer blur 60 and 14). A radial gradient that
+   * follows a Gaussian edge (sigma = half the Figma radius) gives the same
+   * light with no filter to paint.
+   */
+  .horizon__layer {
+    --pad: calc(3 * var(--sigma));
+    --edge: calc(100% - var(--pad));
+
+    position: absolute;
+    inset: calc(-1 * var(--pad));
+    translate: 0 var(--shift);
+    opacity: var(--alpha);
+    background: radial-gradient(
+      circle closest-side,
+      var(--tint) calc(var(--edge) - 2 * var(--sigma)),
+      color-mix(in srgb, var(--tint) 84%, transparent) calc(var(--edge) - var(--sigma)),
+      color-mix(in srgb, var(--tint) 50%, transparent) var(--edge),
+      color-mix(in srgb, var(--tint) 16%, transparent) calc(var(--edge) + var(--sigma)),
+      color-mix(in srgb, var(--tint) 2%, transparent) calc(var(--edge) + 2 * var(--sigma)),
+      transparent 100%
+    );
+  }
+
+  .horizon__glow {
+    --tint: var(--horizon-glow);
+    --sigma: 30px;
+    --shift: -20px;
+    --alpha: 0.85;
+  }
+
+  .horizon__rim {
+    --tint: var(--horizon-rim);
+    --sigma: 7px;
+    --shift: -6px;
+    --alpha: 0.7;
+  }
+
+  /* Filled with the page background, so the clip at the section edge leaves no seam */
+  .horizon__line {
+    position: absolute;
+    inset: 0;
+    border: 1.2px solid var(--horizon-line);
+    border-radius: 50%;
+    background: var(--color-background);
+  }
+</style>
