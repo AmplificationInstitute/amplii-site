@@ -13,6 +13,13 @@ export default defineConfig({
   // Scope as a class, so a class passed to a child component keeps the parent's
   // scoped styles (the attribute strategy drops them).
   scopedStyleStrategy: 'class',
+  vite: {
+    build: {
+      // The app requires iOS 17, whose Safari only knows -webkit-backdrop-filter.
+      // Without this target the minifier drops the prefix and glass turns flat.
+      cssTarget: ['safari17', 'ios17', 'chrome111', 'edge111', 'firefox115'],
+    },
+  },
   fonts: [
     {
       provider: fontProviders.fontsource(),
