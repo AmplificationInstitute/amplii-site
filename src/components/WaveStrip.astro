@@ -1,9 +1,9 @@
 ---
 import { wavePresets, type WavePresetId } from '../data/presets/waves';
 import {
-  FULL_WINDOW,
   GLOW_LAYERS,
-  STRIP_WINDOW,
+  STRIP_CYCLES,
+  STRIP_OFFSET,
   waveStrokes,
   type WaveTint,
 } from '../lib/wave/geometry';
@@ -13,34 +13,43 @@ interface Props {
   preset: WavePresetId;
   /** strip: full-width background (Figma strip rule). box: fills its container. */
   layout?: 'strip' | 'box';
-  /** Height in px. */
-  height: number;
+  /** Height in px (box layout). A strip has no height: its center line sits where it is placed. */
+  height?: number;
   class?: string;
 }
 
-const { preset, layout = 'box', height, class: className } = Astro.props;
+const { preset, layout = 'box', height = 0, class: className } = Astro.props;
 
 const params = wavePresets[preset];
-// The SVG stretches horizontally only, so every width shows the same part of the wave.
-const viewWidth = 1000;
+const isStrip = layout === 'strip';
+if (!isStrip && height <= 0) throw new Error(`WaveStrip "${preset}" needs a height in box layout`);
+/*
+ * Box: the SVG fills the box and stretches sideways only. Strip: the SVG is
+ * sized in CSS (crest length and amplitude per width) and only scales, so every
+ * crest stays an even sine.
+ */
+const viewWidth = isStrip ? STRIP_CYCLES * 100 : 1000;
+const viewHeight = isStrip ? params.refHeight : height;
 const strokes = waveStrokes(params, {
   width: viewWidth,
-  height,
+  height: viewHeight,
   t: 0,
   energy: 1,
-  amplitudeScale: layout === 'strip' ? 1 : height / params.refHeight,
-  window: layout === 'strip' ? STRIP_WINDOW : FULL_WINDOW,
+  amplitudeScale: isStrip ? 1 : height / params.refHeight,
 });
 const id = uniqueId('wave');
 const color = (tint: WaveTint) => `var(--color-${tint})`;
 const glowLayers = params.glow ? GLOW_LAYERS : [];
-const viewBox = `0 0 ${viewWidth} ${height}`;
+const viewBox = `0 0 ${viewWidth} ${viewHeight}`;
+const stripVars = isStrip
+  ? `; --strip-cycles: ${STRIP_CYCLES}; --strip-offset: ${STRIP_OFFSET}; --strip-box: ${params.refHeight / params.amplitude}`
+  : '';
 ---
 
 <div
-  class:list={['wave', className]}
+  class:list={['wave', isStrip && 'wave--strip', className]}
   data-wave={preset}
-  style={`--wave-height: ${height}px`}
+  style={`--wave-height: ${height}px${stripVars}`}
   aria-hidden="true"
 >
   {
@@ -116,5 +125,32 @@ const viewBox = `0 0 ${viewWidth} ${height}`;
     height: 100%;
     max-width: none;
     overflow: visible;
+  }
+
+  /*
+   * Background strips (Figma 214:574, phone redrawn in 201:3): about 2.6 crests
+   * on a 393 phone with a 16 px center amplitude, 3.2 crests and 3% of the
+   * width from 1024 up (1024: 320 / 30.7, 1440: 450 / 43.2). One linear
+   * segment between, so nothing jumps.
+   */
+  .wave--strip {
+    --strip-wavelength: calc(26.7585vw + 2.8746rem);
+    --strip-amplitude: calc(2.3328vw + 0.427rem);
+
+    overflow-x: clip;
+  }
+
+  @media (width >= 1024px) {
+    .wave--strip {
+      --strip-wavelength: 31.25vw;
+      --strip-amplitude: 3vw;
+    }
+  }
+
+  .wave--strip svg {
+    inset: 50% auto auto calc(-100% * var(--strip-offset));
+    width: calc(var(--strip-cycles) * var(--strip-wavelength));
+    height: calc(var(--strip-box) * var(--strip-amplitude));
+    translate: 0 -50%;
   }
 </style>

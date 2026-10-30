@@ -67,33 +67,33 @@ src/
 
 ## 3. Components
 
-| Component                                          | Props                                                                                                                                                       | Used in                                                      |
-| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `Section`                                          | `id`, `labelledBy`; `bleed` slot (glows and waves, full width), default slot (in the container)                                                             | every section                                                |
-| `SectionHeader`                                    | `title`, `lead?`, `level` (default 2), `align: 'start' \| 'center'`                                                                                         | 2 to 10                                                      |
-| `GlassCard`                                        | `as` (`div` / `article` / `li`), `padding: 'md' \| 'lg'` (Figma card: fill, stroke, radius 30, shadow, blur 12)                                             | arc, meditations, demo, plans, facts, modes                  |
-| `Pill`                                             | `label` (accent fill, Figma "Coming to Amplii")                                                                                                             | "Coming to Amplii"                                           |
-| `Button`                                           | `href?` (renders `<a>`, else `<button>`), `variant: 'primary' \| 'secondary'`, `size: 'sm' (40) \| 'md' (52) \| 'lg' (56)`, `type?`                         | nav, hero, demo, plans                                       |
-| `AppStoreBadge`                                    | `campaign` (passed to `appStoreUrl`), `height` (default 56, Apple minimum 40), `eager`                                                                      | hero, pricing, download, sticky bar                          |
-| `QrCode`                                           | `size` (static pre-generated SVG, no library)                                                                                                               | download (tablet and desktop)                                |
-| `Glow`                                             | `x`, `y` (center), `width`, `height` (the ellipse), `intensity` (CSS radial gradient, `aria-hidden`). The dawn variant comes with the Download section (2c) | all                                                          |
-| `Horizon`                                          | none (three layers: glow, rim, line)                                                                                                                        | hero                                                         |
-| `WaveStrip`                                        | see §6                                                                                                                                                      | hero, modes, meditations, science, pricing, demo, mode cards |
-| `PhoneMockup`                                      | `screen: ImageMetadata`, `alt`, `width`                                                                                                                     | privacy                                                      |
-| `ModeCard`                                         | `mode: ModeId` (everything else comes from presets and copy)                                                                                                | modes                                                        |
-| `FactCard`                                         | `index`, `title`, `body`                                                                                                                                    | science                                                      |
-| `FaqItem`                                          | `question`, `answer`, `group` (shared `name`, one answer open at a time)                                                                                    | FAQ, "Read the studies"                                      |
-| `Stepper`                                          | `steps`, `current`                                                                                                                                          | try the beat                                                 |
-| `DemoCard`                                         | `steps`, `leftHz`, `rightHz` (composes WaveStrip, Stepper text and Buttons)                                                                                 | try the beat                                                 |
-| `ArcChart`                                         | `mode` (default meditate; curve, axis and minutes from presets)                                                                                             | arc                                                          |
-| `PlanCard`                                         | `plan: 'free' \| 'full'`, `featured?`                                                                                                                       | pricing                                                      |
-| `SiteHeader`, `SiteFooter`, `StickyAppBar`, `Logo` | none (copy from content files)                                                                                                                              | layout                                                       |
+| Component                                          | Props                                                                                                                                                                                                                          | Used in                                                                                                              |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `Section`                                          | `id`, `labelledBy`; `bleed` slot (glows and waves, full width, clipped sideways only, so glows and the hero horizon continue into the next section), default slot (in the container)                                           | 'all'`(default`x`; the hero uses `all`); `bleed` slot (glows and waves, full width), default slot (in the container) | every section |
+| `SectionHeader`                                    | `title`, `lead?`, `level` (default 2), `align: 'start' \| 'center' \| 'center-from-tablet'` (phone headers are left-aligned in Figma)                                                                                          | 2 to 10                                                                                                              |
+| `GlassCard`                                        | `as` (`div` / `article` / `li`), `padding: 'md' \| 'lg'` (Figma card: fill, stroke, radius 30, shadow, blur 12)                                                                                                                | arc, meditations, demo, plans, facts, modes                                                                          |
+| `Pill`                                             | `label` (accent fill, Figma "Coming to Amplii")                                                                                                                                                                                | "Coming to Amplii"                                                                                                   |
+| `Button`                                           | `href?` (renders `<a>`, else `<button>`), `variant: 'primary' \| 'secondary'`, `size: 'sm' (40) \| 'md' (52) \| 'lg' (56)`, `type?`                                                                                            | nav, hero, demo, plans                                                                                               |
+| `AppStoreBadge`                                    | `campaign` (passed to `appStoreUrl`), `height` (default 56, Apple minimum 40), `eager`                                                                                                                                         | hero, pricing, download, sticky bar                                                                                  |
+| `QrCode`                                           | `size` (static pre-generated SVG, no library)                                                                                                                                                                                  | download (tablet and desktop)                                                                                        |
+| `Glow`                                             | `x`, `y` (center), `width`, `height` (the ellipse), `intensity`, `tint: 'glow' \| 'ambient'` (phone "Ambient" layers), `class` (CSS radial gradient). The dawn variant comes with the Download section (2c)                    | all                                                                                                                  |
+| `Horizon`                                          | none (three layers: glow, rim, line). Phone: 340 px from the top, behind the text. From 768: a fixed distance above the hero's bottom edge. Not clipped at the bottom: as in Figma, the disc continues behind the next section | hero                                                                                                                 |
+| `WaveStrip`                                        | see §6                                                                                                                                                                                                                         | hero, modes, meditations, science, pricing, demo, mode cards                                                         |
+| `PhoneMockup`                                      | `screen: ImageMetadata`, `alt`, `width`                                                                                                                                                                                        | privacy                                                                                                              |
+| `ModeCard`                                         | `mode: ModeId` (everything else comes from presets and copy)                                                                                                                                                                   | modes                                                                                                                |
+| `FactCard`                                         | `index`, `title`, `body`                                                                                                                                                                                                       | science                                                                                                              |
+| `FaqItem`                                          | `question`, `answer`, `group` (shared `name`, one answer open at a time)                                                                                                                                                       | FAQ, "Read the studies"                                                                                              |
+| `Stepper`                                          | `steps`, `current`                                                                                                                                                                                                             | try the beat                                                                                                         |
+| `DemoCard`                                         | `steps`, `leftHz`, `rightHz` (composes WaveStrip, Stepper text and Buttons)                                                                                                                                                    | try the beat                                                                                                         |
+| `ArcChart`                                         | `mode` (default meditate; curve, axis and minutes from presets)                                                                                                                                                                | arc                                                                                                                  |
+| `PlanCard`                                         | `plan: 'free' \| 'full'`, `featured?`                                                                                                                                                                                          | pricing                                                                                                              |
+| `SiteHeader`, `SiteFooter`, `StickyAppBar`, `Logo` | none (copy from content files)                                                                                                                                                                                                 | layout                                                                                                               |
 
 A section only composes these components with its content file.
 
-**App Store links:** one helper, `appStoreUrl(campaign)` in `src/lib/app-store.ts`, builds every link to the App Store: the badges, "Get the app" in the nav and the sticky bar, and "Try Amplii Full". Each call site passes its own campaign name, so downloads can be attributed without tracking visitors. Until phase 6 the provider and campaign tokens are `[TODO]` and the helper returns the plain `https://apps.apple.com/app/id6811405143`. "Try the beat" is an in-page anchor (`#how-it-works`) and needs none.
+**App Store links:** one helper, `appStoreUrl(campaign)` in `src/lib/app-store.ts`, builds every link to the App Store: the badges, "Get the app" in the nav and the sticky bar, and "Try Amplii Full". Each call site passes its own campaign name, so downloads can be attributed without tracking visitors. Until phase 6 the provider and campaign tokens are `[TODO]` and the helper returns the plain `https://apps.apple.com/app/id6811405143`. The hero has no "Try the beat" button (hidden in Figma); the nav's "How it works" link reaches the demo.
 
-**Type weights:** Jost SemiBold for the hero and section titles (`--weight-display`, the only preloaded weight), Jost Light for the fact numbers, Archivo Regular and Medium for text. Jost Regular is not loaded.
+**Type weights:** Jost SemiBold only for the hero title "Find your frequency." (`--weight-hero`, the only preloaded weight). Every section title is Jost Regular (`--weight-title`), which overrides the SemiBold titles in Figma. Jost Light for the fact numbers, Archivo Regular and Medium for text.
 
 **Badge size:** the official badge is 56 px tall, lining up with the 56 px secondary button beside it.
 
@@ -111,7 +111,7 @@ From Figma `214:574`.
 - **Container:** text and cards in a centered column, max 1200 px. Glows, waves and the horizon run full width through the `Section` `bleed` slot. Only the page clips sideways: `html { overflow-x: clip }` (`clip`, not `hidden`, so `position: sticky` still works).
 - **Side margins:** 20 px below 390, 24 px phone, 48 px tablet, then `clamp(3rem, 17.31vw - 8.075rem, 7.5rem)` from 1024 (48 at 1024, 120 at 1440), then the 1200 column is centered.
 - **Type scale:** one linear `clamp()` per segment (393 to 1024, 1024 to 1440, 1440 to 1920), with the token redefined at 1024 and 1440. Segment ends match, so nothing jumps.
-  - Hero title 40 / 60 / 76 / 88
+  - Hero title 36 / 60 / 76 / 88 (36 from the phone frame 201:3, one line; below 393 it shrinks with the screen to stay on one line)
   - Section title 32 / 44 / 52 / 56
   - Body 16 / 18 / 20 / 20
   - Jost from 28 px up, Archivo at 20 px and below.
@@ -120,7 +120,7 @@ From Figma `214:574`.
 | Section              | Phone (< 768)                                           | Tablet (768 to 1279)              | Desktop (≥ 1280)                             |
 | -------------------- | ------------------------------------------------------- | --------------------------------- | -------------------------------------------- |
 | Nav                  | wordmark, Get the app                                   | + four section links              | same as tablet                               |
-| Hero                 | stacked, buttons stacked                                | buttons in a row                  | as Figma                                     |
+| Hero                 | stacked; the App Store badge is the only button         | same, larger                      | as Figma                                     |
 | Try the beat         | stacked                                                 | two columns from 1024 (`5fr 7fr`) | two columns                                  |
 | Modes                | one column of row cards                                 | 2 × 2                             | 4 in a row                                   |
 | Science              | scroll-snap carousel (no JS, labelled focusable region) | 2 × 2                             | row of 4                                     |
@@ -276,20 +276,42 @@ In the 64 px mode-card box, amplitude scales by 64 / 126 (Sleep: 34 → 17 px).
 
 Demo waves (from `WaveBundle.leftTone / rightTone / beat`, `refHeight` 200): left tone 5 lines, amplitude 38, 2.8 cycles, envelope 0…0.93 peak 0.41, wave-1 color, no glow. Right tone 5 lines, 38, 3.2 cycles, envelope 0.07…1 peak 0.59, wave-2 color, no glow. Beat 7 lines, 58, 1.2 cycles, envelope 0.14…0.87 peak 0.5, with glow. These match the demo canvas layers in Figma (Left tone, Right tone, Beat glow, Beat).
 
-Background and hero strips (one `background` preset), measured from the Figma "Strip Waves" vectors: 7 lines, 9 crests across the 2.8 × strip (about 3 on screen), no cycle spread, center amplitude 43 px, center line 1.6 px, line opacity by distance from the center 0.95 / 0.55 / 0.45 / 0.35. Drift 0.06 (about 17 s), breathing 0.1 Hz.
+Background and hero strips (one `background` preset), measured from the Figma "Strip Waves" vectors (phone 201:3, tablet and desktop share the same shape): 7 lines, even crests with no taper (`taper: false`), no cycle spread. Each line is a fixed share of the center line's height (0.45 / 0.7 / 0.9 / 1 / 0.85 / 0.65 / 0.4) and 0.045 of a cycle behind the next (`phaseStep`, counted from the center line). Center line 1.6 px, line opacity by distance from the center 0.95 / 0.55 / 0.45 / 0.35. Drift 0.06 (about 17 s), breathing 0.1 Hz.
+
+### Where the strips show (Figma, per size)
+
+| Section     | Phone                                                                   | Tablet | Desktop |
+| ----------- | ----------------------------------------------------------------------- | ------ | ------- |
+| Hero        | on (stronger center line: 0.35 / 0.55 / 0.8 / 1.35 / 0.8 / 0.55 / 0.35) | on     | on      |
+| Modes       | off                                                                     | on     | off     |
+| Meditations | off                                                                     | off    | off     |
+| Science     | off                                                                     | on     | on      |
+| Pricing     | on                                                                      | on     | on      |
+| Download    | off                                                                     | off    | off     |
+
+Hidden Figma layers never reach the build. Tablet is 768 to 1279, desktop from 1280.
 
 ### Strip rule (Figma `214:574`)
 
-The background strip is 2.8 × the screen width and starts 0.9 widths to the left, so every screen shows the same part of the wave (about three crests). Never repeat or squeeze it.
+The background strip starts 0.9 screen widths to the left. Its crests are calm, even sines at every width: same length and height across the screen, never squeezed into sharp peaks.
 
-- The canvas draws only the visible window, mapped to that part of the strip: `x_strip = (0.9 + x) / 2.8`. Same picture, no 4000 px canvas.
-- The phase 2 static SVG uses a normalized `viewBox`, `preserveAspectRatio="none"` and `vector-effect: non-scaling-stroke`, which gives the same result without JS.
+| Width | Crests on screen | Crest length | Center amplitude |
+| ----- | ---------------- | ------------ | ---------------- |
+| 393   | 2.6              | 151 px       | 16 px            |
+| 1024  | 3.2              | 320 px       | 30.7 px          |
+| 1440  | 3.2              | 450 px       | 43.2 px          |
+| 1920  | 3.2              | 600 px       | 57.6 px          |
+
+From 1024 up the crest length is `31.25vw` and the amplitude `3vw`; from 393 to 1024 both follow one linear segment, so nothing jumps.
+
+- The phase 2 static SVG draws `STRIP_CYCLES` (7) whole cycles and is sized in CSS (`WaveStrip`, `--strip-wavelength`, `--strip-amplitude`), so it only scales and every crest stays a true sine. `vector-effect: non-scaling-stroke` keeps line widths fixed.
+- The canvas uses the same two values per width and draws only the visible part: `x_strip = 0.9 · width + x`, in crest lengths.
 
 ### `WaveStrip` props
 
-`preset` (`'background' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId`), `layout: 'strip' | 'box'`, `height`. The hero uses the `background` preset. Always `aria-hidden`.
+`preset` (`'background' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId`), `layout: 'strip' | 'box'`, `height` (box only; a strip's center line sits where it is placed). The hero uses the `background` preset. Always `aria-hidden`.
 
-- **Phase 2:** static inline SVG at `t = 0`, `energy = 1`.
+- **Phase 2:** static inline SVG at `t = 0`, `energy = 1`. Strips are clipped sideways by `WaveStrip` and the `Section` bleed, so they never widen the page.
 - **Phase 3:** `animations/waves/renderer.ts` adds two canvases over the SVG (a 1/4-resolution glow canvas with a light CSS blur, and a full-resolution lines canvas on top) and draws from the shared ticker. Paused off screen (IntersectionObserver), DPR capped at 2, never created under Reduce Motion.
 
 ## 7. Assets

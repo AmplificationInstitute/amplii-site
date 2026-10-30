@@ -1,0 +1,214 @@
+---
+import { arc } from '../content/en/arc';
+import { arcSplit, phaseMinutes, type ArcPhase } from '../data/presets/arc';
+import { modes, type ModeId } from '../data/presets/modes';
+
+interface Props {
+  mode?: ModeId;
+}
+
+const { mode: modeId = 'meditate' } = Astro.props;
+const mode = modes.find((m) => m.id === modeId) ?? modes[0];
+const { start, hold, end } = mode.arcHz;
+const minutes = phaseMinutes(mode.defaultMinutes);
+const phases = Object.keys(arcSplit) as ArcPhase[];
+
+/*
+ * Plot geometry from the Figma curve frames: the beat range fills the middle
+ * 5/7 of the plot height (30 / 150 / 30 of 210), each ramp is a cubic with its
+ * handles halfway along the ramp.
+ */
+const W = 1000;
+const H = 210;
+const PAD = 30;
+const max = Math.max(start, hold, end);
+const min = Math.min(start, hold, end);
+const y = (hz: number) => PAD + ((max - hz) / (max - min)) * (H - 2 * PAD);
+const easeEnd = W * arcSplit.easeIn;
+const returnStart = W * (arcSplit.easeIn + arcSplit.hold);
+const curve = [
+  `M0 ${y(start)}`,
+  `C${easeEnd / 2} ${y(start)} ${easeEnd / 2} ${y(hold)} ${easeEnd} ${y(hold)}`,
+  `H${returnStart}`,
+  `C${(returnStart + W) / 2} ${y(hold)} ${(returnStart + W) / 2} ${y(end)} ${W} ${y(end)}`,
+].join('');
+
+const percent = (value: number, total: number) => `${((value / total) * 100).toFixed(3)}%`;
+const levels = [...new Set([start, hold, end])].sort((a, b) => b - a);
+const dots = [
+  { x: 0, hz: start },
+  { x: W * (arcSplit.easeIn + arcSplit.hold / 2), hz: hold },
+  { x: W, hz: end },
+];
+---
+
+<div class="arc-chart" data-part="chart">
+  <p class="visually-hidden">{arc.chartLabel(mode.name, start, hold, end, mode.defaultMinutes)}</p>
+  <div class="arc-chart__axis" aria-hidden="true">
+    {levels.map((hz) => (
+      <span class="arc-chart__level" style={`--y: ${percent(y(hz), H)}`}>
+        {arc.hz(hz)}
+      </span>
+    ))}
+  </div>
+  <div class="arc-chart__plot" aria-hidden="true">
+    {levels.map((hz) => (
+      <span class="arc-chart__grid" style={`--y: ${percent(y(hz), H)}`} />
+    ))}
+    <svg class="arc-chart__glow" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
+      <path d={curve} vector-effect="non-scaling-stroke" />
+    </svg>
+    <svg class="arc-chart__curve" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
+      <path d={curve} vector-effect="non-scaling-stroke" data-part="curve" />
+    </svg>
+    {dots.map((dot) => (
+      <span
+        class="arc-chart__dot"
+        style={`--x: ${percent(dot.x, W)}; --y: ${percent(y(dot.hz), H)}`}
+        data-part="dot"
+      />
+    ))}
+  </div>
+  <ol class="arc-chart__phases">
+    {phases.map((phase) => (
+      <li class="arc-chart__phase" data-part="phase">
+        <span class="arc-chart__phase-name">{arc.phases[phase]}</span>
+        <span class="arc-chart__phase-minutes">{arc.minutes(minutes[phase])}</span>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  /*
+   * Phone (Figma 215:2): 40 px axis, 145 px plot. From 768 (231:162, 211:138):
+   * 70 px axis, 210 px plot, larger labels.
+   */
+  .arc-chart {
+    --axis-width: 2.5rem;
+    --plot-height: 9.0625rem;
+    --dot: 10px;
+    --curve-width: 2px;
+
+    display: grid;
+    grid-template-columns: var(--axis-width) minmax(0, 1fr);
+    column-gap: 0.8125rem;
+    row-gap: 1.5625rem;
+  }
+
+  @media (width >= 768px) {
+    .arc-chart {
+      --axis-width: 4.375rem;
+      --plot-height: 13.125rem;
+      --dot: 12px;
+      --curve-width: 2.5px;
+
+      column-gap: 1.5625rem;
+      row-gap: 2.5rem;
+    }
+  }
+
+  .arc-chart__axis,
+  .arc-chart__plot {
+    position: relative;
+    height: var(--plot-height);
+  }
+
+  .arc-chart__level {
+    position: absolute;
+    top: var(--y);
+    right: 0;
+    translate: 0 -50%;
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .arc-chart__grid {
+    position: absolute;
+    top: var(--y);
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 12%) 0 4px,
+      transparent 4px 10px
+    );
+  }
+
+  .arc-chart__plot svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .arc-chart__plot path {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: var(--curve-width);
+    stroke-linecap: round;
+  }
+
+  /* Figma "Curve glow": the same curve, layer blur 8, opacity 0.8 */
+  .arc-chart__glow {
+    opacity: 0.8;
+    filter: blur(4px);
+  }
+
+  .arc-chart__dot {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    width: var(--dot);
+    height: var(--dot);
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: var(--color-ink);
+    box-shadow: 0 0 8px rgb(188 214 255 / 60%);
+  }
+
+  /* Each label sits under the middle of its phase (25 / 50 / 25) */
+  .arc-chart__phases {
+    display: grid;
+    grid-column: 2;
+    grid-template-columns: 1fr 2fr 1fr;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+  }
+
+  .arc-chart__phase {
+    display: grid;
+    gap: 0.125rem;
+    line-height: 1.2;
+  }
+
+  .arc-chart__phase-name {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+
+  .arc-chart__phase-minutes {
+    color: var(--color-muted);
+    font-size: 0.75rem;
+  }
+
+  @media (width >= 768px) {
+    .arc-chart__level {
+      font-size: 0.8125rem;
+    }
+
+    .arc-chart__phase-name {
+      font-size: 1rem;
+    }
+
+    .arc-chart__phase-minutes {
+      font-size: 0.8125rem;
+    }
+  }
+</style>

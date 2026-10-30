@@ -32,14 +32,20 @@ const { name, id, labelledBy, class: className } = Astro.props;
   .section {
     position: relative;
     isolation: isolate;
-    padding-block: var(--space-section);
+    padding-block: var(--section-pad-top, var(--space-section))
+      var(--section-pad-bottom, var(--space-section));
   }
 
-  /* Glows and waves run full width; content stays in the container */
+  /*
+   * Glows and waves run full width; content stays in the container. Clipped
+   * sideways only, so glows still spill into the sections above and below but
+   * never widen the page (which would let phones scroll or zoom out).
+   */
   .section__bleed {
     position: absolute;
     inset: 0;
     z-index: -1;
+    overflow-x: clip;
     pointer-events: none;
   }
 </style>

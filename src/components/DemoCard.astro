@@ -1,0 +1,154 @@
+---
+import { tryTheBeat } from '../content/en/try-the-beat';
+import Button from './Button.astro';
+import GlassCard from './GlassCard.astro';
+import WaveStrip from './WaveStrip.astro';
+
+interface Props {
+  leftHz: number;
+  rightHz: number;
+  class?: string;
+}
+
+const { leftHz, rightHz, class: className } = Astro.props;
+const state = tryTheBeat.start;
+---
+
+<!--
+  Static "Before you start" state (Figma 202:164). Phase 5 drives the step
+  text, waves and buttons from the audio demo.
+-->
+<GlassCard class:list={['demo-card', className]}>
+  <div class="demo-card__top">
+    <span class="demo-card__ear">{tryTheBeat.ear('Left', leftHz)}</span>
+    <span class="demo-card__label" data-part="step-label">
+      {state.label}
+    </span>
+    <span class="demo-card__ear">{tryTheBeat.ear('Right', rightHz)}</span>
+  </div>
+  <div class="demo-card__waves" data-part="waves">
+    <WaveStrip preset="demo-left" height={200} class="demo-card__wave" />
+    <WaveStrip preset="demo-right" height={200} class="demo-card__wave" />
+    <WaveStrip preset="demo-beat" height={200} class="demo-card__wave" />
+  </div>
+  <p class="demo-card__title" data-part="step-title">
+    {state.title}
+  </p>
+  <p class="demo-card__body" data-part="step-body">
+    {state.body}
+  </p>
+  <div class="demo-card__actions" data-part="actions">
+    <Button size="md" class="demo-card__start">
+      {state.button}
+    </Button>
+  </div>
+</GlassCard>
+
+<style>
+  /*
+   * Phone (Figma 201:59, 202:166): the light glass of the glass buttons, radius
+   * 30, padding 20. From 768 (218:1401, 211:84): the card glass, radius 36,
+   * padding 28 to 36. Selectors carry .card so they outrank GlassCard's own.
+   */
+  .demo-card.card {
+    --demo-wave-height: clamp(10rem, 8.4429rem + 6.3391vw, 12.5rem); /* 160 to 200 */
+
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.25rem, 0.9386rem + 1.2678vw, 1.75rem); /* 20 to 28 */
+    border-color: var(--glass-stroke-soft);
+    background: var(--glass-fill);
+    box-shadow: none;
+  }
+
+  @media (width >= 768px) {
+    .demo-card.card {
+      gap: 1.125rem;
+      border-color: var(--card-stroke);
+      border-radius: 2.25rem;
+      background: var(--card-fill);
+      box-shadow: var(--card-shadow);
+    }
+  }
+
+  @media (width >= 1024px) {
+    .demo-card.card {
+      --demo-wave-height: clamp(12.5rem, 7.8846rem + 7.2115vw, 14.375rem); /* 200 to 230 */
+
+      padding: clamp(1.75rem, 0.5192rem + 1.9231vw, 2.25rem); /* 28 to 36 */
+    }
+  }
+
+  .demo-card__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .demo-card__label {
+    font-weight: var(--weight-medium);
+  }
+
+  /* Phone: the step label alone, as in the Figma "Before you start" frame */
+  .demo-card__ear {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .demo-card__top {
+      font-size: var(--text-sm);
+    }
+
+    .demo-card__ear {
+      display: inline;
+    }
+  }
+
+  .demo-card__waves {
+    display: grid;
+  }
+
+  /* The three layers share one box (Left tone, Right tone, Beat in Figma) */
+  .demo-card .demo-card__waves .demo-card__wave {
+    grid-area: 1 / 1;
+    height: var(--demo-wave-height);
+  }
+
+  .demo-card__title {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-medium);
+    line-height: 1.25;
+  }
+
+  .demo-card__body {
+    color: var(--color-ink-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  /* Phone: one full-width 48 px button (Figma); from 768 the 52 px size */
+  .demo-card .demo-card__actions .demo-card__start {
+    --button-size: 3rem;
+
+    width: 100%;
+    padding-inline: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  @media (width >= 768px) {
+    .demo-card__body {
+      font-size: 1rem;
+    }
+
+    .demo-card .demo-card__actions .demo-card__start {
+      --button-size: 52px;
+
+      width: auto;
+      padding-inline: 1.75rem;
+      font-size: var(--text-md);
+    }
+  }
+</style>

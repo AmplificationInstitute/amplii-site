@@ -1,0 +1,95 @@
+---
+import ArcChart from '../components/ArcChart.astro';
+import GlassCard from '../components/GlassCard.astro';
+import Glow from '../components/Glow.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { arc } from '../content/en/arc';
+---
+
+<Section name="arc" id="arc" labelledBy="arc-title" class="arc">
+  <Fragment slot="bleed">
+    <Glow
+      class="arc__glow"
+      intensity={0.22}
+      x="35.42%"
+      y="58.75%"
+      width="var(--arc-glow-w)"
+      height="var(--arc-glow-h)"
+    />
+    <Glow
+      class="arc__glow"
+      intensity={0.2}
+      x="70.83%"
+      y="63.75%"
+      width="var(--arc-glow-w)"
+      height="var(--arc-glow-h)"
+    />
+  </Fragment>
+
+  <div class="arc__layout">
+    <SectionHeader id="arc-title" title={arc.title} lead={arc.lead} align="center-from-tablet" />
+    <GlassCard class="arc__card">
+      <ArcChart mode="meditate" />
+    </GlassCard>
+    <p class="arc__note" data-reveal>
+      {arc.note}
+    </p>
+  </div>
+</Section>
+
+<style>
+  /* Two glows behind the card from 768 (Figma 231:157, 211:133); none on phone */
+  .arc {
+    --lead-measure: 42.5rem; /* 680 */
+    --arc-glow-w: clamp(26rem, 36.1111vw, 100vw);
+    --arc-glow-h: clamp(21rem, 29.1667vw, 100vw);
+  }
+
+  .arc :global(.arc__glow) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .arc :global(.arc__glow) {
+      display: block;
+    }
+  }
+
+  .arc__layout {
+    display: grid;
+    gap: clamp(2.25rem, 1.9685rem + 1.1461vw, 3rem); /* 36 to 48 */
+  }
+
+  /* Card padding from the Figma frames: phone 30 / 20 / 37 / 18, from 768 60 / 40 / 53 / 55 */
+  .arc .arc__card.card {
+    width: 100%;
+    padding: 1.875rem 1.25rem 2.3125rem 1.125rem;
+    border-radius: 1.75rem;
+  }
+
+  @media (width >= 768px) {
+    .arc .arc__card.card {
+      padding: 3.75rem 2.5rem 3.3125rem 3.4375rem;
+      border-radius: 2.25rem;
+    }
+  }
+
+  .arc__note {
+    max-width: 47.5rem;
+    margin-top: -1.25rem; /* 16 to 28 below the card (Figma 16 / 30) */
+    color: var(--color-muted);
+    font-size: clamp(0.875rem, 0.8516rem + 0.0955vw, 0.9375rem); /* 14 to 15 */
+    line-height: 1.4;
+  }
+
+  @media (width >= 768px) {
+    .arc__layout {
+      justify-items: center;
+    }
+
+    .arc__note {
+      text-align: center;
+    }
+  }
+</style>

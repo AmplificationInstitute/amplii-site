@@ -5,7 +5,8 @@ interface Props {
   id: string;
   lead?: string;
   level?: 2 | 3;
-  align?: 'start' | 'center';
+  /** center-from-tablet: left on phone, centered from 768 (the Figma phone frames are left-aligned). */
+  align?: 'start' | 'center' | 'center-from-tablet';
 }
 
 const { title, id, lead, level = 2, align = 'start' } = Astro.props;
@@ -26,7 +27,7 @@ const Heading = `h${level}` as const;
 <style>
   .section-header {
     display: grid;
-    gap: 1.25rem;
+    gap: clamp(1rem, 0.3846rem + 0.9615vw, 1.25rem); /* 16 to 20 at 1440 */
   }
 
   .section-header--center {
@@ -34,17 +35,25 @@ const Heading = `h${level}` as const;
     text-align: center;
   }
 
+  @media (width >= 768px) {
+    .section-header--center-from-tablet {
+      justify-items: center;
+      text-align: center;
+    }
+  }
+
   .section-header__title {
     font-family: var(--font-display);
     font-size: var(--text-title);
-    font-weight: var(--weight-display);
+    font-weight: var(--weight-title);
     line-height: var(--leading-tight);
   }
 
+  /* Sections set --lead-measure to the Figma lead width */
   .section-header__lead {
-    max-width: 34rem;
+    max-width: var(--lead-measure, 34rem);
     color: var(--color-ink-secondary);
-    font-size: var(--text-body);
+    font-size: var(--text-lead);
     line-height: 1.4;
   }
 </style>

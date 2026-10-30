@@ -1,0 +1,139 @@
+---
+import Glow from '../components/Glow.astro';
+import ModeCard from '../components/ModeCard.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import WaveStrip from '../components/WaveStrip.astro';
+import { modesCopy } from '../content/en/modes';
+import { modes } from '../data/presets/modes';
+---
+
+<Section name="modes" id="modes" labelledBy="modes-title" class="modes">
+  <Fragment slot="bleed">
+    <Glow
+      class="modes__ambient"
+      tint="ambient"
+      intensity={0.25}
+      x="68.7%"
+      y="26.875rem"
+      width="28.75rem"
+      height="28.75rem"
+    />
+    <Glow
+      class="modes__glow"
+      intensity={0.2}
+      x="var(--modes-glow-a-x)"
+      y="var(--modes-glow-a-y)"
+      width="var(--modes-glow-w)"
+      height="var(--modes-glow-h)"
+    />
+    <Glow
+      class="modes__glow"
+      intensity={0.22}
+      x="var(--modes-glow-b-x)"
+      y="var(--modes-glow-b-y)"
+      width="var(--modes-glow-w)"
+      height="var(--modes-glow-h)"
+    />
+    <WaveStrip preset="background" layout="strip" class="modes__strip" />
+  </Fragment>
+
+  <div class="modes__layout">
+    <SectionHeader
+      id="modes-title"
+      title={modesCopy.title}
+      lead={modesCopy.lead}
+      align="center-from-tablet"
+    />
+    <ul class="modes__list" data-reveal-group>
+      {modes.map((mode) => (
+        <ModeCard mode={mode.id} />
+      ))}
+    </ul>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Glows and the background strip from the Figma frames: phone one ambient
+   * glow, tablet two glows and the strip behind the cards, desktop (from 1280,
+   * four in a row) two glows. The strip is on for tablet only.
+   */
+  .modes {
+    --lead-measure: 42.5rem; /* 680 */
+    --modes-glow-w: 31rem; /* 496 */
+    --modes-glow-h: 21rem; /* 336 */
+    --modes-glow-a-x: 31.15%;
+    --modes-glow-a-y: 23rem;
+    --modes-glow-b-x: 77%;
+    --modes-glow-b-y: 26.75rem;
+  }
+
+  @media (width >= 1280px) {
+    .modes {
+      --modes-glow-w: 38.75rem; /* 620 */
+      --modes-glow-h: 26.25rem; /* 420 */
+      --modes-glow-a-x: 28.47%;
+      --modes-glow-a-y: 25.625rem;
+      --modes-glow-b-x: 74.31%;
+      --modes-glow-b-y: 29.375rem;
+    }
+  }
+
+  .modes :global(.modes__glow) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .modes :global(.modes__ambient) {
+      display: none;
+    }
+
+    .modes :global(.modes__glow) {
+      display: block;
+    }
+  }
+
+  .modes__strip {
+    display: none;
+    position: absolute;
+    top: 22.5rem; /* 360 */
+    left: 0;
+  }
+
+  @media (768px <= width < 1280px) {
+    .modes__strip {
+      display: block;
+    }
+  }
+
+  .modes__layout {
+    display: grid;
+    gap: 1.625rem;
+  }
+
+  .modes__list {
+    display: grid;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (width >= 768px) {
+    .modes__layout {
+      gap: 4.125rem;
+    }
+
+    .modes__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (width >= 1280px) {
+    .modes__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

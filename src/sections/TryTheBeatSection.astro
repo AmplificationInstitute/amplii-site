@@ -1,0 +1,230 @@
+---
+import DemoCard from '../components/DemoCard.astro';
+import Glow from '../components/Glow.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Stepper from '../components/Stepper.astro';
+import { tryTheBeat } from '../content/en/try-the-beat';
+import { DEMO_START_MODE, demoTones } from '../data/presets/demo';
+
+const tones = demoTones(DEMO_START_MODE);
+---
+
+<Section name="try-the-beat" id="how-it-works" labelledBy="try-title" class="try">
+  <Fragment slot="bleed">
+    <Glow
+      class="try__ambient"
+      tint="ambient"
+      intensity={0.28}
+      x="45.8%"
+      y="20.625rem"
+      width="32.5rem"
+      height="26.25rem"
+    />
+    <Glow
+      class="try__glow"
+      intensity={0.3}
+      x="var(--try-glow-a-x)"
+      y="var(--try-glow-a-y)"
+      width="var(--try-glow-a-w)"
+      height="var(--try-glow-a-h)"
+    />
+    <Glow
+      class="try__glow"
+      intensity={0.24}
+      x="var(--try-glow-b-x)"
+      y="var(--try-glow-b-y)"
+      width="var(--try-glow-b-w)"
+      height="var(--try-glow-b-h)"
+    />
+    <Glow
+      class="try__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="29.8rem"
+      width="var(--try-edge-w)"
+      height="var(--try-edge-h)"
+    />
+    <Glow
+      class="try__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="35.95rem"
+      width="var(--try-edge-w)"
+      height="var(--try-edge-h)"
+    />
+  </Fragment>
+
+  <div class="try__layout">
+    <div class="try__intro">
+      <SectionHeader id="try-title" title={tryTheBeat.title} lead={tryTheBeat.lead} />
+      <Stepper
+        steps={tryTheBeat.steps}
+        current={1}
+        label={tryTheBeat.stepsLabel}
+        class="try__stepper"
+      />
+    </div>
+    <DemoCard leftHz={tones.left} rightHz={tones.right} class="try__demo" />
+    <p class="try__note" data-reveal>
+      {tryTheBeat.note}
+    </p>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Spacing and glows from the Figma frames (393 / 1024 / 1440 / 1920), one
+   * linear segment between each pair. On phone the section starts close under
+   * the hero, whose horizon disc continues behind it. From 1024 the card and
+   * the text start at slightly different heights (card 4 px lower on tablet,
+   * text 20 to 24 px lower on desktop).
+   */
+  .try {
+    --section-pad-top: clamp(2.125rem, 21.2361vw - 3.0911rem, 10.5rem); /* 34 to 168 */
+    --section-pad-bottom: clamp(4.25rem, 15.1026rem - 16.9572vw, 10.9375rem); /* 175 to 68 */
+    --try-intro-offset: 0rem;
+    --try-card-offset: 0rem;
+    --try-edge-w: 0rem;
+    --try-edge-h: 0rem;
+    --lead-measure: 27.5rem; /* 440 */
+    --try-glow-a-x: 71.79%;
+    --try-glow-a-y: 21rem;
+    --try-glow-a-w: 35rem;
+    --try-glow-a-h: 28rem;
+    --try-glow-b-x: 89.93%;
+    --try-glow-b-y: 36rem;
+    --try-glow-b-w: 28rem;
+    --try-glow-b-h: 23rem;
+  }
+
+  @media (width >= 1024px) {
+    .try {
+      --section-pad-top: clamp(6.875rem, 19.4231rem - 13.9423vw, 10.5rem); /* 168 to 110 */
+      --section-pad-bottom: clamp(4.25rem, 23.0769vw - 10.5192rem, 10.25rem); /* 68 to 164 */
+      --try-intro-offset: clamp(0rem, 4.8077vw - 3.0769rem, 1.25rem); /* 0 to 20 */
+      --try-card-offset: clamp(0rem, 0.8654rem - 0.9615vw, 0.25rem); /* 4 to 0 */
+      --try-glow-a-x: clamp(45.9438rem, 6.7284rem + 61.274vw, 61.875rem); /* 735 to 990 */
+      --try-glow-a-y: clamp(20rem, 23.4615rem - 3.8462vw, 21rem); /* 336 to 320 */
+      --try-glow-a-w: clamp(35rem, 13.4615rem + 33.6538vw, 43.75rem); /* 560 to 700 */
+      --try-glow-a-h: clamp(28rem, 10.7692rem + 26.9231vw, 35rem); /* 448 to 560 */
+      --try-glow-b-x: clamp(57.5562rem, 5.387rem + 81.5144vw, 78.75rem); /* 921 to 1260 */
+      --try-glow-b-y: clamp(34.375rem, 40rem - 6.25vw, 36rem); /* 576 to 550 */
+      --try-glow-b-w: clamp(28rem, 10.7692rem + 26.9231vw, 35rem); /* 448 to 560 */
+      --try-glow-b-h: clamp(23rem, 8.8462rem + 22.1154vw, 28.75rem); /* 368 to 460 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .try {
+      --section-pad-top: clamp(6.875rem, 2.75rem + 4.5833vw, 8.25rem); /* 110 to 132 */
+      --section-pad-bottom: clamp(10.25rem, 4.25rem + 6.6667vw, 12.25rem); /* 164 to 196 */
+      --try-intro-offset: clamp(1.25rem, 0.5rem + 0.8333vw, 1.5rem); /* 20 to 24 */
+      --try-card-offset: 0rem;
+      --try-glow-a-x: clamp(61.875rem, 6.75rem + 61.25vw, 80.25rem); /* 990 to 1284 */
+      --try-glow-a-y: clamp(20rem, 8rem + 13.3333vw, 24rem); /* 320 to 384 */
+      --try-glow-a-w: clamp(43.75rem, 17.5rem + 29.1667vw, 52.5rem); /* 700 to 840 */
+      --try-glow-a-h: clamp(35rem, 14rem + 23.3333vw, 42rem); /* 560 to 672 */
+      --try-glow-b-x: clamp(78.75rem, 13.5rem + 72.5vw, 100.5rem); /* 1260 to 1608 */
+      --try-glow-b-y: clamp(34.375rem, 13.75rem + 22.9167vw, 41.25rem); /* 550 to 660 */
+      --try-glow-b-w: clamp(35rem, 14rem + 23.3333vw, 42rem); /* 560 to 672 */
+      --try-glow-b-h: clamp(28.75rem, 11.5rem + 19.1667vw, 34.5rem); /* 460 to 552 */
+      --try-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --try-edge-h: calc(var(--try-edge-w) * 0.8);
+    }
+  }
+
+  .try :global(.try__glow),
+  .try :global(.try__edge) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .try :global(.try__ambient) {
+      display: none;
+    }
+
+    .try :global(.try__glow) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .try :global(.glow.try__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  /*
+   * Phone: title, lead, card, note (Figma 201:53). Tablet: the same, with the
+   * steps between the lead and the card. From 1024: text and steps on the
+   * left, the card on the right (218:1374, 211:57).
+   */
+  .try__layout {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .try__intro {
+    display: grid;
+    gap: 2.375rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .try :global(.try__stepper) {
+    display: none;
+  }
+
+  .try__note {
+    max-width: 25rem;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  @media (width >= 768px) {
+    .try :global(.try__stepper) {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 1.5rem;
+    }
+
+    .try__note {
+      font-size: 0.8125rem;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .try__layout {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 4fr);
+      grid-template-areas:
+        'intro demo'
+        'note demo';
+      align-items: start;
+      column-gap: clamp(0.75rem, 16.3462vw - 9.7115rem, 5rem); /* 12 to 80 */
+      row-gap: 2.25rem;
+    }
+
+    .try__intro {
+      grid-area: intro;
+      margin-top: var(--try-intro-offset);
+      margin-bottom: 0;
+    }
+
+    .try :global(.try__stepper) {
+      display: grid;
+    }
+
+    .try :global(.try__demo) {
+      grid-area: demo;
+      margin-top: var(--try-card-offset);
+    }
+
+    .try__note {
+      grid-area: note;
+    }
+  }
+</style>

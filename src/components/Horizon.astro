@@ -1,0 +1,110 @@
+---
+---
+
+<!--
+  The hero's horizon (Figma "Horizon glow", "Horizon rim glow", "Horizon").
+  As in Figma, the disc is not clipped at the bottom: it continues behind the
+  next section, which has no background of its own. Clipped sideways only.
+-->
+<div class="horizon" aria-hidden="true">
+  <div class="horizon__circle" data-part="horizon">
+    <div class="horizon__layer horizon__glow"></div>
+    <div class="horizon__layer horizon__rim"></div>
+    <div class="horizon__line"></div>
+  </div>
+</div>
+
+<style>
+  /*
+   * Circle size and position from the Figma frames (393 / 1024 / 1440 / 1920).
+   * Phone: 340 px from the top, so the hero text sits on the dark disc. From
+   * tablet up: a fixed distance above the hero's bottom edge, below the
+   * buttons (40 at 1024, 120 at 1440, 144 at 1920). The anchor changes at the
+   * 768 layout breakpoint, with the hero buttons; within each layout the
+   * values follow linear segments, so nothing jumps.
+   */
+  .horizon {
+    --horizon-size: 254.4529vw; /* 1000 at 393 */
+    --horizon-top: 21.25rem; /* 340 */
+
+    position: absolute;
+    inset: 0;
+    overflow-x: clip;
+  }
+
+  @media (width >= 768px) {
+    .horizon {
+      --horizon-size: 214.8438vw; /* 2200 at 1024 */
+      --horizon-top: calc(100% - 2.5rem); /* 40 */
+    }
+  }
+
+  @media (width >= 1024px) {
+    .horizon {
+      --horizon-size: clamp(137.5rem, 45.1923rem + 144.2308vw, 175rem); /* 2200 to 2800 */
+      --horizon-top: calc(100% - clamp(2.5rem, 19.2308vw - 9.8077rem, 7.5rem)); /* 40 to 120 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .horizon {
+      --horizon-size: clamp(175rem, 70rem + 116.6667vw, 210rem); /* 2800 to 3360 */
+      --horizon-top: calc(100% - clamp(7.5rem, 3rem + 5vw, 9rem)); /* 120 to 144 */
+    }
+  }
+
+  .horizon__circle {
+    position: absolute;
+    top: var(--horizon-top);
+    left: 50%;
+    width: var(--horizon-size);
+    aspect-ratio: 1;
+    translate: -50% 0;
+  }
+
+  /*
+   * Figma blurs filled circles (layer blur 60 and 14). A radial gradient that
+   * follows a Gaussian edge (sigma = half the Figma radius) gives the same
+   * light with no filter to paint.
+   */
+  .horizon__layer {
+    --pad: calc(3 * var(--sigma));
+    --edge: calc(100% - var(--pad));
+
+    position: absolute;
+    inset: calc(-1 * var(--pad));
+    translate: 0 var(--shift);
+    opacity: var(--alpha);
+    background: radial-gradient(
+      circle closest-side,
+      var(--tint) calc(var(--edge) - 2 * var(--sigma)),
+      color-mix(in srgb, var(--tint) 84%, transparent) calc(var(--edge) - var(--sigma)),
+      color-mix(in srgb, var(--tint) 50%, transparent) var(--edge),
+      color-mix(in srgb, var(--tint) 16%, transparent) calc(var(--edge) + var(--sigma)),
+      color-mix(in srgb, var(--tint) 2%, transparent) calc(var(--edge) + 2 * var(--sigma)),
+      transparent 100%
+    );
+  }
+
+  .horizon__glow {
+    --tint: var(--horizon-glow);
+    --sigma: 30px;
+    --shift: -20px;
+    --alpha: 0.85;
+  }
+
+  .horizon__rim {
+    --tint: var(--horizon-rim);
+    --sigma: 7px;
+    --shift: -6px;
+    --alpha: 0.7;
+  }
+
+  .horizon__line {
+    position: absolute;
+    inset: 0;
+    border: 1.2px solid var(--horizon-line);
+    border-radius: 50%;
+    background: var(--horizon-fill);
+  }
+</style>
