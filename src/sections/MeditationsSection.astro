@@ -1,0 +1,150 @@
+---
+import GlassCard from '../components/GlassCard.astro';
+import Glow from '../components/Glow.astro';
+import Pill from '../components/Pill.astro';
+import Section from '../components/Section.astro';
+import WaveStrip from '../components/WaveStrip.astro';
+import { meditations } from '../content/en/meditations';
+---
+
+<Section name="meditations" id="meditations" labelledBy="meditations-title" class="meditations">
+  <Fragment slot="bleed">
+    <Glow
+      class="meditations__ambient"
+      tint="ambient"
+      intensity={0.22}
+      x="33%"
+      y="16.25rem"
+      width="31.25rem"
+      height="25rem"
+    />
+    <Glow
+      class="meditations__glow"
+      intensity={0.22}
+      x="var(--meditations-glow-a-x)"
+      y="var(--meditations-glow-a-y)"
+      width="var(--meditations-glow-a-w)"
+      height="var(--meditations-glow-a-h)"
+    />
+    <Glow
+      class="meditations__glow"
+      intensity={0.24}
+      x="var(--meditations-glow-b-x)"
+      y="var(--meditations-glow-b-y)"
+      width="var(--meditations-glow-b-w)"
+      height="var(--meditations-glow-b-h)"
+    />
+    <WaveStrip preset="background" layout="strip" class="meditations__strip" />
+  </Fragment>
+
+  <GlassCard as="article" class="meditations__card">
+    <Pill label={meditations.pill} />
+    <h2 id="meditations-title" class="meditations__title">
+      {meditations.title}
+    </h2>
+    <p class="meditations__body">{meditations.body}</p>
+  </GlassCard>
+</Section>
+
+<style>
+  /*
+   * Phone (Figma 202:2): one ambient glow and the background strip behind the
+   * card. Tablet and desktop (231:188, 213:2): two glows, no strip, one linear
+   * segment between 1024 and 1440.
+   */
+  .meditations {
+    --meditations-glow-a-x: 19.0625rem;
+    --meditations-glow-a-y: 18.5rem;
+    --meditations-glow-a-w: 31rem;
+    --meditations-glow-a-h: 22rem;
+    --meditations-glow-b-x: 50.4375rem;
+    --meditations-glow-b-y: 19.25rem;
+    --meditations-glow-b-w: 28rem;
+    --meditations-glow-b-h: 21rem;
+  }
+
+  @media (width < 1024px) {
+    .meditations {
+      --meditations-glow-a-x: 29.8%;
+      --meditations-glow-b-x: 78.8%;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .meditations {
+      --meditations-glow-a-x: clamp(19.0625rem, 5.9856rem + 20.4327vw, 24.375rem); /* 305 to 390 */
+      --meditations-glow-a-y: clamp(18.5rem, 11.7308rem + 10.5769vw, 21.25rem); /* 296 to 340 */
+      --meditations-glow-a-w: clamp(31rem, 11.9231rem + 29.8077vw, 38.75rem); /* 496 to 620 */
+      --meditations-glow-a-h: clamp(22rem, 8.4615rem + 21.1538vw, 27.5rem); /* 352 to 440 */
+      --meditations-glow-b-x: clamp(50.4375rem, 5.3606rem + 70.4327vw, 68.75rem); /* 807 to 1100 */
+      --meditations-glow-b-y: clamp(19.25rem, 12.7885rem + 10.0962vw, 21.875rem); /* 308 to 350 */
+      --meditations-glow-b-w: clamp(28rem, 10.7692rem + 26.9231vw, 35rem); /* 448 to 560 */
+      --meditations-glow-b-h: clamp(21rem, 8.0769rem + 20.1923vw, 26.25rem); /* 336 to 420 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .meditations {
+      --meditations-glow-a-x: 27.08%;
+      --meditations-glow-b-x: 76.39%;
+    }
+  }
+
+  .meditations :global(.meditations__glow) {
+    display: none;
+  }
+
+  .meditations__strip {
+    position: absolute;
+    top: 12.1875rem; /* 195 */
+    left: 0;
+  }
+
+  @media (width >= 768px) {
+    .meditations :global(.meditations__ambient),
+    .meditations__strip {
+      display: none;
+    }
+
+    .meditations :global(.meditations__glow) {
+      display: block;
+    }
+  }
+
+  /*
+   * Phone: the light glass, radius 30, padding 24. From 768: the card glass,
+   * radius 40, padding 56, 700 wide and centered. Selectors carry .card so
+   * they outrank GlassCard's own.
+   */
+  .meditations .meditations__card.card {
+    display: grid;
+    justify-items: start;
+    gap: 0.875rem;
+    max-width: 43.75rem;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 0.2544rem + 5.0713vw, 3.5rem); /* 24 to 56 */
+    border-color: var(--glass-stroke-soft);
+    background: var(--glass-fill);
+    box-shadow: none;
+  }
+
+  @media (width >= 768px) {
+    .meditations .meditations__card.card {
+      gap: 1rem;
+      border-color: var(--card-stroke);
+      border-radius: 2.5rem;
+      background: var(--card-fill);
+      box-shadow: var(--card-shadow);
+    }
+  }
+
+  .meditations__title {
+    font-size: clamp(1.75rem, 1.1272rem + 2.5357vw, 2.75rem); /* 28 to 44 */
+  }
+
+  .meditations__body {
+    color: var(--color-ink-secondary);
+    font-size: clamp(0.9375rem, 0.8207rem + 0.4754vw, 1.125rem); /* 15 to 18 */
+    line-height: 1.4;
+  }
+</style>
