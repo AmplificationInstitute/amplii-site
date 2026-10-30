@@ -61,6 +61,22 @@ const state = tryTheBeat.start;
     box-shadow: none;
   }
 
+  /*
+   * Phone: the height of the tallest demo state (Figma 201:59, 425), so the
+   * page doesn't shift when phase 5 changes steps. The buttons sit at the
+   * bottom, as in the step frames.
+   */
+  @media (width < 768px) {
+    .demo-card.card {
+      grid-template-rows: auto auto auto auto 1fr;
+      min-height: 26.5625rem;
+    }
+
+    .demo-card__actions {
+      align-self: end;
+    }
+  }
+
   @media (width >= 768px) {
     .demo-card.card {
       gap: 1.125rem;
