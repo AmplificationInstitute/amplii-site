@@ -28,7 +28,7 @@ import { arc } from '../content/en/arc';
   </Fragment>
 
   <div class="arc__layout">
-    <SectionHeader id="arc-title" title={arc.title} lead={arc.lead} align="center" />
+    <SectionHeader id="arc-title" title={arc.title} lead={arc.lead} align="center-from-tablet" />
     <GlassCard class="arc__card">
       <ArcChart mode="meditate" />
     </GlassCard>
@@ -58,7 +58,6 @@ import { arc } from '../content/en/arc';
 
   .arc__layout {
     display: grid;
-    justify-items: center;
     gap: clamp(2.25rem, 1.9685rem + 1.1461vw, 3rem); /* 36 to 48 */
   }
 
@@ -82,6 +81,15 @@ import { arc } from '../content/en/arc';
     color: var(--color-muted);
     font-size: clamp(0.875rem, 0.8516rem + 0.0955vw, 0.9375rem); /* 14 to 15 */
     line-height: 1.4;
-    text-align: center;
+  }
+
+  @media (width >= 768px) {
+    .arc__layout {
+      justify-items: center;
+    }
+
+    .arc__note {
+      text-align: center;
+    }
   }
 </style>

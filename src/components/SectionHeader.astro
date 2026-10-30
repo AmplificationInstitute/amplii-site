@@ -5,7 +5,8 @@ interface Props {
   id: string;
   lead?: string;
   level?: 2 | 3;
-  align?: 'start' | 'center';
+  /** center-from-tablet: left on phone, centered from 768 (the Figma phone frames are left-aligned). */
+  align?: 'start' | 'center' | 'center-from-tablet';
 }
 
 const { title, id, lead, level = 2, align = 'start' } = Astro.props;
@@ -32,6 +33,13 @@ const Heading = `h${level}` as const;
   .section-header--center {
     justify-items: center;
     text-align: center;
+  }
+
+  @media (width >= 768px) {
+    .section-header--center-from-tablet {
+      justify-items: center;
+      text-align: center;
+    }
   }
 
   .section-header__title {
