@@ -1,3 +1,4 @@
+import { STRIP_CYCLES } from '../../lib/wave/geometry';
 import { defineBackgroundWave, defineWave, type WaveParams } from '../../lib/wave/params';
 import { modes, type ModeId } from './modes';
 
@@ -11,15 +12,21 @@ const modeWaves = Object.fromEntries(modes.map((mode) => [mode.id, mode.wave])) 
 export const wavePresets: Record<WavePresetId, WaveParams> = {
   /*
    * Full-width strips behind the hero and sections, measured from the Figma
-   * "Strip Waves" vectors: 7 lines, 9 crests across the 2.8 x strip (about 3
-   * on screen), same cycles on every line.
+   * "Strip Waves" vectors (phone, tablet and desktop share the shape): even
+   * crests with no taper, each line a fixed share of the center line's height
+   * and 0.045 of a cycle behind the next. Drawn as STRIP_CYCLES cycles; the
+   * crest length and amplitude per width are set in WaveStrip's CSS.
    */
   background: defineBackgroundWave({
     lines: 7,
-    amplitude: 43,
-    refHeight: 220,
-    baseCycles: 9,
+    amplitude: 43.2,
+    refHeight: 172.8,
+    baseCycles: STRIP_CYCLES,
     cycleSpread: 0,
+    taper: false,
+    amplitudeByLine: [0.45, 0.7, 0.9, 1, 0.85, 0.65, 0.4],
+    phaseStep: 2 * Math.PI * 0.045,
+    phaseFromCenter: true,
     driftSpeed: 0.06,
     breathRate: 0.1,
     centerWidth: 1.6,

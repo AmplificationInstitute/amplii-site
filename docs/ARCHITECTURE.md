@@ -276,20 +276,29 @@ In the 64 px mode-card box, amplitude scales by 64 / 126 (Sleep: 34 → 17 px).
 
 Demo waves (from `WaveBundle.leftTone / rightTone / beat`, `refHeight` 200): left tone 5 lines, amplitude 38, 2.8 cycles, envelope 0…0.93 peak 0.41, wave-1 color, no glow. Right tone 5 lines, 38, 3.2 cycles, envelope 0.07…1 peak 0.59, wave-2 color, no glow. Beat 7 lines, 58, 1.2 cycles, envelope 0.14…0.87 peak 0.5, with glow. These match the demo canvas layers in Figma (Left tone, Right tone, Beat glow, Beat).
 
-Background and hero strips (one `background` preset), measured from the Figma "Strip Waves" vectors: 7 lines, 9 crests across the 2.8 × strip (about 3 on screen), no cycle spread, center amplitude 43 px, center line 1.6 px, line opacity by distance from the center 0.95 / 0.55 / 0.45 / 0.35. Drift 0.06 (about 17 s), breathing 0.1 Hz.
+Background and hero strips (one `background` preset), measured from the Figma "Strip Waves" vectors (phone 201:3, tablet and desktop share the same shape): 7 lines, even crests with no taper (`taper: false`), no cycle spread. Each line is a fixed share of the center line's height (0.45 / 0.7 / 0.9 / 1 / 0.85 / 0.65 / 0.4) and 0.045 of a cycle behind the next (`phaseStep`, counted from the center line). Center line 1.6 px, line opacity by distance from the center 0.95 / 0.55 / 0.45 / 0.35. Drift 0.06 (about 17 s), breathing 0.1 Hz.
 
 ### Strip rule (Figma `214:574`)
 
-The background strip is 2.8 × the screen width and starts 0.9 widths to the left, so every screen shows the same part of the wave (about three crests). Never repeat or squeeze it.
+The background strip starts 0.9 screen widths to the left. Its crests are calm, even sines at every width: same length and height across the screen, never squeezed into sharp peaks.
 
-- The canvas draws only the visible window, mapped to that part of the strip: `x_strip = (0.9 + x) / 2.8`. Same picture, no 4000 px canvas.
-- The phase 2 static SVG uses a normalized `viewBox`, `preserveAspectRatio="none"` and `vector-effect: non-scaling-stroke`, which gives the same result without JS.
+| Width | Crests on screen | Crest length | Center amplitude |
+| ----- | ---------------- | ------------ | ---------------- |
+| 393   | 2.6              | 151 px       | 16 px            |
+| 1024  | 3.2              | 320 px       | 30.7 px          |
+| 1440  | 3.2              | 450 px       | 43.2 px          |
+| 1920  | 3.2              | 600 px       | 57.6 px          |
+
+From 1024 up the crest length is `31.25vw` and the amplitude `3vw`; from 393 to 1024 both follow one linear segment, so nothing jumps.
+
+- The phase 2 static SVG draws `STRIP_CYCLES` (7) whole cycles and is sized in CSS (`WaveStrip`, `--strip-wavelength`, `--strip-amplitude`), so it only scales and every crest stays a true sine. `vector-effect: non-scaling-stroke` keeps line widths fixed.
+- The canvas uses the same two values per width and draws only the visible part: `x_strip = 0.9 · width + x`, in crest lengths.
 
 ### `WaveStrip` props
 
 `preset` (`'background' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId`), `layout: 'strip' | 'box'`, `height`. The hero uses the `background` preset. Always `aria-hidden`.
 
-- **Phase 2:** static inline SVG at `t = 0`, `energy = 1`.
+- **Phase 2:** static inline SVG at `t = 0`, `energy = 1`. Strips are clipped sideways by `WaveStrip` and the `Section` bleed, so they never widen the page.
 - **Phase 3:** `animations/waves/renderer.ts` adds two canvases over the SVG (a 1/4-resolution glow canvas with a light CSS blur, and a full-resolution lines canvas on top) and draws from the shared ticker. Paused off screen (IntersectionObserver), DPR capped at 2, never created under Reduce Motion.
 
 ## 7. Assets
