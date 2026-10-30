@@ -16,29 +16,40 @@
 
 <style>
   /*
-   * Circle size and top edge from the Figma frames (393 / 1024 / 1440 / 1920),
-   * one linear clamp() per segment like the type scale.
+   * Circle size and position from the Figma frames (393 / 1024 / 1440 / 1920).
+   * Phone: 430 px from the top, so the hero text sits on the dark disc. From
+   * tablet up: a fixed distance above the hero's bottom edge, below the
+   * buttons (40 at 1024, 120 at 1440, 144 at 1920). The anchor changes at the
+   * 768 layout breakpoint, with the hero buttons; within each layout the
+   * values follow linear segments, so nothing jumps.
    */
   .horizon {
-    --horizon-size: clamp(62.5rem, 15.7887rem + 190.1743vw, 137.5rem); /* 1000 to 2200 */
-    --horizon-top: clamp(26.875rem, 10.9152rem + 64.9762vw, 52.5rem); /* 430 to 840 */
+    --horizon-size: 254.4529vw; /* 1000 at 393 */
+    --horizon-top: 26.875rem; /* 430 */
 
     position: absolute;
     inset: 0;
     overflow: clip;
   }
 
+  @media (width >= 768px) {
+    .horizon {
+      --horizon-size: 214.8438vw; /* 2200 at 1024 */
+      --horizon-top: calc(100% - 2.5rem); /* 40 */
+    }
+  }
+
   @media (width >= 1024px) {
     .horizon {
       --horizon-size: clamp(137.5rem, 45.1923rem + 144.2308vw, 175rem); /* 2200 to 2800 */
-      --horizon-top: 52.5rem; /* 840 */
+      --horizon-top: calc(100% - clamp(2.5rem, 19.2308vw - 9.8077rem, 7.5rem)); /* 40 to 120 */
     }
   }
 
   @media (width >= 1440px) {
     .horizon {
       --horizon-size: clamp(175rem, 70rem + 116.6667vw, 210rem); /* 2800 to 3360 */
-      --horizon-top: clamp(52.5rem, 13.5rem + 43.3333vw, 65.5rem); /* 840 to 1048 */
+      --horizon-top: calc(100% - clamp(7.5rem, 3rem + 5vw, 9rem)); /* 120 to 144 */
     }
   }
 

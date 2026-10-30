@@ -13,15 +13,16 @@ interface Props {
   preset: WavePresetId;
   /** strip: full-width background (Figma strip rule). box: fills its container. */
   layout?: 'strip' | 'box';
-  /** Height in px. */
-  height: number;
+  /** Height in px (box layout). A strip has no height: its center line sits where it is placed. */
+  height?: number;
   class?: string;
 }
 
-const { preset, layout = 'box', height, class: className } = Astro.props;
+const { preset, layout = 'box', height = 0, class: className } = Astro.props;
 
 const params = wavePresets[preset];
 const isStrip = layout === 'strip';
+if (!isStrip && height <= 0) throw new Error(`WaveStrip "${preset}" needs a height in box layout`);
 /*
  * Box: the SVG fills the box and stretches sideways only. Strip: the SVG is
  * sized in CSS (crest length and amplitude per width) and only scales, so every

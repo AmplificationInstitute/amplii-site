@@ -1,0 +1,242 @@
+---
+import AppStoreBadge from '../components/AppStoreBadge.astro';
+import Button from '../components/Button.astro';
+import Glow from '../components/Glow.astro';
+import Horizon from '../components/Horizon.astro';
+import Section from '../components/Section.astro';
+import WaveStrip from '../components/WaveStrip.astro';
+import { hero } from '../content/en/hero';
+---
+
+<Section name="hero" labelledBy="hero-title" clip="all" class="hero">
+  <Fragment slot="bleed">
+    <Glow
+      class="hero__ambient"
+      tint="ambient"
+      intensity={0.35}
+      x="50%"
+      y="13.75rem"
+      width="32.0625rem"
+      height="22.5rem"
+    />
+    <Glow
+      class="hero__glow"
+      x="var(--hero-glow-a-x)"
+      y="var(--hero-glow-a-y)"
+      width="var(--hero-glow-w)"
+      height="var(--hero-glow-h)"
+    />
+    <Glow
+      class="hero__glow"
+      intensity={0.2}
+      x="var(--hero-glow-b-x)"
+      y="var(--hero-glow-b-y)"
+      width="var(--hero-glow-w)"
+      height="var(--hero-glow-h)"
+    />
+    <Glow
+      class="hero__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="31.9rem"
+      width="var(--hero-edge-w)"
+      height="var(--hero-edge-h)"
+    />
+    <Glow
+      class="hero__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="39.1rem"
+      width="var(--hero-edge-w)"
+      height="var(--hero-edge-h)"
+    />
+    <WaveStrip preset="background" layout="strip" class="hero__strip" />
+    <Horizon />
+  </Fragment>
+
+  <div class="hero__content">
+    <h1 id="hero-title" class="hero__title" data-part="title">
+      {hero.title}
+    </h1>
+    <p class="hero__lead" data-part="lead">
+      {hero.lead}
+    </p>
+    <div class="hero__actions" data-part="buttons">
+      <AppStoreBadge campaign="hero" eager />
+      <Button href="#how-it-works" variant="secondary" class="hero__try">
+        {hero.tryTheBeat}
+      </Button>
+    </div>
+    <p class="hero__note" data-part="note">
+      {hero.note}
+    </p>
+    <a href="#how-it-works" class="hero__try-link" data-part="link">
+      {hero.tryTheBeatFirst}
+    </a>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Positions from the Figma hero frames (393 / 1024 / 1440 / 1920), one
+   * linear segment between each pair like the type scale, so nothing jumps.
+   * Distances are from the top of the page (the header sits over the hero).
+   */
+  .hero {
+    --section-pad-top: clamp(29.375rem, 30.6935rem - 2.0602vw, 30.1875rem); /* 483 to 470 */
+    --section-pad-bottom: clamp(2.6875rem, 18.225vw - 1.789rem, 9.875rem); /* 43 to 158 */
+    --hero-strip-y: clamp(14.6875rem, 13.7143rem + 3.962vw, 16.25rem); /* 235 to 260 */
+    --hero-content: 40rem; /* 640 */
+
+    /* Tablet and desktop glows (phone has one ambient glow instead) */
+    --hero-glow-w: 38rem; /* 608 */
+    --hero-glow-h: calc(var(--hero-glow-w) * 0.6842);
+    --hero-glow-a-x: 42.1875%;
+    --hero-glow-a-y: 16.75rem;
+    --hero-glow-b-x: 72.7441%;
+    --hero-glow-b-y: 29.25rem;
+
+    /* Large desktop: two extra glows at the edges, growing in from 1440 */
+    --hero-edge-w: 0rem;
+    --hero-edge-h: 0rem;
+  }
+
+  @media (width >= 1024px) {
+    .hero {
+      --section-pad-top: 29.375rem; /* 470 */
+      --section-pad-bottom: clamp(9.875rem, 0.1827rem + 15.1442vw, 13.8125rem); /* 158 to 221 */
+      --hero-strip-y: clamp(16.25rem, 10.0962rem + 9.6154vw, 18.75rem); /* 260 to 300 */
+      --hero-content: clamp(40rem, 21.5385rem + 28.8462vw, 47.5rem); /* 640 to 760 */
+      --hero-glow-w: clamp(38rem, 14.6154rem + 36.5385vw, 47.5rem); /* 608 to 760 */
+      --hero-glow-a-x: clamp(27rem, 7.3077rem + 30.7692vw, 35rem); /* 432 to 560 */
+      --hero-glow-a-y: clamp(16.75rem, 8.75rem + 12.5vw, 20rem); /* 268 to 320 */
+      --hero-glow-b-x: clamp(46.5563rem, 7.31rem + 61.3221vw, 62.5rem); /* 745 to 1000 */
+      --hero-glow-b-y: clamp(29.25rem, 21.25rem + 12.5vw, 32.5rem); /* 468 to 520 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .hero {
+      --section-pad-top: clamp(29.375rem, 11.75rem + 19.5833vw, 35.25rem); /* 470 to 564 */
+      --section-pad-bottom: clamp(13.8125rem, 17.5vw - 1.9375rem, 19.0625rem); /* 221 to 305 */
+      --hero-strip-y: clamp(18.75rem, 7.5rem + 12.5vw, 22.5rem); /* 300 to 360 */
+      --hero-content: clamp(47.5rem, 19rem + 31.6667vw, 57rem); /* 760 to 912 */
+      --hero-glow-w: clamp(47.5rem, 19rem + 31.6667vw, 57rem); /* 760 to 912 */
+      --hero-glow-a-x: clamp(35rem, 43.3333vw - 4rem, 48rem); /* 560 to 768 */
+      --hero-glow-a-y: clamp(20rem, 8rem + 13.3333vw, 24rem); /* 320 to 384 */
+      --hero-glow-b-x: clamp(62.5rem, 7rem + 61.6667vw, 81rem); /* 1000 to 1296 */
+      --hero-glow-b-y: clamp(32.5rem, 13rem + 21.6667vw, 39rem); /* 520 to 624 */
+      --hero-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --hero-edge-h: calc(var(--hero-edge-w) * 0.8);
+    }
+  }
+
+  .hero :global(.hero__glow),
+  .hero :global(.hero__edge) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .hero :global(.hero__ambient) {
+      display: none;
+    }
+
+    .hero :global(.hero__glow) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1440px) {
+    /* The falloff grows from zero too, so the edge glows fade in from 1440 */
+    .hero :global(.glow.hero__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .hero__strip {
+    position: absolute;
+    top: var(--hero-strip-y);
+    left: 0;
+  }
+
+  .hero__content {
+    display: grid;
+    justify-items: center;
+    gap: 0.875rem;
+    max-width: var(--hero-content);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero__title {
+    font-size: var(--text-hero);
+    line-height: var(--leading-display);
+  }
+
+  .hero__lead {
+    color: var(--color-ink-secondary);
+    font-size: clamp(1.0625rem, 0.9457rem + 0.4754vw, 1.25rem); /* 17 to 20 at 1024 */
+    line-height: 1.4;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem; /* Figma: a 6 px spacer between two 14 px gaps */
+  }
+
+  .hero__note {
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  /* Phone: a text link under the note instead of the button */
+  .hero :global(.hero__try) {
+    display: none;
+  }
+
+  .hero__try-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    margin-top: -0.6875rem; /* the 44 px tap area keeps the Figma 14 px gap */
+    color: var(--color-accent);
+    font-size: 0.9375rem;
+    font-weight: var(--weight-medium);
+    line-height: 1.3;
+    text-decoration: none;
+  }
+
+  @media (width >= 768px) {
+    .hero__content {
+      gap: 1.25rem;
+    }
+
+    .hero__actions {
+      margin-top: 0;
+    }
+
+    .hero__note {
+      font-size: 0.8125rem;
+    }
+
+    .hero :global(.hero__try) {
+      display: inline-flex;
+    }
+
+    .hero__try-link {
+      display: none;
+    }
+  }
+
+  @media (hover: hover) {
+    .hero__try-link:hover {
+      text-decoration: underline;
+    }
+  }
+</style>
