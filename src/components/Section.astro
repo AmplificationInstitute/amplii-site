@@ -6,16 +6,10 @@ interface Props {
   id?: string;
   /** Id of the section's heading. */
   labelledBy?: string;
-  /**
-   * x: glows spill into the sections above and below (default).
-   * all: the background ends at the section's edges (the hero, whose horizon
-   * disc is cut there).
-   */
-  clip?: 'x' | 'all';
   class?: string;
 }
 
-const { name, id, labelledBy, clip = 'x', class: className } = Astro.props;
+const { name, id, labelledBy, class: className } = Astro.props;
 ---
 
 <section
@@ -25,10 +19,7 @@ const { name, id, labelledBy, clip = 'x', class: className } = Astro.props;
   class:list={['section', className]}
 >
   {Astro.slots.has('bleed') && (
-    <div
-      class:list={['section__bleed', clip === 'all' && 'section__bleed--clip']}
-      aria-hidden="true"
-    >
+    <div class="section__bleed" aria-hidden="true">
       <slot name="bleed" />
     </div>
   )}
@@ -56,9 +47,5 @@ const { name, id, labelledBy, clip = 'x', class: className } = Astro.props;
     z-index: -1;
     overflow-x: clip;
     pointer-events: none;
-  }
-
-  .section__bleed--clip {
-    overflow: clip;
   }
 </style>

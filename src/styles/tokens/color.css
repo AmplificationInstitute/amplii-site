@@ -33,6 +33,7 @@
   --horizon-glow: #2b62ff;
   --horizon-rim: #7fb0ff;
   --horizon-line: rgb(156 194 255 / 90%);
+  --horizon-fill: #040a1c;
 
   --color-focus: var(--color-accent);
 }

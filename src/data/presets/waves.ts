@@ -2,35 +2,43 @@ import { STRIP_CYCLES } from '../../lib/wave/geometry';
 import { defineBackgroundWave, defineWave, type WaveParams } from '../../lib/wave/params';
 import { modes, type ModeId } from './modes';
 
-export type WavePresetId = 'background' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId;
+export type WavePresetId =
+  'background' | 'background-hero-phone' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId;
 
 const modeWaves = Object.fromEntries(modes.map((mode) => [mode.id, mode.wave])) as Record<
   ModeId,
   WaveParams
 >;
 
+/*
+ * Full-width strips behind the hero and sections, measured from the Figma
+ * "Strip Waves" vectors (phone, tablet and desktop share the shape): even
+ * crests with no taper, each line a fixed share of the center line's height
+ * and 0.045 of a cycle behind the next. Drawn as STRIP_CYCLES cycles; the
+ * crest length and amplitude per width are set in WaveStrip's CSS.
+ */
+const backgroundStrip = {
+  lines: 7,
+  amplitude: 43.2,
+  refHeight: 172.8,
+  baseCycles: STRIP_CYCLES,
+  cycleSpread: 0,
+  taper: false,
+  amplitudeByLine: [0.45, 0.7, 0.9, 1, 0.85, 0.65, 0.4],
+  phaseStep: 2 * Math.PI * 0.045,
+  phaseFromCenter: true,
+  driftSpeed: 0.06,
+  breathRate: 0.1,
+  centerWidth: 1.6,
+  alphaByDistance: [0.95, 0.55, 0.45, 0.35],
+} satisfies Parameters<typeof defineBackgroundWave>[0];
+
 export const wavePresets: Record<WavePresetId, WaveParams> = {
-  /*
-   * Full-width strips behind the hero and sections, measured from the Figma
-   * "Strip Waves" vectors (phone, tablet and desktop share the shape): even
-   * crests with no taper, each line a fixed share of the center line's height
-   * and 0.045 of a cycle behind the next. Drawn as STRIP_CYCLES cycles; the
-   * crest length and amplitude per width are set in WaveStrip's CSS.
-   */
-  background: defineBackgroundWave({
-    lines: 7,
-    amplitude: 43.2,
-    refHeight: 172.8,
-    baseCycles: STRIP_CYCLES,
-    cycleSpread: 0,
-    taper: false,
-    amplitudeByLine: [0.45, 0.7, 0.9, 1, 0.85, 0.65, 0.4],
-    phaseStep: 2 * Math.PI * 0.045,
-    phaseFromCenter: true,
-    driftSpeed: 0.06,
-    breathRate: 0.1,
-    centerWidth: 1.6,
-    alphaByDistance: [0.95, 0.55, 0.45, 0.35],
+  background: defineBackgroundWave(backgroundStrip),
+  /* Phone hero (Figma 201:6): the same strip with a stronger center line */
+  'background-hero-phone': defineBackgroundWave({
+    ...backgroundStrip,
+    amplitudeByLine: [0.35, 0.55, 0.8, 1.35, 0.8, 0.55, 0.35],
   }),
 
   /* Demo tones, from WaveBundle.leftTone / rightTone / beat. Designed for a 200 px box. */

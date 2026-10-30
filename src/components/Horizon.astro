@@ -3,8 +3,8 @@
 
 <!--
   The hero's horizon (Figma "Horizon glow", "Horizon rim glow", "Horizon").
-  Clipped to its section: unclipped, the 2800 px circle would reach three
-  sections down.
+  As in Figma, the disc is not clipped at the bottom: it continues behind the
+  next section, which has no background of its own. Clipped sideways only.
 -->
 <div class="horizon" aria-hidden="true">
   <div class="horizon__circle" data-part="horizon">
@@ -17,7 +17,7 @@
 <style>
   /*
    * Circle size and position from the Figma frames (393 / 1024 / 1440 / 1920).
-   * Phone: 430 px from the top, so the hero text sits on the dark disc. From
+   * Phone: 340 px from the top, so the hero text sits on the dark disc. From
    * tablet up: a fixed distance above the hero's bottom edge, below the
    * buttons (40 at 1024, 120 at 1440, 144 at 1920). The anchor changes at the
    * 768 layout breakpoint, with the hero buttons; within each layout the
@@ -25,11 +25,11 @@
    */
   .horizon {
     --horizon-size: 254.4529vw; /* 1000 at 393 */
-    --horizon-top: 26.875rem; /* 430 */
+    --horizon-top: 21.25rem; /* 340 */
 
     position: absolute;
     inset: 0;
-    overflow: clip;
+    overflow-x: clip;
   }
 
   @media (width >= 768px) {
@@ -100,12 +100,11 @@
     --alpha: 0.7;
   }
 
-  /* Filled with the page background, so the clip at the section edge leaves no seam */
   .horizon__line {
     position: absolute;
     inset: 0;
     border: 1.2px solid var(--horizon-line);
     border-radius: 50%;
-    background: var(--color-background);
+    background: var(--horizon-fill);
   }
 </style>
