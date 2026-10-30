@@ -56,24 +56,17 @@ import { modes } from '../data/presets/modes';
 <style>
   /*
    * Glows and the background strip from the Figma frames: phone one ambient
-   * glow and the strip behind the cards, tablet two glows and the strip,
-   * desktop (from 1280, four in a row) two glows and no strip.
+   * glow, tablet two glows and the strip behind the cards, desktop (from 1280,
+   * four in a row) two glows. The strip is on for tablet only.
    */
   .modes {
     --lead-measure: 42.5rem; /* 680 */
-    --modes-strip-y: 24.375rem; /* 390 */
     --modes-glow-w: 31rem; /* 496 */
     --modes-glow-h: 21rem; /* 336 */
     --modes-glow-a-x: 31.15%;
     --modes-glow-a-y: 23rem;
     --modes-glow-b-x: 77%;
     --modes-glow-b-y: 26.75rem;
-  }
-
-  @media (width >= 768px) {
-    .modes {
-      --modes-strip-y: 22.5rem; /* 360 */
-    }
   }
 
   @media (width >= 1280px) {
@@ -102,14 +95,15 @@ import { modes } from '../data/presets/modes';
   }
 
   .modes__strip {
+    display: none;
     position: absolute;
-    top: var(--modes-strip-y);
+    top: 22.5rem; /* 360 */
     left: 0;
   }
 
-  @media (width >= 1280px) {
+  @media (768px <= width < 1280px) {
     .modes__strip {
-      display: none;
+      display: block;
     }
   }
 

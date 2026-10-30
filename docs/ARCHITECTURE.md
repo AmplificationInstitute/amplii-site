@@ -278,6 +278,19 @@ Demo waves (from `WaveBundle.leftTone / rightTone / beat`, `refHeight` 200): lef
 
 Background and hero strips (one `background` preset), measured from the Figma "Strip Waves" vectors (phone 201:3, tablet and desktop share the same shape): 7 lines, even crests with no taper (`taper: false`), no cycle spread. Each line is a fixed share of the center line's height (0.45 / 0.7 / 0.9 / 1 / 0.85 / 0.65 / 0.4) and 0.045 of a cycle behind the next (`phaseStep`, counted from the center line). Center line 1.6 px, line opacity by distance from the center 0.95 / 0.55 / 0.45 / 0.35. Drift 0.06 (about 17 s), breathing 0.1 Hz.
 
+### Where the strips show (Figma, per size)
+
+| Section     | Phone                                                                   | Tablet | Desktop |
+| ----------- | ----------------------------------------------------------------------- | ------ | ------- |
+| Hero        | on (stronger center line: 0.35 / 0.55 / 0.8 / 1.35 / 0.8 / 0.55 / 0.35) | on     | on      |
+| Modes       | off                                                                     | on     | off     |
+| Meditations | off                                                                     | off    | off     |
+| Science     | off                                                                     | on     | on      |
+| Pricing     | on                                                                      | on     | on      |
+| Download    | off                                                                     | off    | off     |
+
+Hidden Figma layers never reach the build. Tablet is 768 to 1279, desktop from 1280.
+
 ### Strip rule (Figma `214:574`)
 
 The background strip starts 0.9 screen widths to the left. Its crests are calm, even sines at every width: same length and height across the screen, never squeezed into sharp peaks.

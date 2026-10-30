@@ -3,7 +3,6 @@ import GlassCard from '../components/GlassCard.astro';
 import Glow from '../components/Glow.astro';
 import Pill from '../components/Pill.astro';
 import Section from '../components/Section.astro';
-import WaveStrip from '../components/WaveStrip.astro';
 import { meditations } from '../content/en/meditations';
 ---
 
@@ -34,7 +33,6 @@ import { meditations } from '../content/en/meditations';
       width="var(--meditations-glow-b-w)"
       height="var(--meditations-glow-b-h)"
     />
-    <WaveStrip preset="background" layout="strip" class="meditations__strip" />
   </Fragment>
 
   <GlassCard as="article" class="meditations__card">
@@ -48,9 +46,9 @@ import { meditations } from '../content/en/meditations';
 
 <style>
   /*
-   * Phone (Figma 202:2): one ambient glow and the background strip behind the
-   * card. Tablet and desktop (231:188, 213:2): two glows, no strip, one linear
-   * segment between 1024 and 1440.
+   * Phone (Figma 202:2): one ambient glow. Tablet and desktop (231:188,
+   * 213:2): two glows, one linear segment between 1024 and 1440. No
+   * background strip at any size.
    */
   .meditations {
     --meditations-glow-a-x: 19.0625rem;
@@ -94,15 +92,8 @@ import { meditations } from '../content/en/meditations';
     display: none;
   }
 
-  .meditations__strip {
-    position: absolute;
-    top: 12.1875rem; /* 195 */
-    left: 0;
-  }
-
   @media (width >= 768px) {
-    .meditations :global(.meditations__ambient),
-    .meditations__strip {
+    .meditations :global(.meditations__ambient) {
       display: none;
     }
 
