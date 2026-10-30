@@ -28,6 +28,8 @@
   --text-hero: min(9.1603vw, clamp(2.25rem, 1.3158rem + 3.8035vw, 3.75rem));
   --text-title: clamp(2rem, 1.5329rem + 1.9017vw, 2.75rem); /* 32 to 44 */
   --text-body: clamp(1rem, 0.9221rem + 0.317vw, 1.125rem); /* 16 to 18 */
+  /* Section leads, from the Figma frames: 16 on phone, 20 from 1024 */
+  --text-lead: clamp(1rem, 0.8443rem + 0.6339vw, 1.25rem);
 
   --leading-display: 1.05;
   --leading-tight: 1.1;
