@@ -1,0 +1,150 @@
+---
+import FaqItem from '../components/FaqItem.astro';
+import Glow from '../components/Glow.astro';
+import Section from '../components/Section.astro';
+import { faq } from '../content/en/faq';
+---
+
+<Section name="faq" id="faq" labelledBy="faq-title" class="faq">
+  <Fragment slot="bleed">
+    <Glow
+      class="faq__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="28.6rem"
+      width="var(--faq-edge-w)"
+      height="var(--faq-edge-h)"
+    />
+    <Glow
+      class="faq__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="34.2rem"
+      width="var(--faq-edge-w)"
+      height="var(--faq-edge-h)"
+    />
+  </Fragment>
+
+  <div class="faq__layout">
+    <div class="faq__intro">
+      <h2 id="faq-title" class="faq__title">
+        {faq.title}
+      </h2>
+      <p class="faq__contact">
+        {faq.contact.before} <a href={`mailto:${faq.contact.email}`}>{faq.contact.email}</a>
+      </p>
+    </div>
+    <div class="faq__list">
+      {faq.items.map((item, i) => (
+        <FaqItem question={item.question} answer={item.answer} group="faq" open={i === 0} />
+      ))}
+    </div>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Spacing from the Figma frames (393 / 1024 / 1440 / 1920), one linear
+   * segment between each pair. Phone: title, then the questions (no contact
+   * line, as in Figma). Tablet: title, contact line, questions. From 1280:
+   * the title column beside the 720 px questions. No glows or waves, except
+   * the soft edge glows of the large screens.
+   */
+  .faq {
+    --section-pad-top: clamp(5.125rem, 4.8136rem + 1.2678vw, 5.625rem); /* 82 to 90 */
+    --section-pad-bottom: clamp(4.5rem, 3.7993rem + 2.8526vw, 5.625rem); /* 72 to 90 */
+    --faq-contact-gap: 0.75rem; /* 12 */
+    --faq-list-gap: clamp(1rem, -0.2456rem + 5.0713vw, 3rem); /* 16 to 48 */
+    --faq-edge-w: 0rem;
+    --faq-edge-h: 0rem;
+  }
+
+  @media (width >= 1024px) {
+    .faq {
+      --section-pad-top: clamp(5.625rem, 4.0865rem + 2.4038vw, 6.25rem); /* 90 to 100 */
+      --section-pad-bottom: clamp(5.625rem, 2.5481rem + 4.8077vw, 6.875rem); /* 90 to 110 */
+      --faq-contact-gap: clamp(0.75rem, -0.3269rem + 1.6827vw, 1.1875rem); /* 12 to 19 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .faq {
+      --section-pad-top: clamp(6.25rem, 2.5rem + 4.1667vw, 7.5rem); /* 100 to 120 */
+      --section-pad-bottom: clamp(6.875rem, 3.5rem + 3.75vw, 8rem); /* 110 to 128 */
+      --faq-contact-gap: clamp(1.1875rem, 0.625rem + 0.625vw, 1.375rem); /* 19 to 22 */
+      --faq-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --faq-edge-h: calc(var(--faq-edge-w) * 0.8);
+    }
+  }
+
+  .faq :global(.faq__edge) {
+    display: none;
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .faq :global(.glow.faq__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .faq__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .faq__title {
+    font-size: var(--text-title);
+    line-height: var(--leading-tight);
+  }
+
+  .faq__contact {
+    display: none;
+    max-width: 40rem; /* 640 */
+    margin-top: var(--faq-contact-gap);
+    color: var(--color-ink-secondary);
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .faq__contact a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgb(188 214 255 / 45%);
+    text-underline-offset: 0.2em;
+  }
+
+  @media (hover: hover) {
+    .faq__contact a:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  .faq__list {
+    margin-top: var(--faq-list-gap);
+    border-top: 1px solid rgb(255 255 255 / 12%);
+  }
+
+  @media (width >= 768px) {
+    .faq__contact {
+      display: block;
+    }
+  }
+
+  @media (width >= 1280px) {
+    .faq__layout {
+      grid-template-columns: minmax(0, 480fr) minmax(0, 720fr);
+      align-items: start;
+    }
+
+    .faq__contact {
+      max-width: 22.5rem; /* 360 */
+    }
+
+    .faq__list {
+      margin-top: 0;
+    }
+  }
+</style>
