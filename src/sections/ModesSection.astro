@@ -35,6 +35,22 @@ import { modes } from '../data/presets/modes';
       width="var(--modes-glow-w)"
       height="var(--modes-glow-h)"
     />
+    <Glow
+      class="modes__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="27.1rem"
+      width="var(--modes-edge-w)"
+      height="var(--modes-edge-h)"
+    />
+    <Glow
+      class="modes__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="31.9rem"
+      width="var(--modes-edge-w)"
+      height="var(--modes-edge-h)"
+    />
     <WaveStrip preset="background" layout="strip" class="modes__strip" />
   </Fragment>
 
@@ -55,32 +71,62 @@ import { modes } from '../data/presets/modes';
 
 <style>
   /*
-   * Glows and the background strip from the Figma frames: phone one ambient
-   * glow, tablet two glows and the strip behind the cards, desktop (from 1280,
-   * four in a row) two glows. The strip is on for tablet only.
+   * Spacing and glows from the Figma frames (393 / 1024 / 1440 / 1920), one
+   * linear segment between each pair. Phone: one ambient glow. From 768: two
+   * glows, plus two at the edges from 1440 (as in the sections above). The
+   * background strip is on for tablet only (768 to 1279). The cards keep the
+   * 1200 column at 1920; only the spacing follows that frame.
    */
   .modes {
+    --section-pad-top: clamp(4.5rem, 4.1886rem + 1.2678vw, 5rem); /* 72 to 80 */
+    --section-pad-bottom: clamp(4.5rem, 3.7993rem + 2.8526vw, 5.625rem); /* 72 to 90 */
+    --header-gap: clamp(0.625rem, 2.8526vw - 0.0757rem, 1.75rem); /* 10 to 28 */
     --lead-measure: 42.5rem; /* 680 */
+    --modes-list-gap: clamp(1.625rem, 0.0679rem + 6.3391vw, 4.125rem); /* 26 to 66 */
     --modes-glow-w: 31rem; /* 496 */
     --modes-glow-h: 21rem; /* 336 */
-    --modes-glow-a-x: 31.15%;
-    --modes-glow-a-y: 23rem;
+    --modes-glow-a-x: 31.16%;
+    --modes-glow-a-y: 23rem; /* 368 */
     --modes-glow-b-x: 77%;
-    --modes-glow-b-y: 26.75rem;
+    --modes-glow-b-y: 26.75rem; /* 428 */
+    --modes-edge-w: 0rem;
+    --modes-edge-h: 0rem;
   }
 
-  @media (width >= 1280px) {
+  @media (width >= 1024px) {
     .modes {
-      --modes-glow-w: 38.75rem; /* 620 */
-      --modes-glow-h: 26.25rem; /* 420 */
-      --modes-glow-a-x: 28.47%;
-      --modes-glow-a-y: 25.625rem;
-      --modes-glow-b-x: 74.31%;
-      --modes-glow-b-y: 29.375rem;
+      --section-pad-top: 5rem; /* 80 */
+      --section-pad-bottom: clamp(5.625rem, 12.2596vw - 2.2212rem, 8.8125rem); /* 90 to 141 */
+      --header-gap: clamp(1.1875rem, 3.1346rem - 2.1635vw, 1.75rem); /* 28 to 19 */
+      --modes-list-gap: 4.125rem; /* 66 */
+      --modes-glow-w: clamp(31rem, 11.9231rem + 29.8077vw, 38.75rem); /* 496 to 620 */
+      --modes-glow-h: clamp(21rem, 8.0769rem + 20.1923vw, 26.25rem); /* 336 to 420 */
+      --modes-glow-a-x: clamp(19.9438rem, 5.9591rem + 21.851vw, 25.625rem); /* 319 to 410 */
+      --modes-glow-a-y: clamp(23rem, 16.5385rem + 10.0962vw, 25.625rem); /* 368 to 410 */
+      --modes-glow-b-x: clamp(49.275rem, 5.9519rem + 67.6923vw, 66.875rem); /* 788 to 1070 */
+      --modes-glow-b-y: clamp(26.75rem, 20.2885rem + 10.0962vw, 29.375rem); /* 428 to 470 */
     }
   }
 
-  .modes :global(.modes__glow) {
+  @media (width >= 1440px) {
+    .modes {
+      --section-pad-top: clamp(5rem, 2rem + 3.3333vw, 6rem); /* 80 to 96 */
+      --section-pad-bottom: clamp(8.8125rem, 3.375rem + 6.0417vw, 10.625rem); /* 141 to 170 */
+      --header-gap: clamp(1.1875rem, 0.625rem + 0.625vw, 1.375rem); /* 19 to 22 */
+      --modes-list-gap: clamp(4.125rem, 1.6875rem + 2.7083vw, 4.9375rem); /* 66 to 79 */
+      --modes-glow-w: clamp(38.75rem, 15.5rem + 25.8333vw, 46.5rem); /* 620 to 744 */
+      --modes-glow-h: clamp(26.25rem, 10.5rem + 17.5vw, 31.5rem); /* 420 to 504 */
+      --modes-glow-a-x: clamp(25.625rem, 37.0833vw - 7.75rem, 36.75rem); /* 410 to 588 */
+      --modes-glow-a-y: clamp(25.625rem, 10.25rem + 17.0833vw, 30.75rem); /* 410 to 492 */
+      --modes-glow-b-x: clamp(66.875rem, 8.75rem + 64.5833vw, 86.25rem); /* 1070 to 1380 */
+      --modes-glow-b-y: clamp(29.375rem, 11.75rem + 19.5833vw, 35.25rem); /* 470 to 564 */
+      --modes-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --modes-edge-h: calc(var(--modes-edge-w) * 0.8);
+    }
+  }
+
+  .modes :global(.modes__glow),
+  .modes :global(.modes__edge) {
     display: none;
   }
 
@@ -90,6 +136,15 @@ import { modes } from '../data/presets/modes';
     }
 
     .modes :global(.modes__glow) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .modes :global(.glow.modes__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
       display: block;
     }
   }
@@ -109,7 +164,7 @@ import { modes } from '../data/presets/modes';
 
   .modes__layout {
     display: grid;
-    gap: 1.625rem;
+    gap: var(--modes-list-gap);
   }
 
   .modes__list {
@@ -121,10 +176,6 @@ import { modes } from '../data/presets/modes';
   }
 
   @media (width >= 768px) {
-    .modes__layout {
-      gap: 4.125rem;
-    }
-
     .modes__list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.5rem;
