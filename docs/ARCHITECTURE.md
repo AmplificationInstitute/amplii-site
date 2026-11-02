@@ -49,7 +49,7 @@ src/
                     sections/  hero.ts, try-the-beat.ts, arc.ts, modes.ts, meditations.ts,
                                science.ts, privacy.ts, pricing.ts, faq.ts, download.ts
                     sticky-bar.ts
-  audio/            (phase 5) binaural.ts, demo-controller.ts
+  audio/            (phase 3a) binaural.ts, demo-controller.ts
   content/          site.ts (language-neutral)
                     en/  nav, hero, try-the-beat, arc, modes, meditations, science,
                          privacy, pricing, faq, download, footer  (.ts)
@@ -178,7 +178,7 @@ The hero H1 is the likely LCP element, so its entrance never waits for the JS bu
 
 - The entrance is CSS `@keyframes` (opacity and `filter: blur()`) declared in the hero's own styles, so it starts at first paint.
 - Title, lead, buttons and note use the same keyframes with `animation-delay` steps of 80 ms (`--motion-stagger`).
-- The waves grow from a flat line with a `scaleY(0 → 1)` keyframe on the `WaveStrip` wrapper (slow, ease-in-out). The phase 3 canvas sits inside the same wrapper, so it inherits the growth with no handoff.
+- The waves grow from a flat line with a `scaleY(0 → 1)` keyframe on the `WaveStrip` wrapper (slow, ease-in-out). The phase 5 canvas sits inside the same wrapper, so it inherits the growth with no handoff.
 - The horizon rises 40 px and fades in with its own keyframe (ambient).
 - `animation-fill-mode: both`, so there is no flash of the final state before the animation starts. The start state lives only in the keyframes; nothing is hidden by a class, so there is no fallback timer.
 - GSAP only handles the hero's scroll-linked flatten and the wave drift.
@@ -197,7 +197,7 @@ The hero H1 is the likely LCP element, so its entrance never waits for the JS bu
 - The wave canvases draw from the same `gsap.ticker`: one loop for the page.
 - Touch scroll stays native (no `syncTouch`). Keyboard scroll stays native. Anchors go through Lenis with the header offset, matching `scroll-margin-top`.
 - `ScrollTrigger.config({ ignoreMobileResize: true })` for the iOS address bar. No pinned sections.
-- Lenis's own stylesheet (`lenis/dist/lenis.css`, or its rules copied in) is part of the global styles, added in phase 3 with the package.
+- Lenis's own stylesheet (`lenis/dist/lenis.css`, or its rules copied in) is part of the global styles, added in phase 5 with the package.
 
 ### Reduce Motion
 
@@ -240,7 +240,7 @@ envelope  = sin(π · u)^1.6   (u maps envelope.lo…peak…hi to 0…0.5…1; 0
 - **Colors:** the center line is white at 2 px; the others alternate `--color-wave-1` / `--color-wave-2` at 1.1 px. Alpha is `(0.15 + 0.75 · closeness²) · lineOpacity`.
 - **Glow:** as in Figma, the same lines drawn again under the crisp lines and blurred: a soft layer (Figma layer blur 22, opacity 0.7) and a near layer (blur 8, opacity 0.8), with the lines' own colors and opacities. A Gaussian's standard deviation is about half Figma's radius (`GLOW_LAYERS` in `lib/wave/geometry.ts`).
   - **Static SVG (phase 2):** each glow layer is its own `<svg>` blurred with a real `feGaussianBlur` (stdDeviation 11 and 4), referenced through CSS `filter: url(#…)`. On an HTML-level element the blur is measured in CSS px, so it stays round although the viewBox stretches sideways. The filter region reaches well past the wave (x −25 %, y −100 %, width 150 %, height 300 %), so the blur never ends in a straight edge.
-  - **Animated canvas (phase 3):** the glow is drawn on its own canvas at about 1/4 resolution, scaled up with CSS, plus a light CSS `filter: blur()` on that glow canvas only. The main lines stay on a full-resolution canvas on top. No per-frame blur on full-resolution layers. Acceptance: steady 60 fps on the hero at 4× CPU throttling.
+  - **Animated canvas (phase 5):** the glow is drawn on its own canvas at about 1/4 resolution, scaled up with CSS, plus a light CSS `filter: blur()` on that glow canvas only. The main lines stay on a full-resolution canvas on top. No per-frame blur on full-resolution layers. Acceptance: steady 60 fps on the hero at 4× CPU throttling.
 - `energy` (0…1) grows the waves from a flat line (hero).
 
 ### Units
@@ -312,7 +312,7 @@ From 1024 up the crest length is `31.25vw` and the amplitude `3vw`; from 393 to 
 `preset` (`'background' | 'demo-left' | 'demo-right' | 'demo-beat' | ModeId`), `layout: 'strip' | 'box'`, `height` (box only; a strip's center line sits where it is placed). The hero uses the `background` preset. Always `aria-hidden`.
 
 - **Phase 2:** static inline SVG at `t = 0`, `energy = 1`. Strips are clipped sideways by `WaveStrip` and the `Section` bleed, so they never widen the page.
-- **Phase 3:** `animations/waves/renderer.ts` adds two canvases over the SVG (a 1/4-resolution glow canvas with a light CSS blur, and a full-resolution lines canvas on top) and draws from the shared ticker. Paused off screen (IntersectionObserver), DPR capped at 2, never created under Reduce Motion.
+- **Phase 5:** `animations/waves/renderer.ts` adds two canvases over the SVG (a 1/4-resolution glow canvas with a light CSS blur, and a full-resolution lines canvas on top) and draws from the shared ticker. Paused off screen (IntersectionObserver), DPR capped at 2, never created under Reduce Motion.
 
 ## 7. Assets
 
@@ -329,13 +329,18 @@ From 1024 up the crest length is `31.25vw` and the amplitude `3vw`; from 393 to 
 
 Each is one branch from `develop` (`feat/2a-tokens-components`, `feat/2b-sections-1-5`, `feat/2c-sections-6-10`) and one PR into `develop`.
 
-## 9. Later phases (additions to CLAUDE.md §15)
+## 9. Later phases (order in CLAUDE.md §15)
 
-- **Phase 5 (Try the beat):** the demo gets labelled controls, full keyboard operation, and `aria-live="polite"` announcements for step and mode changes.
-- **Phase 6 (SEO/AEO):** `public/robots.txt` with the rules in CLAUDE.md §13, and the JSON-LD (§12) in `SeoHead`. App Store campaign tokens are filled in `appStoreUrl`.
+After 2c comes the launch pack (phase 3), then launch (phase 4). The motion system (phase 5) and the section animations (phase 6) come after launch, one section at a time on the live site.
+
+- **Phase 3a (Try the beat with real audio):** the Start button (hidden until the script runs), Web Audio tones, the earbud test, mode chips and the silent-mode hint. The demo gets labelled controls, full keyboard operation, and `aria-live="polite"` announcements for step and mode changes. Its waves stay static until phase 5.
+- **Phase 3b (sticky App Store bar):** built hidden in 2c; a small script shows it after the hero and hides it while the demo is on screen (IntersectionObserver, no GSAP).
+- **Phase 3c (SEO/AEO):** titles and descriptions, the share image, `public/robots.txt` with the rules in CLAUDE.md §13, the sitemap, the Smart App Banner and the JSON-LD (§12) in `SeoHead`. App Store campaign tokens are filled in `appStoreUrl`.
+- **Phase 3d (checks):** Lighthouse, VoiceOver on iPhone, keyboard, Safari and Chrome on phone, iPad and desktop.
+- **Phase 3e (launch steps):** written out for Ana, for after Marie approves (domain to Vercel, GitHub Pages off).
 
 ## 10. Known risks
 
-- **LCP:** the hero entrance is CSS from first paint, so LCP doesn't wait for JS. Still measured in phase 3, since an element at opacity 0 isn't counted until it starts to show.
-- **Wave glow cost:** phase 2 blurs static SVG layers once (painted, then cached). Phase 3 blurs only the 1/4-resolution glow canvas; verified at 4× CPU throttle on the hero.
-- **Dependencies:** `gsap` and `lenis` are added in phase 3. Estimated initial JS about 50 KB gzipped.
+- **LCP:** the hero entrance is CSS from first paint, so LCP doesn't wait for JS. Still measured in phase 5, since an element at opacity 0 isn't counted until it starts to show.
+- **Wave glow cost:** phase 2 blurs static SVG layers once (painted, then cached). Phase 5 blurs only the 1/4-resolution glow canvas; verified at 4× CPU throttle on the hero.
+- **Dependencies:** `gsap` and `lenis` are added in phase 5. Estimated initial JS about 50 KB gzipped.
