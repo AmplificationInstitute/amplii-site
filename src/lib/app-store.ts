@@ -5,7 +5,7 @@ import { site } from '../content/site';
  * campaign name, so downloads can be attributed without tracking visitors.
  */
 export type AppStoreCampaign =
-  'hero' | 'nav' | 'sticky-bar' | 'pricing-free' | 'pricing-full' | 'download';
+  'hero' | 'nav' | 'sticky-bar' | 'demo' | 'pricing-free' | 'pricing-full' | 'download';
 
 /** [TODO phase 3c: provider token from App Store Connect] */
 const providerToken: string | null = null;
