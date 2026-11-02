@@ -10,16 +10,16 @@ export const pricing = {
       { title: 'Voice', body: 'Guided meditations by Marie, coming soon.' },
     ],
     note: 'Try everything free for 7 days. After that, unlock it to keep the controls, or carry on with the four free modes.',
-    cta: 'Try Amplii Full free',
+    cta: 'Try Amplii Full free for 7 days',
   },
   free: {
     name: 'Free',
     tagline: 'The four modes, any length. Free, always.',
-    /** Shown from tablet up (the phone card is the short version, as in Figma). */
     items: [
       'Meditate, Focus, Energy and Sleep',
       'Any length, 5 minutes to 2 hours',
       'No account, nothing tracked',
     ],
+    cta: 'Download Amplii free',
   },
 } as const;
