@@ -36,7 +36,7 @@ import { meditations } from '../content/en/meditations';
   </Fragment>
 
   <GlassCard as="article" class="meditations__card">
-    <Pill label={meditations.pill} />
+    <Pill label={meditations.pill} class="meditations__pill" />
     <h2 id="meditations-title" class="meditations__title">
       {meditations.title}
     </h2>
@@ -126,6 +126,15 @@ import { meditations } from '../content/en/meditations';
       border-radius: 2.5rem;
       background: var(--card-fill);
       box-shadow: var(--card-shadow);
+    }
+  }
+
+  /* Phone: a small tag (12 px, 24 tall) with more room before the title */
+  @media (width < 768px) {
+    .meditations .meditations__pill.pill {
+      margin-bottom: 0.375rem;
+      padding: 0.3125rem 0.625rem;
+      font-size: 0.75rem;
     }
   }
 
