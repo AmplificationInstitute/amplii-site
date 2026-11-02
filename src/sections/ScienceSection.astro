@@ -1,0 +1,333 @@
+---
+import CardGlow from '../components/CardGlow.astro';
+import FactCard from '../components/FactCard.astro';
+import Glow from '../components/Glow.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import WaveStrip from '../components/WaveStrip.astro';
+import { science } from '../content/en/science';
+---
+
+<Section name="science" id="science" labelledBy="science-title" class="science">
+  <Fragment slot="bleed">
+    <Glow
+      intensity={0.3}
+      x="var(--science-glow-a-x)"
+      y="var(--science-glow-a-y)"
+      width="var(--science-glow-a-w)"
+      height="var(--science-glow-a-h)"
+    />
+    <Glow
+      intensity={0.26}
+      x="var(--science-glow-b-x)"
+      y="var(--science-glow-b-y)"
+      width="var(--science-glow-b-w)"
+      height="var(--science-glow-b-h)"
+    />
+    <Glow
+      class="science__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="27.7rem"
+      width="var(--science-edge-w)"
+      height="var(--science-edge-h)"
+    />
+    <Glow
+      class="science__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="32.8rem"
+      width="var(--science-edge-w)"
+      height="var(--science-edge-h)"
+    />
+    <WaveStrip preset="background" layout="strip" class="science__strip" />
+  </Fragment>
+
+  <div class="science__layout">
+    <SectionHeader id="science-title" title={science.title} align="center-from-tablet" />
+    <CardGlow class="science__cards">
+      {/* Phone: a swipeable row (scroll snap, no JS) that keyboard users can scroll too */}
+      <div class="science__carousel" role="region" aria-label={science.carouselLabel} tabindex="0">
+        <ul class="science__list" data-reveal-group>
+          {science.facts.map((fact, i) => (
+            <FactCard
+              counter={science.counter(i + 1, science.facts.length)}
+              number={science.number(i + 1)}
+              title={fact.title}
+              body={fact.body}
+            />
+          ))}
+        </ul>
+      </div>
+    </CardGlow>
+    <p class="science__disclaimer">{science.disclaimer}</p>
+    <details class="science__studies" data-part="studies">
+      <summary class="science__summary">{science.studiesLabel}</summary>
+      <ul class="science__sources">
+        {science.studies.map((study) => (
+          <li>
+            <a href={study.url}>{study.title}</a>
+            <span class="science__source-meta">
+              {study.journal}, {study.year}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Spacing and glows from the Figma frames (393 / 1024 / 1440 / 1920), one
+   * linear segment between each pair. Phone: the cards scroll sideways (the
+   * Figma dots come later, with JS). Tablet: 2 x 2. From 1280: a row of 4.
+   * The background strip is on from 768. The cards keep the 1200 column at
+   * 1920; only the spacing follows that frame.
+   */
+  .science {
+    --section-pad-top: clamp(4.5rem, 3.7993rem + 2.8526vw, 5.625rem); /* 72 to 90 */
+    --section-pad-bottom: clamp(4.5rem, 3.8772rem + 2.5357vw, 5.5rem); /* 72 to 88 */
+    --science-cards-gap: clamp(2.25rem, 0.8487rem + 5.7052vw, 4.5rem); /* 36 to 72 */
+    --science-note-gap: clamp(1rem, 4.4374vw - 0.0899rem, 2.75rem); /* 16 to 44 */
+    --science-link-gap: clamp(0.8125rem, 1.1168rem - 0.4754vw, 1rem); /* 16 to 13 */
+    --science-strip-y: 23.125rem; /* 370 */
+
+    /* Phone glows (Figma 208:2, 208:3) */
+    --science-glow-a-x: 17.81%;
+    --science-glow-a-y: 13.3125rem; /* 213 */
+    --science-glow-a-w: 20rem; /* 320 */
+    --science-glow-a-h: 17.5rem; /* 280 */
+    --science-glow-b-x: 86.51%;
+    --science-glow-b-y: 20.1875rem; /* 323 */
+    --science-glow-b-w: 21.25rem; /* 340 */
+    --science-glow-b-h: 18.75rem; /* 300 */
+    --science-edge-w: 0rem;
+    --science-edge-h: 0rem;
+  }
+
+  @media (width >= 768px) {
+    .science {
+      --science-glow-a-x: 31.6%;
+      --science-glow-a-y: 24.25rem; /* 388 */
+      --science-glow-a-w: 28rem; /* 448 */
+      --science-glow-a-h: 21rem; /* 336 */
+      --science-glow-b-x: 76.21%;
+      --science-glow-b-y: 26.75rem; /* 428 */
+      --science-glow-b-w: 30rem; /* 480 */
+      --science-glow-b-h: 21rem; /* 336 */
+    }
+  }
+
+  @media (width >= 1024px) {
+    .science {
+      --section-pad-top: 5.625rem; /* 90 */
+      --section-pad-bottom: clamp(5.25rem, 6.1154rem - 0.9615vw, 5.5rem); /* 88 to 84 */
+      --science-cards-gap: clamp(3.9375rem, 5.8846rem - 2.1635vw, 4.5rem); /* 72 to 63 */
+      --science-note-gap: clamp(2.75rem, 1.8269rem + 1.4423vw, 3.125rem); /* 44 to 50 */
+      --science-link-gap: 0.8125rem; /* 13 */
+      --science-glow-a-x: clamp(20.225rem, 5.3942rem + 23.1731vw, 26.25rem); /* 324 to 420 */
+      --science-glow-a-y: clamp(24.25rem, 17.7885rem + 10.0962vw, 26.875rem); /* 388 to 430 */
+      --science-glow-a-w: clamp(28rem, 10.7692rem + 26.9231vw, 35rem); /* 448 to 560 */
+      --science-glow-a-h: clamp(21rem, 8.0769rem + 20.1923vw, 26.25rem); /* 336 to 420 */
+      --science-glow-b-x: clamp(48.775rem, 5.7596rem + 67.2115vw, 66.25rem); /* 780 to 1060 */
+      --science-glow-b-y: clamp(26.75rem, 20.2885rem + 10.0962vw, 29.375rem); /* 428 to 470 */
+      --science-glow-b-w: clamp(30rem, 11.5385rem + 28.8462vw, 37.5rem); /* 480 to 600 */
+      --science-glow-b-h: clamp(21rem, 8.0769rem + 20.1923vw, 26.25rem); /* 336 to 420 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .science {
+      --section-pad-top: clamp(5.625rem, 2.25rem + 3.75vw, 6.75rem); /* 90 to 108 */
+      --section-pad-bottom: clamp(5.25rem, 2.25rem + 3.3333vw, 6.25rem); /* 84 to 100 */
+      --science-cards-gap: clamp(3.9375rem, 1.6875rem + 2.5vw, 4.6875rem); /* 63 to 75 */
+      --science-note-gap: clamp(3.125rem, 1.25rem + 2.0833vw, 3.75rem); /* 50 to 60 */
+      --science-link-gap: clamp(0.8125rem, 0.25rem + 0.625vw, 1rem); /* 13 to 16 */
+      --science-strip-y: clamp(23.125rem, 9.25rem + 15.4167vw, 27.75rem); /* 370 to 444 */
+      --science-glow-a-x: clamp(26.25rem, 37.5vw - 7.5rem, 37.5rem); /* 420 to 600 */
+      --science-glow-a-y: clamp(26.875rem, 10.75rem + 17.9167vw, 32.25rem); /* 430 to 516 */
+      --science-glow-a-w: clamp(35rem, 14rem + 23.3333vw, 42rem); /* 560 to 672 */
+      --science-glow-a-h: clamp(26.25rem, 10.5rem + 17.5vw, 31.5rem); /* 420 to 504 */
+      --science-glow-b-x: clamp(66.25rem, 8.5rem + 64.1667vw, 85.5rem); /* 1060 to 1368 */
+      --science-glow-b-y: clamp(29.375rem, 11.75rem + 19.5833vw, 35.25rem); /* 470 to 564 */
+      --science-glow-b-w: clamp(37.5rem, 15rem + 25vw, 45rem); /* 600 to 720 */
+      --science-glow-b-h: clamp(26.25rem, 10.5rem + 17.5vw, 31.5rem); /* 420 to 504 */
+      --science-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --science-edge-h: calc(var(--science-edge-w) * 0.8);
+    }
+  }
+
+  .science :global(.science__edge) {
+    display: none;
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .science :global(.glow.science__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  /* Background strip: off on phone, on from 768 (Figma 218:1543, 217:90) */
+  .science__strip {
+    display: none;
+    position: absolute;
+    top: var(--science-strip-y);
+    left: 0;
+  }
+
+  @media (width >= 768px) {
+    .science__strip {
+      display: block;
+    }
+  }
+
+  /* minmax(0, 1fr) so the phone card row scrolls instead of widening the column */
+  .science__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .science :global(.science__cards) {
+    margin-top: var(--science-cards-gap);
+  }
+
+  /* Phone: the row runs to the screen edges, the next card peeks in */
+  .science__carousel {
+    margin-inline: calc(-1 * var(--gutter));
+    overflow-x: auto;
+    scroll-padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .science__carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .science__carousel:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .science__list {
+    display: flex;
+    gap: 0.75rem;
+    width: max-content;
+    margin: 0;
+    padding: 0 var(--gutter);
+    list-style: none;
+  }
+
+  .science__list > :global(li) {
+    flex: 0 0 17.5rem; /* 280 */
+    scroll-snap-align: start;
+  }
+
+  @media (width >= 768px) {
+    .science__carousel {
+      margin-inline: 0;
+      overflow: visible;
+    }
+
+    .science__list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      width: auto;
+      padding: 0;
+    }
+  }
+
+  @media (width >= 1280px) {
+    .science__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .science__disclaimer {
+    margin-top: var(--science-note-gap);
+    color: var(--color-muted);
+    font-size: clamp(0.875rem, 0.8361rem + 0.1585vw, 0.9375rem); /* 14 to 15 */
+    line-height: 1.4;
+  }
+
+  .science__studies {
+    margin-top: var(--science-link-gap);
+  }
+
+  /* Looks like a link (Figma); a 44 px tall target without moving the text */
+  .science__summary {
+    display: block;
+    width: fit-content;
+    margin-block: -0.6875rem;
+    padding-block: 0.6875rem;
+    color: var(--color-accent);
+    font-size: clamp(0.9375rem, 0.8986rem + 0.1585vw, 1rem); /* 15 to 16 */
+    font-weight: var(--weight-medium);
+    line-height: 1.3;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .science__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .science__sources {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 37.5rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    list-style: none;
+  }
+
+  .science__sources a {
+    color: var(--color-ink-secondary);
+    text-decoration: underline;
+    text-decoration-color: rgb(188 214 255 / 45%);
+    text-underline-offset: 0.2em;
+  }
+
+  .science__source-meta {
+    display: block;
+  }
+
+  @media (hover: hover) {
+    .science__sources a:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  @media (width >= 768px) {
+    .science__layout {
+      justify-items: center;
+      text-align: center;
+    }
+
+    .science :global(.science__cards) {
+      width: 100%;
+      text-align: start;
+    }
+
+    .science__disclaimer {
+      max-width: 37.5rem;
+    }
+
+    .science__summary {
+      margin-inline: auto;
+      line-height: 1.4;
+    }
+
+    .science__sources {
+      margin-inline: auto;
+    }
+  }
+</style>

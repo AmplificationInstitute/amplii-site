@@ -17,6 +17,8 @@ export default defineConfig(
     },
     rules: {
       'no-console': 'error',
+      // A scrollable region (the phone fact carousel) must be focusable so keyboard users can scroll it
+      'astro/jsx-a11y/no-noninteractive-tabindex': ['error', { roles: ['tabpanel', 'region'] }],
     },
   },
 );
