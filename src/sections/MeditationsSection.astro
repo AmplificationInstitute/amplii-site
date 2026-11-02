@@ -1,4 +1,5 @@
 ---
+import CardGlow from '../components/CardGlow.astro';
 import GlassCard from '../components/GlassCard.astro';
 import Glow from '../components/Glow.astro';
 import Pill from '../components/Pill.astro';
@@ -35,13 +36,15 @@ import { meditations } from '../content/en/meditations';
     />
   </Fragment>
 
-  <GlassCard as="article" class="meditations__card">
-    <Pill label={meditations.pill} class="meditations__pill" />
-    <h2 id="meditations-title" class="meditations__title">
-      {meditations.title}
-    </h2>
-    <p class="meditations__body">{meditations.body}</p>
-  </GlassCard>
+  <CardGlow class="meditations__group">
+    <GlassCard as="article" class="meditations__card">
+      <Pill label={meditations.pill} class="meditations__pill" />
+      <h2 id="meditations-title" class="meditations__title">
+        {meditations.title}
+      </h2>
+      <p class="meditations__body">{meditations.body}</p>
+    </GlassCard>
+  </CardGlow>
 </Section>
 
 <style>
@@ -107,6 +110,11 @@ import { meditations } from '../content/en/meditations';
    * radius 40, padding 56, 700 wide and centered. Selectors carry .card so
    * they outrank GlassCard's own.
    */
+  .meditations :global(.meditations__group) {
+    max-width: 43.75rem;
+    margin-inline: auto;
+  }
+
   .meditations .meditations__card.card {
     display: grid;
     justify-items: start;

@@ -1,4 +1,5 @@
 ---
+import CardGlow from '../components/CardGlow.astro';
 import DemoCard from '../components/DemoCard.astro';
 import Glow from '../components/Glow.astro';
 import Section from '../components/Section.astro';
@@ -65,7 +66,9 @@ const tones = demoTones(DEMO_START_MODE);
         class="try__stepper"
       />
     </div>
-    <DemoCard leftHz={tones.left} rightHz={tones.right} class="try__demo" />
+    <CardGlow class="try__demo">
+      <DemoCard leftHz={tones.left} rightHz={tones.right} />
+    </CardGlow>
     <p class="try__note" data-reveal>
       {tryTheBeat.note}
     </p>

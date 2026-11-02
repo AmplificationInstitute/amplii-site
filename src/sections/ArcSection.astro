@@ -1,5 +1,6 @@
 ---
 import ArcChart from '../components/ArcChart.astro';
+import CardGlow from '../components/CardGlow.astro';
 import GlassCard from '../components/GlassCard.astro';
 import Glow from '../components/Glow.astro';
 import Section from '../components/Section.astro';
@@ -45,9 +46,11 @@ import { arc } from '../content/en/arc';
 
   <div class="arc__layout">
     <SectionHeader id="arc-title" title={arc.title} lead={arc.lead} align="center-from-tablet" />
-    <GlassCard class="arc__card">
-      <ArcChart mode="meditate" />
-    </GlassCard>
+    <CardGlow class="arc__card-group">
+      <GlassCard class="arc__card">
+        <ArcChart mode="meditate" />
+      </GlassCard>
+    </CardGlow>
     <p class="arc__note" data-reveal>
       {arc.note}
     </p>
@@ -142,9 +145,12 @@ import { arc } from '../content/en/arc';
    * Card padding inside the 1 px border, from the Figma frames: phone
    * 29 / 19 / 36 / 17, from 768 59 / 39 / 52 / 55.
    */
-  .arc .arc__card.card {
+  .arc :global(.arc__card-group) {
     width: 100%;
     margin-top: var(--arc-card-gap);
+  }
+
+  .arc .arc__card.card {
     padding: 1.8125rem 1.1875rem 2.25rem 1.0625rem;
     border-radius: 1.75rem;
   }

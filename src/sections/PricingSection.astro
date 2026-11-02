@@ -1,0 +1,174 @@
+---
+import CardGlow from '../components/CardGlow.astro';
+import Glow from '../components/Glow.astro';
+import PlanCard from '../components/PlanCard.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import WaveStrip from '../components/WaveStrip.astro';
+import { pricing } from '../content/en/pricing';
+---
+
+<Section name="pricing" id="pricing" labelledBy="pricing-title" class="pricing">
+  <Fragment slot="bleed">
+    <Glow
+      intensity={0.3}
+      x="var(--pricing-glow-a-x)"
+      y="var(--pricing-glow-a-y)"
+      width="var(--pricing-glow-a-w)"
+      height="var(--pricing-glow-a-h)"
+    />
+    <Glow
+      intensity={0.24}
+      x="var(--pricing-glow-b-x)"
+      y="var(--pricing-glow-b-y)"
+      width="var(--pricing-glow-b-w)"
+      height="var(--pricing-glow-b-h)"
+    />
+    <Glow
+      class="pricing__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="29.04rem"
+      width="var(--pricing-edge-w)"
+      height="var(--pricing-edge-h)"
+    />
+    <Glow
+      class="pricing__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="34.8rem"
+      width="var(--pricing-edge-w)"
+      height="var(--pricing-edge-h)"
+    />
+    <WaveStrip preset="background" layout="strip" class="pricing__strip" />
+  </Fragment>
+
+  <div class="pricing__layout">
+    <SectionHeader id="pricing-title" title={pricing.title} align="center-from-tablet" />
+    <CardGlow class="pricing__plans">
+      <div class="pricing__grid" data-reveal-group>
+        <PlanCard plan="full" />
+        <PlanCard plan="free" />
+      </div>
+    </CardGlow>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Spacing, glows and the background strip from the Figma frames (393 /
+   * 1024 / 1440 / 1920), one linear segment between each pair. Phone and
+   * tablet: Full above Free. From 1280: side by side (720 / 456). The strip
+   * is on at every size. The cards keep the 1200 column at 1920; only the
+   * spacing follows that frame.
+   */
+  .pricing {
+    --section-pad-top: clamp(4.5rem, 3.7993rem + 2.8526vw, 5.625rem); /* 72 to 90 */
+    --section-pad-bottom: clamp(4.5rem, 3.4101rem + 4.4374vw, 6.25rem); /* 72 to 100 */
+    --pricing-plans-gap: clamp(2.125rem, 0.6458rem + 6.0222vw, 4.5rem); /* 34 to 72 */
+    --pricing-cards-gap: clamp(0.875rem, 0.4857rem + 1.5848vw, 1.5rem); /* 14 to 24 */
+    --pricing-strip-y: clamp(21.3125rem, 15.9017rem + 22.0285vw, 30rem); /* 341 to 480 */
+
+    /* Phone glows (Figma 208:14, 208:15) */
+    --pricing-glow-a-x: 16.54%;
+    --pricing-glow-a-y: 16.3125rem; /* 261 */
+    --pricing-glow-a-w: 20.625rem; /* 330 */
+    --pricing-glow-a-h: 18.75rem; /* 300 */
+    --pricing-glow-b-x: 81.42%;
+    --pricing-glow-b-y: 31.9375rem; /* 511 */
+    --pricing-glow-b-w: 21.25rem; /* 340 */
+    --pricing-glow-b-h: 18.75rem; /* 300 */
+    --pricing-edge-w: 0rem;
+    --pricing-edge-h: 0rem;
+  }
+
+  @media (width >= 768px) {
+    .pricing {
+      --pricing-glow-a-x: 29.17%;
+      --pricing-glow-a-y: 24.25rem; /* 388 */
+      --pricing-glow-a-w: 32rem; /* 512 */
+      --pricing-glow-a-h: 26rem; /* 416 */
+      --pricing-glow-b-x: 51.04%;
+      --pricing-glow-b-y: 34.75rem; /* 556 */
+      --pricing-glow-b-w: 28rem; /* 448 */
+      --pricing-glow-b-h: 22rem; /* 352 */
+    }
+  }
+
+  @media (width >= 1024px) {
+    .pricing {
+      --section-pad-top: 5.625rem; /* 90 */
+      --section-pad-bottom: clamp(5.5rem, 8.0962rem - 2.8846vw, 6.25rem); /* 100 to 88 */
+      --pricing-plans-gap: clamp(3.9375rem, 5.8846rem - 2.1635vw, 4.5rem); /* 72 to 63 */
+      --pricing-cards-gap: 1.5rem; /* 24 */
+      --pricing-strip-y: clamp(28.125rem, 34.6154rem - 7.2115vw, 30rem); /* 480 to 450 */
+      --pricing-glow-a-x: clamp(18.6669rem, 6.1546rem + 19.5505vw, 23.75rem); /* 299 to 380 */
+      --pricing-glow-a-y: clamp(24.25rem, 16.25rem + 12.5vw, 27.5rem); /* 388 to 440 */
+      --pricing-glow-a-w: clamp(32rem, 12.3077rem + 30.7692vw, 40rem); /* 512 to 640 */
+      --pricing-glow-a-h: clamp(26rem, 10rem + 25vw, 32.5rem); /* 416 to 520 */
+      --pricing-glow-b-x: clamp(32.6669rem, 5.3853rem + 42.6274vw, 43.75rem); /* 523 to 700 */
+      --pricing-glow-b-y: clamp(34.75rem, 27.9808rem + 10.5769vw, 37.5rem); /* 556 to 600 */
+      --pricing-glow-b-w: clamp(28rem, 10.7692rem + 26.9231vw, 35rem); /* 448 to 560 */
+      --pricing-glow-b-h: clamp(22rem, 8.4615rem + 21.1538vw, 27.5rem); /* 352 to 440 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .pricing {
+      --section-pad-top: clamp(5.625rem, 2.25rem + 3.75vw, 6.75rem); /* 90 to 108 */
+      --section-pad-bottom: clamp(5.5rem, 2.5rem + 3.3333vw, 6.5rem); /* 88 to 104 */
+      --pricing-plans-gap: clamp(3.9375rem, 1.6875rem + 2.5vw, 4.6875rem); /* 63 to 75 */
+      --pricing-strip-y: clamp(28.125rem, 11.25rem + 18.75vw, 33.75rem); /* 450 to 540 */
+      --pricing-glow-a-x: clamp(23.75rem, 35.8333vw - 8.5rem, 34.5rem); /* 380 to 552 */
+      --pricing-glow-a-y: clamp(27.5rem, 11rem + 18.3333vw, 33rem); /* 440 to 528 */
+      --pricing-glow-a-w: clamp(40rem, 16rem + 26.6667vw, 48rem); /* 640 to 768 */
+      --pricing-glow-a-h: clamp(32.5rem, 13rem + 21.6667vw, 39rem); /* 520 to 624 */
+      --pricing-glow-b-x: clamp(43.75rem, 49.1667vw - 0.5rem, 58.5rem); /* 700 to 936 */
+      --pricing-glow-b-y: clamp(37.5rem, 15rem + 25vw, 45rem); /* 600 to 720 */
+      --pricing-glow-b-w: clamp(35rem, 14rem + 23.3333vw, 42rem); /* 560 to 672 */
+      --pricing-glow-b-h: clamp(27.5rem, 11rem + 18.3333vw, 33rem); /* 440 to 528 */
+      --pricing-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --pricing-edge-h: calc(var(--pricing-edge-w) * 0.8);
+    }
+  }
+
+  .pricing :global(.pricing__edge) {
+    display: none;
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .pricing :global(.glow.pricing__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .pricing__strip {
+    position: absolute;
+    top: var(--pricing-strip-y);
+    left: 0;
+  }
+
+  .pricing__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pricing :global(.pricing__plans) {
+    margin-top: var(--pricing-plans-gap);
+  }
+
+  .pricing__grid {
+    display: grid;
+    gap: var(--pricing-cards-gap);
+    align-items: start;
+  }
+
+  @media (width >= 1280px) {
+    .pricing__grid {
+      grid-template-columns: minmax(0, 720fr) minmax(0, 456fr);
+    }
+  }
+</style>

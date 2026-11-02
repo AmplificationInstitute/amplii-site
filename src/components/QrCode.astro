@@ -1,0 +1,41 @@
+---
+import qr from '../assets/qr-app-store.svg?raw';
+
+interface Props {
+  /** Size in px. */
+  size?: number;
+  label: string;
+  class?: string;
+}
+
+const { size = 120, label, class: className } = Astro.props;
+---
+
+<!--
+  Generated once (qrcode on npm, error correction M, run through npx) and
+  committed, so no library ships. It points to the App Store page; regenerate
+  it when the campaign links exist. Dark modules on a light tile, so phone
+  cameras read it easily.
+-->
+<div
+  class:list={['qr-code', className]}
+  role="img"
+  aria-label={label}
+  style={`--qr-size: ${size}px`}
+  set:html={qr}
+/>
+
+<style>
+  .qr-code {
+    width: var(--qr-size);
+    height: var(--qr-size);
+    overflow: hidden;
+    border-radius: 0.75rem;
+  }
+
+  .qr-code :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

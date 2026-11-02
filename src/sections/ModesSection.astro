@@ -1,4 +1,5 @@
 ---
+import CardGlow from '../components/CardGlow.astro';
 import Glow from '../components/Glow.astro';
 import ModeCard from '../components/ModeCard.astro';
 import Section from '../components/Section.astro';
@@ -61,11 +62,13 @@ import { modes } from '../data/presets/modes';
       lead={modesCopy.lead}
       align="center-from-tablet"
     />
-    <ul class="modes__list" data-reveal-group>
-      {modes.map((mode) => (
-        <ModeCard mode={mode.id} />
-      ))}
-    </ul>
+    <CardGlow>
+      <ul class="modes__list" data-reveal-group>
+        {modes.map((mode) => (
+          <ModeCard mode={mode.id} />
+        ))}
+      </ul>
+    </CardGlow>
   </div>
 </Section>
 

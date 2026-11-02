@@ -16,8 +16,8 @@ export const site = {
     url: 'https://amplificationinstitute.com',
   },
   legal: {
-    privacy: '/privacy.html',
-    support: '/support.html',
-    terms: '/terms.html',
+    privacy: '/privacy',
+    support: '/support',
+    terms: '/terms',
   },
 } as const;

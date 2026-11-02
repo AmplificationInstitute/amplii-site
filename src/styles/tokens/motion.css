@@ -1,5 +1,5 @@
 /*
- * Motion tokens. GSAP reads the same values from a TypeScript mirror (phase 3).
+ * Motion tokens. GSAP reads the same values from a TypeScript mirror (phase 5).
  * No overshooting or bouncing eases. Figma's hover 0.3 s uses quick, the FAQ's
  * 0.35 s uses exit.
  */

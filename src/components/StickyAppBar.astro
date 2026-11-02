@@ -1,0 +1,47 @@
+---
+import { stickyBar } from '../content/en/sticky-bar';
+import AppStoreBadge from './AppStoreBadge.astro';
+---
+
+<!--
+  Phone only (Figma 202:519), with Apple's badge in place of Figma's custom
+  button. Built hidden: the launch-pack script (phase 3b) removes `hidden`
+  after the hero and puts it back while the demo or the final section is on
+  screen. Without JS it never shows; the hero, pricing and final section
+  already have download links.
+-->
+<aside class="sticky-app-bar" aria-label={stickyBar.label} hidden data-part="sticky-bar">
+  <AppStoreBadge campaign="sticky-bar" height={52} />
+</aside>
+
+<style>
+  /*
+   * Glass bar along the bottom: 12 px above the badge, and below it 12 px or
+   * the iPhone's safe area, whichever is larger (Figma draws 28 for the home
+   * indicator).
+   */
+  .sticky-app-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem var(--gutter) max(0.75rem, env(safe-area-inset-bottom));
+    border-top: 1px solid rgb(255 255 255 / 8%);
+    background: rgb(5 11 32 / 72%);
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+  }
+
+  .sticky-app-bar[hidden] {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .sticky-app-bar {
+      display: none;
+    }
+  }
+</style>
