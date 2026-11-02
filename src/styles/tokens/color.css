@@ -15,7 +15,7 @@
   --color-glow: #3f74ff;
   --color-ambient: #1d46d8; /* phone "Ambient" glows */
   --color-dawn: #5f8dff; /* final section: Figma "Dawn bloom" */
-  --color-dawn-core: #e3eeff; /* final section: Figma "Dawn core" */
+  --color-dawn-core: #bcd6ff; /* final section: the dawn's center, a soft blue-white (Figma #E3EEFF, toned down for the dark theme) */
   --color-wave-1: #5d8bff;
   --color-wave-2: #a9c8ff;
 

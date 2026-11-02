@@ -21,7 +21,7 @@ Ten sections, in the Figma order. Ids match the nav links (How it works, Modes, 
 
 Decisions folded in:
 
-- "What binaural beats are" is taught inside Try the beat. "Who makes Amplii" is one line in the footer area, above the links: "Amplii is made by Amplification Institute, founded by Marie Monet.", with "Amplification Institute" linking to https://amplificationinstitute.com.
+- "What binaural beats are" is taught inside Try the beat. "Who makes Amplii" is one line in the footer area, above the links: "Amplii is made by Amplification Institute.", with "Amplification Institute" linking to https://amplificationinstitute.com.
 - Meditations: "coming soon" only. No SoundCloud link, no preview player. Hidden Figma layers never reach the build.
 - Contact email on the landing is contact@amplificationinstitute.com everywhere, FAQ included. Legacy pages keep support@ untouched.
 - The QR code appears only in the Download section, on tablet and desktop, beside the App Store badge (about 120 px), captioned "Scan with your iPhone camera to get Amplii." The hero stays as in Figma.
