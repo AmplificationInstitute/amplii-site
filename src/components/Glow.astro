@@ -8,14 +8,17 @@ interface Props {
   height: string;
   /** Peak opacity. Figma glows use 0.26. */
   intensity?: number;
+  /** glow: the usual #3F74FF. ambient: the deeper blue of the phone "Ambient" layers. */
+  tint?: 'glow' | 'ambient';
+  class?: string;
 }
 
-const { x, y, width, height, intensity = 0.26 } = Astro.props;
+const { x, y, width, height, intensity = 0.26, tint = 'glow', class: className } = Astro.props;
 ---
 
 <div
-  class="glow"
-  style={`--glow-x: ${x}; --glow-y: ${y}; --glow-w: ${width}; --glow-h: ${height}; --glow-intensity: ${intensity}`}
+  class:list={['glow', className]}
+  style={`--glow-x: ${x}; --glow-y: ${y}; --glow-w: ${width}; --glow-h: ${height}; --glow-intensity: ${intensity}; --glow-tint: var(--color-${tint})`}
   aria-hidden="true"
 ></div>
 
@@ -36,11 +39,11 @@ const { x, y, width, height, intensity = 0.26 } = Astro.props;
     opacity: var(--glow-intensity);
     background: radial-gradient(
       closest-side,
-      var(--color-glow) 0%,
-      color-mix(in srgb, var(--color-glow) 96%, transparent) 50%,
-      color-mix(in srgb, var(--color-glow) 80%, transparent) 62%,
-      color-mix(in srgb, var(--color-glow) 50%, transparent) 75%,
-      color-mix(in srgb, var(--color-glow) 20%, transparent) 88%,
+      var(--glow-tint) 0%,
+      color-mix(in srgb, var(--glow-tint) 96%, transparent) 50%,
+      color-mix(in srgb, var(--glow-tint) 80%, transparent) 62%,
+      color-mix(in srgb, var(--glow-tint) 50%, transparent) 75%,
+      color-mix(in srgb, var(--glow-tint) 20%, transparent) 88%,
       transparent 100%
     );
     pointer-events: none;

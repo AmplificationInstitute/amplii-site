@@ -11,7 +11,11 @@
   --space-10: 8rem; /* 128 */
 
   /* Vertical rhythm between sections, phone to desktop */
-  --space-section: clamp(4rem, 2.5rem + 6vw, 8rem);
+  --space-section: clamp(
+    4.5rem,
+    2.5rem + 6vw,
+    8rem
+  ); /* 72 on phone, as every Figma phone section */
 
   /*
    * Side margins from Figma 214:574: 20 below 390 (iPhone SE), 24 phone,

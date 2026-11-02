@@ -28,6 +28,14 @@ export interface WaveParams {
   /** Where the waves live across the width (fractions of it), and where they peak. */
   envelope: readonly [number, number];
   envelopePeak: number;
+  /** false: every crest the same height across the width (background strips). */
+  taper: boolean;
+  /** Phase step between lines, in radians. */
+  phaseStep: number;
+  /** Count the phase step from the center line instead of the first line. */
+  phaseFromCenter: boolean;
+  /** Amplitude of each line as a share of the center line. Without it: the app's taper. */
+  amplitudeByLine?: readonly number[];
 }
 
 /** Hard photosensitivity limit for any visual rhythm (CLAUDE.md §6). */
@@ -50,6 +58,9 @@ const appDefaults = {
   lineWidth: 1.1,
   envelope: [0, 1],
   envelopePeak: 0.5,
+  taper: true,
+  phaseStep: 0.55,
+  phaseFromCenter: false,
 } as const satisfies Partial<WaveParams>;
 
 type WaveInput = Pick<WaveParams, 'lines' | 'amplitude' | 'refHeight' | 'baseCycles'> &

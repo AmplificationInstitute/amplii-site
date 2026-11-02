@@ -13,12 +13,14 @@
   --color-accent: #bcd6ff;
   --color-on-accent: #071a45;
   --color-glow: #3f74ff;
+  --color-ambient: #1d46d8; /* phone "Ambient" glows */
   --color-wave-1: #5d8bff;
   --color-wave-2: #a9c8ff;
 
   /* Glass controls (secondary buttons), from the Figma buttons */
   --glass-fill: rgb(255 255 255 / 5%);
   --glass-stroke: rgb(255 255 255 / 14%);
+  --glass-stroke-soft: rgb(255 255 255 / 12%); /* phone demo card */
   --glass-blur: 12px;
 
   /* Cards (mode, fact, demo, plan), from the Figma cards */
@@ -26,6 +28,12 @@
   --card-stroke: rgb(188 214 255 / 45%);
   --card-shadow: 0 14px 30px rgb(0 0 0 / 45%);
   --card-blur: 12px;
+
+  /* Hero horizon, from the Figma "Horizon" layers */
+  --horizon-glow: #2b62ff;
+  --horizon-rim: #7fb0ff;
+  --horizon-line: rgb(156 194 255 / 90%);
+  --horizon-fill: #040a1c;
 
   --color-focus: var(--color-accent);
 }

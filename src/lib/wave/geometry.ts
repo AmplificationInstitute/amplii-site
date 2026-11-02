@@ -12,8 +12,6 @@ export interface WaveFrame {
   energy: number;
   /** Multiplies the amplitude: box height / refHeight for boxes, 1 for strips. */
   amplitudeScale: number;
-  /** The part of the wave shown across the width, as fractions of it. */
-  window: readonly [number, number];
 }
 
 export interface WaveStroke {
@@ -24,11 +22,13 @@ export interface WaveStroke {
 }
 
 /**
- * Background strips are 2.8 x the screen wide and start 0.9 screens to the left
- * (Figma 214:574), so every width shows the same part of the wave.
+ * Background strips (Figma 214:574) start 0.9 screens to the left of the screen
+ * and are drawn as whole, even cycles. CSS sets the crest length and amplitude
+ * per width, so this many cycles always reach past the right edge (at most 3.2
+ * crests on screen: 1.9 x 3.2 = 6.1).
  */
-export const STRIP_WINDOW = [0.9 / 2.8, 1.9 / 2.8] as const;
-export const FULL_WINDOW = [0, 1] as const;
+export const STRIP_CYCLES = 7;
+export const STRIP_OFFSET = 0.9;
 
 /**
  * The glow: the same lines again, blurred, under the crisp lines. Values from the
@@ -40,8 +40,7 @@ export const GLOW_LAYERS = [
   { name: 'near', blurRadius: 8, opacity: 0.8 },
 ] as const;
 
-const PHASE_STEP = 0.55;
-const POINTS_PER_CYCLE = 8;
+const POINTS_PER_CYCLE = 12;
 const MIN_POINTS = 16;
 
 function closeness(p: WaveParams, k: number): number {
@@ -51,6 +50,7 @@ function closeness(p: WaveParams, k: number): number {
 
 /** 0 outside the envelope, rising to 1 at its peak, tapering like the app's bundle. */
 function envelopeHeight(p: WaveParams, x: number): number {
+  if (!p.taper) return 1;
   const [lo, hi] = p.envelope;
   if (x <= lo || x >= hi) return 0;
   const peak = p.envelopePeak;
@@ -62,10 +62,11 @@ function envelopeHeight(p: WaveParams, x: number): number {
 export function lineOffset(p: WaveParams, k: number, x: number, frame: WaveFrame): number {
   const breathRate = Math.min(p.breathRate, RHYTHM_LIMIT_HZ);
   const breath = 1 + p.breathDepth * Math.sin(2 * Math.PI * breathRate * frame.t);
-  const amp =
-    p.amplitude * frame.amplitudeScale * frame.energy * breath * (0.35 + 0.65 * closeness(p, k));
+  const share = p.amplitudeByLine?.[k] ?? 0.35 + 0.65 * closeness(p, k);
+  const amp = p.amplitude * frame.amplitudeScale * frame.energy * breath * share;
   const cycles = p.baseCycles + k * p.cycleSpread;
-  const phase = k * PHASE_STEP + 2 * Math.PI * p.driftSpeed * frame.t * (1 + k * DRIFT_STEP);
+  const step = p.phaseFromCenter ? k - (p.lines - 1) / 2 : k;
+  const phase = step * p.phaseStep + 2 * Math.PI * p.driftSpeed * frame.t * (1 + k * DRIFT_STEP);
   return amp * envelopeHeight(p, x) * Math.sin(2 * Math.PI * cycles * x + phase);
 }
 
@@ -107,16 +108,14 @@ function smoothPath(points: readonly (readonly [number, number])[]): string {
 
 /** Every line of the bundle at one moment, as SVG path data with its style. */
 export function waveStrokes(p: WaveParams, frame: WaveFrame): WaveStroke[] {
-  const [w0, w1] = frame.window;
-  const maxCycles = (p.baseCycles + (p.lines - 1) * p.cycleSpread) * (w1 - w0);
+  const maxCycles = p.baseCycles + (p.lines - 1) * p.cycleSpread;
   const count = Math.max(MIN_POINTS, Math.ceil(maxCycles * POINTS_PER_CYCLE));
   const centerY = frame.height / 2;
 
   return Array.from({ length: p.lines }, (_, k) => {
     const points = Array.from({ length: count + 1 }, (_, i) => {
-      const s = i / count;
-      const x = w0 + s * (w1 - w0);
-      return [s * frame.width, centerY + lineOffset(p, k, x, frame)] as const;
+      const x = i / count;
+      return [x * frame.width, centerY + lineOffset(p, k, x, frame)] as const;
     });
     return { d: smoothPath(points), ...lineStyle(p, k) };
   });

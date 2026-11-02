@@ -1,0 +1,176 @@
+---
+import ArcChart from '../components/ArcChart.astro';
+import GlassCard from '../components/GlassCard.astro';
+import Glow from '../components/Glow.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { arc } from '../content/en/arc';
+---
+
+<Section name="arc" id="arc" labelledBy="arc-title" class="arc">
+  <Fragment slot="bleed">
+    <Glow
+      class="arc__glow"
+      intensity={0.22}
+      x="var(--arc-glow-a-x)"
+      y="var(--arc-glow-a-y)"
+      width="var(--arc-glow-w)"
+      height="var(--arc-glow-h)"
+    />
+    <Glow
+      class="arc__glow"
+      intensity={0.2}
+      x="var(--arc-glow-b-x)"
+      y="var(--arc-glow-b-y)"
+      width="var(--arc-glow-w)"
+      height="var(--arc-glow-h)"
+    />
+    <Glow
+      class="arc__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="29.5rem"
+      width="var(--arc-edge-w)"
+      height="var(--arc-edge-h)"
+    />
+    <Glow
+      class="arc__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="35.5rem"
+      width="var(--arc-edge-w)"
+      height="var(--arc-edge-h)"
+    />
+  </Fragment>
+
+  <div class="arc__layout">
+    <SectionHeader id="arc-title" title={arc.title} lead={arc.lead} align="center-from-tablet" />
+    <GlassCard class="arc__card">
+      <ArcChart mode="meditate" />
+    </GlassCard>
+    <p class="arc__note" data-reveal>
+      {arc.note}
+    </p>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Spacing and glows from the Figma frames (393 / 1024 / 1440 / 1920), one
+   * linear segment between each pair. No glows on phone, two behind the card
+   * from 768, two more at the edges from 1440 (as in Try the beat). The card
+   * keeps the 1200 column at 1920; only the spacing follows that frame.
+   */
+  .arc {
+    --section-pad-top: clamp(4.5rem, 4.1886rem + 1.2678vw, 5rem); /* 72 to 80 */
+    --section-pad-bottom: clamp(3.6875rem, 5.006rem - 2.0602vw, 4.5rem); /* 72 to 59 */
+    --header-gap: clamp(1rem, 0.9221rem + 0.317vw, 1.125rem); /* 16 to 18 */
+    --text-lead: clamp(1rem, 0.9221rem + 0.317vw, 1.125rem); /* 16 to 18 */
+    --lead-measure: 42.5rem; /* 680 */
+    --arc-card-gap: clamp(2.125rem, 2.3279rem - 0.317vw, 2.25rem); /* 36 to 34 */
+    --arc-note-gap: clamp(1rem, 0.455rem + 2.2187vw, 1.875rem); /* 16 to 30 */
+    --arc-glow-a-x: 37.68%;
+    --arc-glow-a-y: 26.75rem; /* 428 */
+    --arc-glow-b-x: 73.09%;
+    --arc-glow-b-y: 29.25rem; /* 468 */
+    --arc-glow-w: 26rem; /* 416 */
+    --arc-glow-h: 21rem; /* 336 */
+    --arc-edge-w: 0rem;
+    --arc-edge-h: 0rem;
+  }
+
+  @media (width >= 1024px) {
+    .arc {
+      --section-pad-top: clamp(5rem, 3.4615rem + 2.4038vw, 5.625rem); /* 80 to 90 */
+      --section-pad-bottom: clamp(3.6875rem, 0.6106rem + 4.8077vw, 4.9375rem); /* 59 to 79 */
+      --header-gap: clamp(1.125rem, 0.9712rem + 0.2404vw, 1.1875rem); /* 18 to 19 */
+      --text-lead: clamp(1.125rem, 0.8173rem + 0.4808vw, 1.25rem); /* 18 to 20 */
+      --arc-card-gap: clamp(2.125rem, 3.3654vw - 0.0288rem, 3rem); /* 34 to 48 */
+      --arc-glow-a-x: clamp(24.1125rem, 5.0048rem + 29.8558vw, 31.875rem); /* 386 to 510 */
+      --arc-glow-a-y: clamp(26.75rem, 20.2885rem + 10.0962vw, 29.375rem); /* 428 to 470 */
+      --arc-glow-b-x: clamp(46.775rem, 4.9904rem + 65.2885vw, 63.75rem); /* 748 to 1020 */
+      --arc-glow-b-y: clamp(29.25rem, 22.7885rem + 10.0962vw, 31.875rem); /* 468 to 510 */
+      --arc-glow-w: clamp(26rem, 10rem + 25vw, 32.5rem); /* 416 to 520 */
+      --arc-glow-h: clamp(21rem, 8.0769rem + 20.1923vw, 26.25rem); /* 336 to 420 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .arc {
+      --section-pad-top: clamp(5.625rem, 2.25rem + 3.75vw, 6.75rem); /* 90 to 108 */
+      --section-pad-bottom: clamp(4.9375rem, 1.9375rem + 3.3333vw, 5.9375rem); /* 79 to 95 */
+      --header-gap: clamp(1.1875rem, 0.625rem + 0.625vw, 1.375rem); /* 19 to 22 */
+      --text-lead: 1.25rem; /* 20 */
+      --arc-card-gap: clamp(3rem, 1.3125rem + 1.875vw, 3.5625rem); /* 48 to 57 */
+      --arc-note-gap: clamp(1.875rem, 0.75rem + 1.25vw, 2.25rem); /* 30 to 36 */
+      --arc-glow-a-x: clamp(31.875rem, 41.25vw - 5.25rem, 44.25rem); /* 510 to 708 */
+      --arc-glow-a-y: clamp(29.375rem, 11.75rem + 19.5833vw, 35.25rem); /* 470 to 564 */
+      --arc-glow-b-x: clamp(63.75rem, 7.5rem + 62.5vw, 82.5rem); /* 1020 to 1320 */
+      --arc-glow-b-y: clamp(31.875rem, 12.75rem + 21.25vw, 38.25rem); /* 510 to 612 */
+      --arc-glow-w: clamp(32.5rem, 13rem + 21.6667vw, 39rem); /* 520 to 624 */
+      --arc-glow-h: clamp(26.25rem, 10.5rem + 17.5vw, 31.5rem); /* 420 to 504 */
+      --arc-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --arc-edge-h: calc(var(--arc-edge-w) * 0.8);
+    }
+  }
+
+  .arc :global(.arc__glow),
+  .arc :global(.arc__edge) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .arc :global(.arc__glow) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .arc :global(.glow.arc__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .arc__layout {
+    display: grid;
+  }
+
+  /*
+   * Card padding inside the 1 px border, from the Figma frames: phone
+   * 29 / 19 / 36 / 17, from 768 59 / 39 / 52 / 55.
+   */
+  .arc .arc__card.card {
+    width: 100%;
+    margin-top: var(--arc-card-gap);
+    padding: 1.8125rem 1.1875rem 2.25rem 1.0625rem;
+    border-radius: 1.75rem;
+  }
+
+  @media (width >= 768px) {
+    .arc .arc__card.card {
+      padding: 3.6875rem 2.4375rem 3.25rem 3.4375rem;
+      border-radius: 2.25rem;
+    }
+  }
+
+  .arc__note {
+    max-width: 47.5rem; /* 760 */
+    margin-top: var(--arc-note-gap);
+    color: var(--color-muted);
+    font-size: clamp(0.875rem, 0.8361rem + 0.1585vw, 0.9375rem); /* 14 to 15 */
+    line-height: 1.4;
+  }
+
+  @media (width >= 768px) {
+    .arc__layout {
+      justify-items: center;
+    }
+
+    .arc__note {
+      text-align: center;
+    }
+  }
+</style>

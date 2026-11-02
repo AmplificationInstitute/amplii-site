@@ -2,7 +2,8 @@
 import type { ComponentProps } from 'astro/types';
 import { Font } from 'astro:assets';
 import SeoHead from '../components/SeoHead.astro';
-import { home } from '../content/en/home';
+import SiteHeader from '../components/SiteHeader.astro';
+import { nav } from '../content/en/nav';
 import { site } from '../content/site';
 import '../styles/global.css';
 
@@ -23,8 +24,9 @@ const seo = Astro.props;
   </head>
   <body>
     <a class="skip-link visually-hidden" href="#main">
-      {home.skipLink}
+      {nav.skipLink}
     </a>
+    <SiteHeader />
     <main id="main">
       <slot />
     </main>

@@ -1,0 +1,229 @@
+---
+import AppStoreBadge from '../components/AppStoreBadge.astro';
+import Glow from '../components/Glow.astro';
+import Horizon from '../components/Horizon.astro';
+import Section from '../components/Section.astro';
+import WaveStrip from '../components/WaveStrip.astro';
+import { hero } from '../content/en/hero';
+---
+
+<Section name="hero" labelledBy="hero-title" class="hero">
+  <Fragment slot="bleed">
+    <Glow
+      class="hero__ambient"
+      tint="ambient"
+      intensity={0.35}
+      x="50%"
+      y="11.875rem"
+      width="32.0625rem"
+      height="22.5rem"
+    />
+    <Glow
+      class="hero__glow"
+      x="var(--hero-glow-a-x)"
+      y="var(--hero-glow-a-y)"
+      width="var(--hero-glow-w)"
+      height="var(--hero-glow-h)"
+    />
+    <Glow
+      class="hero__glow"
+      intensity={0.2}
+      x="var(--hero-glow-b-x)"
+      y="var(--hero-glow-b-y)"
+      width="var(--hero-glow-w)"
+      height="var(--hero-glow-h)"
+    />
+    <Glow
+      class="hero__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="27.4rem"
+      width="var(--hero-edge-w)"
+      height="var(--hero-edge-h)"
+    />
+    <Glow
+      class="hero__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="34.6rem"
+      width="var(--hero-edge-w)"
+      height="var(--hero-edge-h)"
+    />
+    <WaveStrip
+      preset="background-hero-phone"
+      layout="strip"
+      class="hero__strip hero__strip--phone"
+    />
+    <WaveStrip preset="background" layout="strip" class="hero__strip hero__strip--wide" />
+    <Horizon />
+  </Fragment>
+
+  <div class="hero__content">
+    <h1 id="hero-title" class="hero__title" data-part="title">
+      {hero.title}
+    </h1>
+    <p class="hero__lead" data-part="lead">
+      {hero.lead}
+    </p>
+    <div class="hero__actions" data-part="buttons">
+      <AppStoreBadge campaign="hero" eager />
+    </div>
+    <p class="hero__note" data-part="note">
+      {hero.note}
+    </p>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Positions from the Figma hero frames (393 / 1024 / 1440 / 1920), one
+   * linear segment between each pair like the type scale, so nothing jumps.
+   * Distances are from the top of the page (the header sits over the hero).
+   * The hero keeps the Figma heights; its content starts at --section-pad-top.
+   */
+  .hero {
+    --section-pad-top: clamp(25rem, 27.13rem - 3.3281vw, 26.3125rem); /* 421 to 400 */
+    --section-pad-bottom: 0rem;
+    --hero-height: clamp(46.9375rem, 41.916rem + 20.4437vw, 55rem); /* 751 to 880 */
+    --hero-gap: clamp(1.0625rem, 0.9457rem + 0.4754vw, 1.25rem); /* 17 to 20 */
+    --hero-spacer: 0.5rem; /* 8 */
+    --hero-strip-y: clamp(10.9375rem, 9.5751rem + 5.5468vw, 13.125rem); /* 175 to 210 */
+    --hero-content: 40rem; /* 640 */
+
+    /* Tablet and desktop glows (phone has one ambient glow instead) */
+    --hero-glow-w: 38rem; /* 608 */
+    --hero-glow-h: calc(var(--hero-glow-w) * 0.6842);
+    --hero-glow-a-x: 42.1875%;
+    --hero-glow-a-y: 13.625rem;
+    --hero-glow-b-x: 72.7441%;
+    --hero-glow-b-y: 26.125rem;
+
+    /* Large desktop: two extra glows at the edges, growing in from 1440 */
+    --hero-edge-w: 0rem;
+    --hero-edge-h: 0rem;
+
+    min-height: var(--hero-height);
+  }
+
+  @media (width >= 1024px) {
+    .hero {
+      --section-pad-top: clamp(24.375rem, 26.5385rem - 2.4038vw, 25rem); /* 400 to 390 */
+      --hero-height: clamp(55rem, 42.6923rem + 19.2308vw, 60rem); /* 880 to 960 */
+      --hero-gap: clamp(1.25rem, 0.6346rem + 0.9615vw, 1.5rem); /* 20 to 24 */
+      --hero-strip-y: clamp(13.125rem, 8.5096rem + 7.2115vw, 15rem); /* 210 to 240 */
+      --hero-content: clamp(40rem, 21.5385rem + 28.8462vw, 47.5rem); /* 640 to 760 */
+      --hero-glow-w: clamp(38rem, 14.6154rem + 36.5385vw, 47.5rem); /* 608 to 760 */
+      --hero-glow-a-x: clamp(27rem, 7.3077rem + 30.7692vw, 35rem); /* 432 to 560 */
+      --hero-glow-a-y: clamp(13.625rem, 7.1635rem + 10.0962vw, 16.25rem); /* 218 to 260 */
+      --hero-glow-b-x: clamp(46.5563rem, 7.31rem + 61.3221vw, 62.5rem); /* 745 to 1000 */
+      --hero-glow-b-y: clamp(26.125rem, 19.6635rem + 10.0962vw, 28.75rem); /* 418 to 460 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .hero {
+      --section-pad-top: clamp(24.375rem, 9.375rem + 16.6667vw, 29.375rem); /* 390 to 470 */
+      --hero-height: clamp(60rem, 16.5rem + 48.3333vw, 74.5rem); /* 960 to 1192 */
+      --hero-gap: clamp(1.5rem, 0.6rem + 1vw, 1.8rem); /* 24 to 28.8 */
+      --hero-spacer: clamp(0.5rem, 0.125rem + 0.4167vw, 0.625rem); /* 8 to 10 */
+      --hero-strip-y: clamp(15rem, 6rem + 10vw, 18rem); /* 240 to 288 */
+      --hero-content: clamp(47.5rem, 19rem + 31.6667vw, 57rem); /* 760 to 912 */
+      --hero-glow-w: clamp(47.5rem, 19rem + 31.6667vw, 57rem); /* 760 to 912 */
+      --hero-glow-a-x: clamp(35rem, 43.3333vw - 4rem, 48rem); /* 560 to 768 */
+      --hero-glow-a-y: clamp(16.25rem, 6.5rem + 10.8333vw, 19.5rem); /* 260 to 312 */
+      --hero-glow-b-x: clamp(62.5rem, 7rem + 61.6667vw, 81rem); /* 1000 to 1296 */
+      --hero-glow-b-y: clamp(28.75rem, 11.5rem + 19.1667vw, 34.5rem); /* 460 to 552 */
+      --hero-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --hero-edge-h: calc(var(--hero-edge-w) * 0.8);
+    }
+  }
+
+  .hero :global(.hero__glow),
+  .hero :global(.hero__edge) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .hero :global(.hero__ambient) {
+      display: none;
+    }
+
+    .hero :global(.hero__glow) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1440px) {
+    /* The falloff grows from zero too, so the edge glows fade in from 1440 */
+    .hero :global(.glow.hero__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .hero__strip {
+    position: absolute;
+    top: var(--hero-strip-y);
+    left: 0;
+  }
+
+  /* Phone: the redrawn strip with a stronger center line (Figma 201:6) */
+  .hero__strip--wide {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .hero__strip--phone {
+      display: none;
+    }
+
+    .hero__strip--wide {
+      display: block;
+    }
+  }
+
+  /*
+   * Figma: one item spacing between every element, plus a spacer between the
+   * lead and the buttons, so that is the biggest gap.
+   */
+  .hero__content {
+    display: grid;
+    justify-items: center;
+    gap: var(--hero-gap);
+    max-width: var(--hero-content);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  /* Figma: 1.1 on phone, 1.05 from tablet */
+  .hero__title {
+    font-size: var(--text-hero);
+    line-height: var(--leading-tight);
+  }
+
+  @media (width >= 768px) {
+    .hero__title {
+      line-height: var(--leading-display);
+    }
+  }
+
+  .hero__lead {
+    color: var(--color-ink-secondary);
+    font-size: clamp(1.0625rem, 0.9457rem + 0.4754vw, 1.25rem); /* 17 to 20 at 1024 */
+    line-height: 1.4;
+  }
+
+  /* The App Store badge is the hero's only button */
+  .hero__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: calc(var(--hero-gap) + var(--hero-spacer));
+  }
+
+  .hero__note {
+    color: var(--color-muted);
+    font-size: clamp(0.8125rem, 0.9139rem - 0.1585vw, 0.875rem); /* 14 to 13 at 1024 */
+    line-height: 1.3;
+  }
+</style>
