@@ -29,9 +29,11 @@ const { name, id, labelledBy, class: className } = Astro.props;
 </section>
 
 <style>
+  /* Clipped sideways too, for the lights behind cards (CardGlow) that sit in the container */
   .section {
     position: relative;
     isolation: isolate;
+    overflow-x: clip;
     padding-block: var(--section-pad-top, var(--space-section))
       var(--section-pad-bottom, var(--space-section));
   }
