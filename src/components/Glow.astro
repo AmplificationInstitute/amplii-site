@@ -8,8 +8,11 @@ interface Props {
   height: string;
   /** Peak opacity. Figma glows use 0.26. */
   intensity?: number;
-  /** glow: the usual #3F74FF. ambient: the deeper blue of the phone "Ambient" layers. */
-  tint?: 'glow' | 'ambient';
+  /**
+   * glow: the usual #3F74FF. ambient: the deeper blue of the phone "Ambient"
+   * layers. dawn, dawn-core: the two layers of the final section's dawn.
+   */
+  tint?: 'glow' | 'ambient' | 'dawn' | 'dawn-core';
   class?: string;
 }
 

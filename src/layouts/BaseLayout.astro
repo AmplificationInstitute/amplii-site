@@ -2,6 +2,7 @@
 import type { ComponentProps } from 'astro/types';
 import { Font } from 'astro:assets';
 import SeoHead from '../components/SeoHead.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { nav } from '../content/en/nav';
 import { site } from '../content/site';
@@ -30,5 +31,6 @@ const seo = Astro.props;
     <main id="main">
       <slot />
     </main>
+    <SiteFooter />
   </body>
 </html>

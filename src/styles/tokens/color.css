@@ -14,6 +14,8 @@
   --color-on-accent: #071a45;
   --color-glow: #3f74ff;
   --color-ambient: #1d46d8; /* phone "Ambient" glows */
+  --color-dawn: #5f8dff; /* final section: Figma "Dawn bloom" */
+  --color-dawn-core: #e3eeff; /* final section: Figma "Dawn core" */
   --color-wave-1: #5d8bff;
   --color-wave-2: #a9c8ff;
 

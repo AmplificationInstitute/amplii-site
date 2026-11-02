@@ -1,0 +1,168 @@
+---
+import AppStoreBadge from '../components/AppStoreBadge.astro';
+import Glow from '../components/Glow.astro';
+import QrCode from '../components/QrCode.astro';
+import Section from '../components/Section.astro';
+import { download } from '../content/en/download';
+---
+
+<Section name="download" id="download" labelledBy="download-title" class="download">
+  <Fragment slot="bleed">
+    <Glow
+      class="download__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="29.7rem"
+      width="var(--download-edge-w)"
+      height="var(--download-edge-h)"
+    />
+    <Glow
+      class="download__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="35.95rem"
+      width="var(--download-edge-w)"
+      height="var(--download-edge-h)"
+    />
+  </Fragment>
+
+  <div class="download__content">
+    <h2 id="download-title" class="download__title" data-part="title">
+      {download.title}
+    </h2>
+    <p class="download__lead" data-part="lead">
+      {download.lead}
+    </p>
+    <div class="download__cta" data-part="buttons">
+      <AppStoreBadge campaign="download" class="download__badge" />
+      <figure class="download__qr">
+        <QrCode label={download.qrAlt} />
+        <figcaption class="download__qr-caption">{download.qrCaption}</figcaption>
+      </figure>
+    </div>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Figma frames 393 / 1024 / 1440 / 1920, one linear segment between each
+   * pair. No waves: the dawn glow sits in the footer (SiteFooter), anchored
+   * to the bottom of the page, and rises behind this section. The QR code
+   * (no Figma frame, agreed with Ana) sits beside the badge from 768. The
+   * title keeps its 1440 size at 1920; the spacing follows that frame.
+   */
+  .download {
+    --section-pad-top: clamp(9.375rem, 5.0931rem + 17.4326vw, 16.25rem); /* 150 to 260 */
+    --section-pad-bottom: 11.125rem; /* 178, badge to footer line (phone) */
+    --download-title: clamp(2.125rem, 1.4243rem + 2.8526vw, 3.25rem); /* 34 to 52 */
+    --download-lead-gap: 0.875rem; /* 14 */
+    --download-lead: clamp(1rem, 0.9221rem + 0.317vw, 1.125rem); /* 16 to 18 */
+    --download-cta-gap: clamp(2rem, 2.4057rem - 0.6339vw, 2.25rem); /* 36 to 32 */
+    --download-edge-w: 0rem;
+    --download-edge-h: 0rem;
+  }
+
+  @media (width >= 768px) {
+    .download {
+      /* QR row (166 tall) to the footer line: Figma keeps 262 from the top of the button */
+      --section-pad-bottom: 6rem; /* 96 */
+    }
+  }
+
+  @media (width >= 1024px) {
+    .download {
+      --section-pad-top: clamp(16.25rem, 10.0962rem + 9.6154vw, 18.75rem); /* 260 to 300 */
+      --download-title: clamp(3.25rem, 1.4038rem + 2.8846vw, 4rem); /* 52 to 64 */
+      --download-lead: clamp(1.125rem, 0.8173rem + 0.4808vw, 1.25rem); /* 18 to 20 */
+      --download-cta-gap: clamp(2rem, 1.0769rem + 1.4423vw, 2.375rem); /* 32 to 38 */
+      --section-pad-bottom: clamp(6rem, 1.6923rem + 6.7308vw, 7.75rem); /* 96 to 124 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .download {
+      --section-pad-top: clamp(18.75rem, 7.5rem + 12.5vw, 22.5rem); /* 300 to 360 */
+      --download-title: 4rem; /* 64 */
+      --download-lead: 1.25rem; /* 20 */
+      --download-lead-gap: clamp(0.875rem, 0.35rem + 0.5833vw, 1.05rem); /* 14 to 17 */
+      --download-cta-gap: clamp(2.375rem, 1.0625rem + 1.4583vw, 2.8125rem); /* 38 to 45 */
+      --section-pad-bottom: clamp(7.75rem, -3.125rem + 12.0833vw, 11.375rem); /* 124 to 182 */
+      --download-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --download-edge-h: calc(var(--download-edge-w) * 0.8);
+    }
+  }
+
+  .download :global(.download__edge) {
+    display: none;
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .download :global(.glow.download__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .download__content {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .download__title {
+    font-size: var(--download-title);
+    line-height: 1.1;
+  }
+
+  /* Phone: two lines, as in Figma ("Put your / headphones on.") */
+  @media (width < 768px) {
+    .download__title {
+      max-width: 15ch;
+    }
+  }
+
+  .download__lead {
+    max-width: 40rem; /* 640 */
+    margin-top: var(--download-lead-gap);
+    color: var(--color-ink-secondary);
+    font-size: var(--download-lead);
+    line-height: 1.4;
+  }
+
+  .download__cta {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: var(--download-cta-gap);
+  }
+
+  /* Phone: the badge only (CLAUDE.md: the QR code is for tablet and desktop) */
+  .download__qr {
+    display: none;
+    width: 10rem; /* 160, so the caption takes two lines */
+    margin: 0;
+  }
+
+  @media (width >= 768px) {
+    .download__qr {
+      display: grid;
+      justify-items: center;
+      gap: 0.625rem;
+    }
+
+    /* Centered on the 120 px code */
+    .download :global(.download__badge) {
+      margin-top: 2rem;
+    }
+  }
+
+  /* On the light of the dawn, so dark like the footer text */
+  .download__qr-caption {
+    color: #071a45;
+    font-size: 0.8125rem; /* 13 */
+    line-height: 1.4;
+  }
+</style>
