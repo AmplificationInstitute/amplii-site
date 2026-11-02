@@ -142,6 +142,25 @@ const chips = modes
   <p class="visually-hidden" aria-live="polite" data-demo-live></p>
 </GlassCard>
 
+<script>
+  /*
+   * Loads the audio code only when the card gets near the screen (CLAUDE.md
+   * §8), and only where Web Audio exists; elsewhere Start stays hidden.
+   */
+  const card = document.querySelector<HTMLElement>('[data-demo]');
+  if (card && 'AudioContext' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void import('../audio/demo-controller').then(({ initDemo }) => initDemo(card));
+      },
+      { rootMargin: '100% 0px' },
+    );
+    observer.observe(card);
+  }
+</script>
+
 <style>
   /*
    * Phone (Figma 201:59, 202:166 to 202:181): the light glass of the glass
