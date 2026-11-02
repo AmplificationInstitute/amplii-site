@@ -27,7 +27,7 @@ const Heading = `h${level}` as const;
 <style>
   .section-header {
     display: grid;
-    gap: clamp(1rem, 0.3846rem + 0.9615vw, 1.25rem); /* 16 to 20 at 1440 */
+    gap: var(--header-gap, clamp(1rem, 0.3846rem + 0.9615vw, 1.25rem)); /* 16 to 20 at 1440 */
   }
 
   .section-header--center {

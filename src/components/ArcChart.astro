@@ -81,8 +81,8 @@ const dots = [
 
 <style>
   /*
-   * Phone (Figma 215:2): 40 px axis, 145 px plot. From 768 (231:162, 211:138):
-   * 70 px axis, 210 px plot, larger labels.
+   * Phone (Figma 215:2): 40 px axis, 12 px gap, 145 px plot. From 768 (231:162,
+   * 211:138): 70 px axis, 24 px gap, 210 px plot, larger labels.
    */
   .arc-chart {
     --axis-width: 2.5rem;
@@ -92,7 +92,7 @@ const dots = [
 
     display: grid;
     grid-template-columns: var(--axis-width) minmax(0, 1fr);
-    column-gap: 0.8125rem;
+    column-gap: 0.75rem;
     row-gap: 1.5625rem;
   }
 
@@ -103,7 +103,7 @@ const dots = [
       --dot: 12px;
       --curve-width: 2.5px;
 
-      column-gap: 1.5625rem;
+      column-gap: 1.5rem;
       row-gap: 2.5rem;
     }
   }
