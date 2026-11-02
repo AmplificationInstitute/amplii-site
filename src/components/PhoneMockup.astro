@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { screen, alt, class: className } = Astro.props;
+/* srcset w descriptors must be whole numbers (the 2x screen can be an odd width) */
 ---
 
 <!--
@@ -25,7 +26,7 @@ const { screen, alt, class: className } = Astro.props;
       src={screen}
       alt={alt}
       formats={['avif', 'webp']}
-      widths={[screen.width / 2, screen.width]}
+      widths={[Math.round(screen.width / 2), screen.width]}
       sizes="(width >= 1024px) 231px, 192px"
       loading="lazy"
       decoding="async"
