@@ -335,7 +335,7 @@ Each is one branch from `develop` (`feat/2a-tokens-components`, `feat/2b-section
 After 2c comes the launch pack (phase 3), then launch (phase 4). The motion system (phase 5) and the section animations (phase 6) come after launch, one section at a time on the live site.
 
 - **Phase 3a (Try the beat with real audio):** the Start button (hidden until the script runs), Web Audio tones, the earbud test, mode chips and the silent-mode hint. The demo gets labelled controls, full keyboard operation, and `aria-live="polite"` announcements for step and mode changes. Its waves stay static until phase 5.
-- **Phase 3b (sticky App Store bar):** built hidden in 2c; a small script shows it after the hero and hides it while the demo is on screen (IntersectionObserver, no GSAP).
+- **Phase 3b (sticky App Store bar):** built hidden in 2c (`hidden` attribute, phone only); a small script removes `hidden` after the hero and puts it back while the demo or the final section is on screen, so it never covers the footer (IntersectionObserver, no GSAP).
 - **Phase 3c (SEO/AEO):** titles and descriptions, the share image, `public/robots.txt` with the rules in CLAUDE.md §13, the sitemap, the Smart App Banner and the JSON-LD (§12) in `SeoHead`. App Store campaign tokens are filled in `appStoreUrl`.
 - **Phase 3d (checks):** Lighthouse, VoiceOver on iPhone, keyboard, Safari and Chrome on phone, iPad and desktop.
 - **Phase 3e (launch steps):** written out for Ana, for after Marie approves (domain to Vercel, GitHub Pages off).
