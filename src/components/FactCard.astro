@@ -2,19 +2,16 @@
 import GlassCard from './GlassCard.astro';
 
 interface Props {
-  /** Phone label, e.g. "1 of 4". */
-  counter: string;
   /** Large number from tablet up, e.g. "01". */
   number: string;
   title: string;
   body: string;
 }
 
-const { counter, number, title, body } = Astro.props;
+const { number, title, body } = Astro.props;
 ---
 
 <GlassCard as="li" class="fact-card">
-  <p class="fact-card__counter">{counter}</p>
   <p class="fact-card__number" aria-hidden="true">
     {number}
   </p>
@@ -24,25 +21,18 @@ const { counter, number, title, body } = Astro.props;
 
 <style>
   /*
-   * Phone (Figma 206:14): 280 x 220, padding 22, radius 26, "1 of 4" above
-   * the title. From 768 (218:1553, 213:46): padding 28, radius 30, the number
-   * in Jost Light instead. Padding is inside the 1 px border. Selectors carry
+   * Phone (Figma 206:14, without the "1 of 4" label): 280 wide, padding 22,
+   * radius 26, as tall as the longest card in the row. From 768 (218:1553,
+   * 213:46): padding 28, radius 30, the number in Jost Light above the title,
+   * 220 tall (280 from 1280). Padding is inside the 1 px border. Selectors carry
    * .card so they outrank GlassCard's own.
    */
   .fact-card.card {
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
-    min-height: 13.75rem;
     padding: 1.3125rem;
     border-radius: 1.625rem;
-  }
-
-  .fact-card__counter {
-    color: var(--color-accent);
-    font-size: 0.8125rem;
-    font-weight: var(--weight-medium);
-    line-height: 1.2;
   }
 
   .fact-card__number {
@@ -70,12 +60,9 @@ const { counter, number, title, body } = Astro.props;
   @media (width >= 768px) {
     .fact-card.card {
       gap: 0.75rem;
+      min-height: 13.75rem;
       padding: 1.6875rem;
       border-radius: var(--radius-card);
-    }
-
-    .fact-card__counter {
-      display: none;
     }
 
     .fact-card__number {

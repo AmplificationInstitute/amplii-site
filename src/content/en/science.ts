@@ -20,8 +20,7 @@ export const science = {
       body: 'In the studies, longer listening, and listening before a task, worked better than short bursts.',
     },
   ],
-  /** Phone label ("1 of 4") and the large number from tablet up ("01"). */
-  counter: (index: number, total: number) => `${index} of ${total}`,
+  /** The large number from tablet up ("01"). */
   number: (index: number) => String(index).padStart(2, '0'),
   disclaimer: 'Amplii is a wellness tool, not a medical treatment.',
   studiesLabel: 'Read the studies',

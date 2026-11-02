@@ -50,12 +50,7 @@ import { science } from '../content/en/science';
       <div class="science__carousel" role="region" aria-label={science.carouselLabel} tabindex="0">
         <ul class="science__list" data-reveal-group>
           {science.facts.map((fact, i) => (
-            <FactCard
-              counter={science.counter(i + 1, science.facts.length)}
-              number={science.number(i + 1)}
-              title={fact.title}
-              body={fact.body}
-            />
+            <FactCard number={science.number(i + 1)} title={fact.title} body={fact.body} />
           ))}
         </ul>
       </div>
