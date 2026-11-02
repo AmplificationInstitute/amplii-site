@@ -5,7 +5,7 @@ export const science = {
   facts: [
     {
       title: 'The beat is real.',
-      body: 'First described in 1839. Studies have measured how the brain responds to it.',
+      body: 'First described in 1839, and studied ever since. Researchers have measured how the brain responds to it.',
     },
     {
       title: 'Modest benefits, on average.',
@@ -17,7 +17,7 @@ export const science = {
     },
     {
       title: 'Longer works better.',
-      body: 'In the studies, longer listening, and listening before a task, worked better than short bursts.',
+      body: 'In the studies, longer listening, and listening before a task, worked better than short bursts. Give a session a few minutes to settle in.',
     },
   ],
   /** The large number from tablet up ("01"). */

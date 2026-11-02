@@ -190,9 +190,15 @@ import { science } from '../content/en/science';
     margin-top: var(--science-cards-gap);
   }
 
-  /* Phone: the row runs to the screen edges, the next card peeks in */
+  /*
+   * Phone: the row runs to the screen edges, the next card peeks in. A
+   * scroller clips on both axes, so it gets room above and below for the card
+   * shadow (0 14 30: 16 above, 44 below), taken back with negative margins so
+   * the gaps stay the same.
+   */
   .science__carousel {
-    margin-inline: calc(-1 * var(--gutter));
+    margin: -1rem calc(-1 * var(--gutter)) -2.75rem;
+    padding-block: 1rem 2.75rem;
     overflow-x: auto;
     scroll-padding-inline: var(--gutter);
     scroll-snap-type: x mandatory;
@@ -224,7 +230,8 @@ import { science } from '../content/en/science';
 
   @media (width >= 768px) {
     .science__carousel {
-      margin-inline: 0;
+      margin: 0;
+      padding-block: 0;
       overflow: visible;
     }
 
