@@ -18,6 +18,9 @@ export default defineConfig({
       // The app requires iOS 17, whose Safari only knows -webkit-backdrop-filter.
       // Without this target the minifier drops the prefix and glass turns flat.
       cssTarget: ['safari17', 'ios17', 'chrome111', 'edge111', 'firefox115'],
+      // Never inline scripts (Astro inlines small ones): the CSP in vercel.json
+      // allows only script files from our own origin, no inline scripts.
+      assetsInlineLimit: 0,
     },
   },
   fonts: [
