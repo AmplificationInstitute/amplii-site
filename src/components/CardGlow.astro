@@ -10,11 +10,11 @@ interface Props {
 const { intensity = 0.4, class: className } = Astro.props;
 ---
 
-<!--
+{/*
   Wraps a card or a group of cards with a soft light behind it from 768, so
   the glass blur has something to pick up (as the phone "Ambient" layers do).
   The light follows the cards at every width.
--->
+*/}
 <div class:list={['card-glow', className]}>
   <Glow
     class="card-glow__light"

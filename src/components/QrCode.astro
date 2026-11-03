@@ -11,12 +11,12 @@ interface Props {
 const { size = 120, label, class: className } = Astro.props;
 ---
 
-<!--
+{/*
   Generated once (qrcode on npm, error correction M, run through npx) and
   committed, so no library ships. It points to the App Store page; regenerate
   it when the campaign links exist. Dark modules on a light tile, so phone
   cameras read it easily.
--->
+*/}
 <div
   class:list={['qr-code', className]}
   role="img"

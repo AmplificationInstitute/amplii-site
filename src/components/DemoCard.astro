@@ -22,14 +22,14 @@ const chips = modes
   .sort((a, b) => a.beat - b.beat);
 ---
 
-<!--
+{/*
   Every state of the demo (Figma 202:164 to 202:179) is in the HTML; the card's
   data-step (0 to 5) picks the one that shows. Without JS the card stays on
   step 0 and the Start button stays hidden, since there is no sound to start.
   Phase 3a's script (src/audio) drives data-step, the labels and the sound.
--->
+*/}
 <GlassCard class:list={['demo-card', className]} data-demo data-step="0" data-speaker="off">
-  <!-- Step 0: the label, with the two ears from tablet up -->
+  {/* Step 0: the label, with the two ears from tablet up */}
   <div class="demo-card__top demo-card__when-start">
     <span class="demo-card__ear">{tryTheBeat.ear('Left', leftHz)}</span>
     <span class="demo-card__label" data-part="step-label">
@@ -38,7 +38,7 @@ const chips = modes
     <span class="demo-card__ear">{tryTheBeat.ear('Right', rightHz)}</span>
   </div>
 
-  <!-- Steps 1 to 5: "Step N of 5", the progress dots, the ears or the live beat -->
+  {/* Steps 1 to 5: "Step N of 5", the progress dots, the ears or the live beat */}
   <div class="demo-card__status demo-card__when-playing">
     <div class="demo-card__step-row">
       {stepCards.map((_, i) => (
@@ -70,7 +70,7 @@ const chips = modes
     <WaveStrip preset="demo-beat" height={200} class="demo-card__wave demo-card__wave--beat" />
   </div>
 
-  <!-- Step 3: the beat of each mode -->
+  {/* Step 3: the beat of each mode */}
   <fieldset class="demo-card__chips" data-for="3">
     <legend class="visually-hidden">{tryTheBeat.chipsLabel}</legend>
     {chips.map((chip) => (
@@ -87,7 +87,7 @@ const chips = modes
     ))}
   </fieldset>
 
-  <!-- Step 4 -->
+  {/* Step 4 */}
   <button
     type="button"
     class="demo-card__switch"
