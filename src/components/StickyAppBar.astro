@@ -25,7 +25,8 @@ import AppStoreBadge from './AppStoreBadge.astro';
     .map((selector) => document.querySelector(selector))
     .filter((zone) => zone !== null);
 
-  if (bar && zones.length > 0) {
+  /* Landing page only: other pages (the 404) have no hero */
+  if (bar && document.querySelector('[data-section="hero"]')) {
     const phone = window.matchMedia('(width < 768px)');
     const onScreen = new Set<Element>();
 

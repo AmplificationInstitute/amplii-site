@@ -1,0 +1,61 @@
+---
+import Button from '../components/Button.astro';
+import Glow from '../components/Glow.astro';
+import Section from '../components/Section.astro';
+import { notFound } from '../content/en/not-found';
+import { site } from '../content/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout path="/404" title={notFound.pageTitle} description={site.description} noindex>
+  <Section name="not-found" labelledBy="not-found-title" class="not-found">
+    <Fragment slot="bleed">
+      <Glow tint="ambient" intensity={0.3} x="50%" y="45%" width="36rem" height="26rem" />
+    </Fragment>
+    <div class="not-found__content">
+      <h1 id="not-found-title" class="not-found__title">
+        {notFound.title}
+      </h1>
+      <p class="not-found__line">{notFound.line}</p>
+      <Button href="/" class="not-found__button">
+        {notFound.button}
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  /*
+   * At least one screen tall, so the footer and its dawn start below the fold
+   * and the text sits on the dark part of the page.
+   */
+  .not-found {
+    --section-pad-top: clamp(10rem, 7.5rem + 10vw, 14rem);
+    --section-pad-bottom: 0rem;
+
+    min-height: 100svh;
+  }
+
+  .not-found__content {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .not-found__title {
+    font-size: var(--text-title);
+    font-weight: var(--weight-title);
+    line-height: var(--leading-tight);
+  }
+
+  .not-found__line {
+    color: var(--color-ink-secondary);
+    font-size: var(--text-lead);
+    line-height: 1.4;
+  }
+
+  .not-found :global(.not-found__button) {
+    margin-top: 0.75rem;
+  }
+</style>
