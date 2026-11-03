@@ -17,6 +17,9 @@ export const site = {
   appStore: {
     appId: '6811405143',
     url: 'https://apps.apple.com/app/id6811405143',
+    /** For JSON-LD (CLAUDE.md §2) */
+    operatingSystem: 'iOS 17.0 or later',
+    applicationCategory: 'HealthApplication',
   },
   organization: {
     name: 'Amplification Institute',

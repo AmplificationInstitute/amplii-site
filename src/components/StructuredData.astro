@@ -1,0 +1,62 @@
+---
+import { faq } from '../content/en/faq';
+import { site } from '../content/site';
+
+/*
+ * JSON-LD for the home page (CLAUDE.md §12, §13), built from the content
+ * files so it always matches what the page says. The download is free, so the
+ * offer is 0; Amplii Full's price is never written down. No ratings or
+ * reviews: we have none to show.
+ */
+const home = new URL('/', site.url).href;
+const id = (name: string) => `${home}#${name}`;
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': id('organization'),
+      name: site.organization.name,
+      url: site.organization.url,
+      email: site.contactEmail,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': id('website'),
+      url: home,
+      name: site.name,
+      inLanguage: site.lang,
+      publisher: { '@id': id('organization') },
+    },
+    {
+      '@type': 'MobileApplication',
+      '@id': id('app'),
+      name: site.name,
+      description: site.description,
+      url: home,
+      installUrl: site.appStore.url,
+      operatingSystem: site.appStore.operatingSystem,
+      applicationCategory: site.appStore.applicationCategory,
+      image: new URL(site.shareImage.path, site.url).href,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      publisher: { '@id': id('organization') },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': id('faq'),
+      url: home,
+      mainEntity: faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+  ],
+};
+
+/* "<" escaped, so no text can close the script element early */
+const json = JSON.stringify(graph).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" is:inline set:html={json} />
