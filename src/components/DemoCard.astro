@@ -1,5 +1,8 @@
 ---
 import { tryTheBeat } from '../content/en/try-the-beat';
+import { demoTones } from '../data/presets/demo';
+import { modes } from '../data/presets/modes';
+import AppStoreBadge from './AppStoreBadge.astro';
 import Button from './Button.astro';
 import GlassCard from './GlassCard.astro';
 import WaveStrip from './WaveStrip.astro';
@@ -11,75 +14,223 @@ interface Props {
 }
 
 const { leftHz, rightHz, class: className } = Astro.props;
-const state = tryTheBeat.start;
+const { start, stepCards } = tryTheBeat;
+const total = stepCards.length;
+/* Slowest beat first, as in Figma: Sleep, Meditate, Focus, Energy */
+const chips = modes
+  .map((mode) => ({ id: mode.id, name: mode.name, beat: demoTones(mode.id).beat }))
+  .sort((a, b) => a.beat - b.beat);
 ---
 
 <!--
-  Static "Before you start" state (Figma 202:164). Phase 3a drives the step
-  text, waves and buttons from the audio demo.
+  Every state of the demo (Figma 202:164 to 202:179) is in the HTML; the card's
+  data-step (0 to 5) picks the one that shows. Without JS the card stays on
+  step 0 and the Start button stays hidden, since there is no sound to start.
+  Phase 3a's script (src/audio) drives data-step, the labels and the sound.
 -->
-<GlassCard class:list={['demo-card', className]}>
-  <div class="demo-card__top">
+<GlassCard class:list={['demo-card', className]} data-demo data-step="0" data-speaker="off">
+  <!-- Step 0: the label, with the two ears from tablet up -->
+  <div class="demo-card__top demo-card__when-start">
     <span class="demo-card__ear">{tryTheBeat.ear('Left', leftHz)}</span>
     <span class="demo-card__label" data-part="step-label">
-      {state.label}
+      {start.label}
     </span>
     <span class="demo-card__ear">{tryTheBeat.ear('Right', rightHz)}</span>
   </div>
+
+  <!-- Steps 1 to 5: "Step N of 5", the progress dots, the ears or the live beat -->
+  <div class="demo-card__status demo-card__when-playing">
+    <div class="demo-card__step-row">
+      {stepCards.map((_, i) => (
+        <span class="demo-card__count" data-for={i + 1}>
+          {tryTheBeat.stepOf(i + 1, total)}
+        </span>
+      ))}
+      <span class="demo-card__dots" aria-hidden="true">
+        {stepCards.map((_, i) => (
+          <span class="demo-card__dot" data-dot={i + 1} />
+        ))}
+      </span>
+    </div>
+    <div class="demo-card__ears">
+      <span class="demo-card__ears-split">
+        <span data-demo-ear="left">{tryTheBeat.ear('Left', leftHz)}</span>
+        <span data-demo-ear="right">{tryTheBeat.ear('Right', rightHz)}</span>
+      </span>
+      <span class="demo-card__ears-mixed">{tryTheBeat.mixed}</span>
+      <span class="demo-card__now" data-demo-now>
+        {tryTheBeat.now(String(rightHz - leftHz))}
+      </span>
+    </div>
+  </div>
+
   <div class="demo-card__waves" data-part="waves">
     <WaveStrip preset="demo-left" height={200} class="demo-card__wave" />
-    <WaveStrip preset="demo-right" height={200} class="demo-card__wave" />
-    <WaveStrip preset="demo-beat" height={200} class="demo-card__wave" />
+    <WaveStrip preset="demo-right" height={200} class="demo-card__wave demo-card__wave--right" />
+    <WaveStrip preset="demo-beat" height={200} class="demo-card__wave demo-card__wave--beat" />
   </div>
-  <p class="demo-card__title" data-part="step-title">
-    {state.title}
-  </p>
-  <p class="demo-card__body" data-part="step-body">
-    {state.body}
-  </p>
+
+  <!-- Step 3: the beat of each mode -->
+  <fieldset class="demo-card__chips" data-for="3">
+    <legend class="visually-hidden">{tryTheBeat.chipsLabel}</legend>
+    {chips.map((chip) => (
+      <label class="demo-card__chip">
+        <input
+          type="radio"
+          name="demo-mode"
+          value={chip.id}
+          class="demo-card__radio"
+          checked={chip.beat === rightHz - leftHz}
+        />
+        {tryTheBeat.chip(chip.name, chip.beat)}
+      </label>
+    ))}
+  </fieldset>
+
+  <!-- Step 4 -->
+  <button
+    type="button"
+    class="demo-card__switch"
+    role="switch"
+    aria-checked="false"
+    data-for="4"
+    data-demo-speaker
+  >
+    {tryTheBeat.speaker}
+    <span class="demo-card__track" aria-hidden="true"></span>
+  </button>
+
+  <div class="demo-card__text">
+    <div data-for="0">
+      <p class="demo-card__title" data-part="step-title">
+        {start.title}
+      </p>
+      <p class="demo-card__body" data-part="step-body">
+        {start.body}
+      </p>
+    </div>
+    {stepCards.map((card, i) => (
+      <div data-for={i + 1}>
+        <p class="demo-card__title">{card.title}</p>
+        <p class="demo-card__body">{card.body}</p>
+      </div>
+    ))}
+  </div>
+
   <div class="demo-card__actions" data-part="actions">
-    <Button size="md" class="demo-card__start">
-      {state.button}
-    </Button>
+    <div data-for="0">
+      <Button size="md" class="demo-card__start" hidden data-demo-start>
+        {start.button}
+      </Button>
+    </div>
+    <div class="demo-card__pair demo-card__when-stepping">
+      <Button size="md" class="demo-card__next" data-demo-next>
+        {tryTheBeat.next}
+      </Button>
+      <Button size="md" variant="secondary" class="demo-card__stop" data-demo-stop>
+        {tryTheBeat.stop}
+      </Button>
+    </div>
+    <div class="demo-card__end" data-for="5">
+      <AppStoreBadge campaign="demo" height={48} />
+      <button type="button" class="demo-card__stop-demo" data-demo-stop>
+        {tryTheBeat.stopDemo}
+      </button>
+    </div>
   </div>
+
+  <p class="visually-hidden" aria-live="polite" data-demo-live></p>
 </GlassCard>
+
+<script>
+  /*
+   * Loads the audio code only when the card gets near the screen (CLAUDE.md
+   * §8), and only where Web Audio exists; elsewhere Start stays hidden.
+   */
+  const card = document.querySelector<HTMLElement>('[data-demo]');
+  if (card && 'AudioContext' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void import('../audio/demo-controller').then(({ initDemo }) => initDemo(card));
+      },
+      { rootMargin: '100% 0px' },
+    );
+    observer.observe(card);
+  }
+</script>
 
 <style>
   /*
-   * Phone (Figma 201:59, 202:166): the light glass of the glass buttons, radius
-   * 30, padding 20. From 768 (218:1401, 211:84): the card glass, radius 36,
-   * padding 28 to 36. Selectors carry .card so they outrank GlassCard's own.
+   * Phone (Figma 201:59, 202:166 to 202:181): the light glass of the glass
+   * buttons, radius 30, padding 20, 16 px between rows. From 768 (218:1401,
+   * 211:84): the card glass, radius 36, padding 28 to 36. Figma has the steps
+   * on phone only; tablet and desktop use the same rows in the larger card.
+   * Selectors carry .card so they outrank GlassCard's own.
    */
   .demo-card.card {
     --demo-wave-height: clamp(10rem, 8.4429rem + 6.3391vw, 12.5rem); /* 160 to 200 */
+    --demo-gap: 1rem;
 
-    display: grid;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--demo-gap);
     padding: clamp(1.25rem, 0.9386rem + 1.2678vw, 1.75rem); /* 20 to 28 */
     border-color: var(--glass-stroke-soft);
     background: var(--glass-fill);
     box-shadow: none;
   }
 
+  /* --- Which state shows ------------------------------------------------ */
+
+  [data-for],
+  .demo-card__when-playing,
+  .demo-card__when-stepping {
+    display: none;
+  }
+
+  .demo-card[data-step='0'] [data-for='0'],
+  .demo-card[data-step='1'] [data-for='1'],
+  .demo-card[data-step='2'] [data-for='2'],
+  .demo-card[data-step='3'] [data-for='3'],
+  .demo-card[data-step='4'] [data-for='4'],
+  .demo-card[data-step='5'] [data-for='5'] {
+    display: revert;
+  }
+
+  .demo-card:not([data-step='0']) .demo-card__when-start {
+    display: none;
+  }
+
+  .demo-card:not([data-step='0']) .demo-card__when-playing {
+    display: grid;
+  }
+
+  .demo-card:is([data-step='1'], [data-step='2'], [data-step='3'], [data-step='4'])
+    .demo-card__when-stepping {
+    display: flex;
+  }
+
   /*
-   * Phone: the height of the tallest demo state (Figma 201:59, 425), so the
-   * page doesn't shift when phase 3a changes steps. The buttons sit at the
-   * bottom, as in the step frames.
+   * Phone: the height of the "One tone in each ear" step (Figma 201:59, 425),
+   * the buttons at the bottom. Steps 3 and 4 are taller and grow the card,
+   * only after a tap.
    */
   @media (width < 768px) {
     .demo-card.card {
-      grid-template-rows: auto auto auto auto 1fr;
       min-height: 26.5625rem;
     }
 
     .demo-card__actions {
-      align-self: end;
+      margin-top: auto;
     }
   }
 
   @media (width >= 768px) {
     .demo-card.card {
-      gap: 1.125rem;
+      --demo-gap: 1.125rem;
+
       border-color: var(--card-stroke);
       border-radius: 2.25rem;
       background: var(--card-fill);
@@ -94,6 +245,8 @@ const state = tryTheBeat.start;
       padding: clamp(1.75rem, 0.5192rem + 1.9231vw, 2.25rem); /* 28 to 36 */
     }
   }
+
+  /* --- Top rows ----------------------------------------------------------- */
 
   .demo-card__top {
     display: flex;
@@ -113,8 +266,75 @@ const state = tryTheBeat.start;
     display: none;
   }
 
+  .demo-card__status {
+    gap: 1rem;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .demo-card__step-row,
+  .demo-card__ears-split {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .demo-card__count {
+    font-weight: var(--weight-medium);
+  }
+
+  /* Figma "Progress": 6 px dots, the current one 16 px wide */
+  .demo-card__dots {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .demo-card .demo-card__dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgb(238 243 255 / 25%);
+  }
+
+  .demo-card[data-step='1'] .demo-card__dot[data-dot='1'],
+  .demo-card[data-step='2'] .demo-card__dot[data-dot='2'],
+  .demo-card[data-step='3'] .demo-card__dot[data-dot='3'],
+  .demo-card[data-step='4'] .demo-card__dot[data-dot='4'],
+  .demo-card[data-step='5'] .demo-card__dot[data-dot='5'] {
+    width: 16px;
+    background: var(--color-ink);
+  }
+
+  /* Ears: "Left · 197 Hz / Right · 203 Hz"; "Both ears · mixed" while the
+     speaker switch is on; on the last step, the gliding beat */
+  .demo-card__ears-mixed,
+  .demo-card__now {
+    display: none;
+  }
+
+  .demo-card[data-step='4'][data-speaker='on'] .demo-card__ears-split {
+    display: none;
+  }
+
+  .demo-card[data-step='4'][data-speaker='on'] .demo-card__ears-mixed {
+    display: block;
+  }
+
+  .demo-card[data-step='5'] .demo-card__ears-split {
+    display: none;
+  }
+
+  .demo-card[data-step='5'] .demo-card__now {
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+
   @media (width >= 768px) {
-    .demo-card__top {
+    .demo-card__top,
+    .demo-card__status {
       font-size: var(--text-sm);
     }
 
@@ -122,6 +342,8 @@ const state = tryTheBeat.start;
       display: inline;
     }
   }
+
+  /* --- Waves -------------------------------------------------------------- */
 
   .demo-card__waves {
     display: grid;
@@ -131,6 +353,142 @@ const state = tryTheBeat.start;
   .demo-card .demo-card__waves .demo-card__wave {
     grid-area: 1 / 1;
     height: var(--demo-wave-height);
+    transition: opacity var(--duration-slow) var(--ease-in-out);
+  }
+
+  /* Step 2: the right tone and the beat fade, as if one earbud were out */
+  .demo-card[data-step='2'] .demo-card__waves .demo-card__wave--right,
+  .demo-card[data-step='2'] .demo-card__waves .demo-card__wave--beat {
+    opacity: 0.25;
+  }
+
+  /* --- Step 3: mode chips (Figma "Chip / Meditate · 6") ------------------- */
+
+  .demo-card__chips {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .demo-card[data-step='3'] .demo-card__chips {
+    display: flex;
+  }
+
+  .demo-card__chip {
+    position: relative;
+    padding: 0.5625rem 0.875rem;
+    border: 1px solid var(--glass-stroke-soft);
+    border-radius: 1.125rem;
+    background: var(--glass-fill);
+    font-size: 0.8125rem;
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+  }
+
+  /* The radio itself is invisible and covers the chip */
+  .demo-card__radio {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* A 44 px tall target without moving the chips */
+  .demo-card__chip::before {
+    content: '';
+    position: absolute;
+    inset: -5px 0;
+  }
+
+  .demo-card__chip:has(:checked) {
+    border-color: rgb(188 214 255 / 90%);
+    background: rgb(255 255 255 / 11%);
+    box-shadow: inset 0 0 0 0.5px rgb(188 214 255 / 90%);
+    color: var(--color-accent);
+  }
+
+  .demo-card__chip:has(:focus-visible) {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* --- Step 4: "Play like a speaker" (Figma "Switch", 51 x 31) ------------ */
+
+  .demo-card__switch {
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--touch-target);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: var(--weight-medium);
+    line-height: 1.3;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .demo-card[data-step='4'] .demo-card__switch {
+    display: flex;
+  }
+
+  .demo-card__track {
+    position: relative;
+    flex: none;
+    width: 51px;
+    height: 31px;
+    border-radius: 15.5px;
+    background: rgb(255 255 255 / 16%);
+    transition: background-color var(--duration-quick) var(--ease-out);
+  }
+
+  .demo-card__track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: #fff;
+    transition: translate var(--duration-quick) var(--ease-out);
+  }
+
+  .demo-card__switch[aria-checked='true'] .demo-card__track {
+    background: var(--color-accent);
+  }
+
+  .demo-card__switch[aria-checked='true'] .demo-card__track::after {
+    translate: 20px 0;
+  }
+
+  /* --- Text --------------------------------------------------------------- */
+
+  .demo-card__text > div {
+    gap: var(--demo-gap);
+  }
+
+  .demo-card[data-step] .demo-card__text > [data-for] {
+    display: none;
+  }
+
+  .demo-card[data-step='0'] .demo-card__text > [data-for='0'],
+  .demo-card[data-step='1'] .demo-card__text > [data-for='1'],
+  .demo-card[data-step='2'] .demo-card__text > [data-for='2'],
+  .demo-card[data-step='3'] .demo-card__text > [data-for='3'],
+  .demo-card[data-step='4'] .demo-card__text > [data-for='4'],
+  .demo-card[data-step='5'] .demo-card__text > [data-for='5'] {
+    display: grid;
   }
 
   .demo-card__title {
@@ -145,13 +503,68 @@ const state = tryTheBeat.start;
     line-height: 1.4;
   }
 
-  /* Phone: one full-width 48 px button (Figma); from 768 the 52 px size */
-  .demo-card .demo-card__actions .demo-card__start {
+  /* --- Buttons ------------------------------------------------------------ */
+
+  /* Phone: 48 px buttons (Figma); from 768 the 52 px size */
+  .demo-card__actions .button {
     --button-size: 3rem;
 
-    width: 100%;
     padding-inline: 1.5rem;
     font-size: 0.9375rem;
+  }
+
+  .demo-card .demo-card__actions .demo-card__start {
+    width: 100%;
+  }
+
+  /*
+   * Hidden until the script can make sound. It keeps its space, so the page
+   * doesn't move when it appears (and the button style would override
+   * display: none anyway). visibility: hidden also hides it from screen readers.
+   */
+  .demo-card .demo-card__actions .demo-card__start[hidden] {
+    visibility: hidden;
+  }
+
+  /* Next fills the row, Stop keeps its width (Figma "Actions") */
+  .demo-card__pair {
+    gap: 0.75rem;
+  }
+
+  .demo-card .demo-card__pair .demo-card__next {
+    flex: 1;
+  }
+
+  .demo-card .demo-card__pair .demo-card__stop {
+    border-color: rgb(255 255 255 / 30%);
+    background: rgb(7 26 69 / 42%);
+  }
+
+  /* Last step: the badge, then "Stop the demo" as a quiet text button */
+  .demo-card[data-step='5'] .demo-card__end {
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+  }
+
+  .demo-card__stop-demo {
+    width: 100%;
+    min-height: var(--touch-target);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .demo-card__stop-demo:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
   }
 
   @media (width >= 768px) {
@@ -159,12 +572,27 @@ const state = tryTheBeat.start;
       font-size: 1rem;
     }
 
-    .demo-card .demo-card__actions .demo-card__start {
+    .demo-card__actions .button {
       --button-size: 52px;
 
-      width: auto;
       padding-inline: 1.75rem;
       font-size: var(--text-md);
+    }
+
+    .demo-card .demo-card__actions .demo-card__start {
+      width: auto;
+    }
+
+    .demo-card .demo-card__pair .demo-card__next {
+      flex: none;
+    }
+
+    .demo-card[data-step='5'] .demo-card__end {
+      justify-items: start;
+    }
+
+    .demo-card__stop-demo {
+      width: auto;
     }
   }
 </style>

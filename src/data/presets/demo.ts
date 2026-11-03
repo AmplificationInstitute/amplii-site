@@ -10,3 +10,7 @@ export function demoTones(mode: ModeId): { left: number; right: number; beat: nu
   const beat = modes.find((m) => m.id === mode)?.arcHz.hold ?? 0;
   return { left: DEMO_CARRIER_HZ - beat / 2, right: DEMO_CARRIER_HZ + beat / 2, beat };
 }
+
+/** Step 5 ("the gap never jumps"): the beat glides slowly to 10 Hz, then holds. */
+export const DEMO_GLIDE_TO_HZ = 10;
+export const DEMO_GLIDE_SECONDS = 20;

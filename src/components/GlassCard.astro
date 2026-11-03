@@ -1,14 +1,17 @@
 ---
-interface Props {
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = Omit<HTMLAttributes<'div'>, 'class'> & {
   as?: 'div' | 'article' | 'li';
   padding?: 'md' | 'lg';
   class?: string;
-}
+};
 
-const { as: Tag = 'div', padding = 'md', class: className } = Astro.props;
+/* Other attributes (data-*, aria-*) pass through to the element */
+const { as: Tag = 'div', padding = 'md', class: className, ...attrs } = Astro.props;
 ---
 
-<Tag class:list={['card', `card--${padding}`, className]}>
+<Tag class:list={['card', `card--${padding}`, className]} {...attrs}>
   <slot />
 </Tag>
 
