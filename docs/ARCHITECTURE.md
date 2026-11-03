@@ -109,7 +109,7 @@ From Figma `214:574`.
 - **Designed widths:** 393 phone, 1024 tablet and small laptop, 1440 desktop, 1920 large desktop.
 - **Breakpoints:** `@media (width >= 768px)` tablet layout, `(width >= 1280px)` desktop layout. One extra rule at `1024px` (Try the beat, two columns). Above 1920 it stays the 1920 design with more space.
 - **Scoped styles:** `scopedStyleStrategy: 'class'` in `astro.config.mjs`, so a class a section passes to a component (`<WaveStrip class="…">`) keeps the section's scoped styles.
-- **Container:** text and cards in a centered column, max 1200 px. Glows, waves and the horizon run full width through the `Section` `bleed` slot. Only the page clips sideways: `html { overflow-x: clip }` (`clip`, not `hidden`, so `position: sticky` still works).
+- **Container:** text and cards in a centered column, max 1200 px. Glows, waves and the horizon run full width through the `Section` `bleed` slot. Scripts are never inlined (`assetsInlineLimit: 0`), because the CSP allows only same-origin script files. Only the page clips sideways: `html { overflow-x: clip }` (`clip`, not `hidden`, so `position: sticky` still works).
 - **Side margins:** 20 px below 390, 24 px phone, 48 px tablet, then `clamp(3rem, 17.31vw - 8.075rem, 7.5rem)` from 1024 (48 at 1024, 120 at 1440), then the 1200 column is centered.
 - **Type scale:** one linear `clamp()` per segment (393 to 1024, 1024 to 1440, 1440 to 1920), with the token redefined at 1024 and 1440. Segment ends match, so nothing jumps.
   - Hero title 36 / 60 / 76 / 88 (36 from the phone frame 201:3, one line; below 393 it shrinks with the screen to stay on one line)
@@ -118,18 +118,18 @@ From Figma `214:574`.
   - Jost from 28 px up, Archivo at 20 px and below.
 - **Layout changes** (grid; card internals use `@container`):
 
-| Section              | Phone (< 768)                                           | Tablet (768 to 1279)              | Desktop (≥ 1280)                             |
-| -------------------- | ------------------------------------------------------- | --------------------------------- | -------------------------------------------- |
-| Nav                  | wordmark, Get the app                                   | + four section links              | same as tablet                               |
-| Hero                 | stacked; the App Store badge is the only button         | same, larger                      | as Figma                                     |
-| Try the beat         | stacked                                                 | two columns from 1024 (`5fr 7fr`) | two columns                                  |
-| Modes                | one column of row cards                                 | 2 × 2                             | 4 in a row                                   |
-| Science              | scroll-snap carousel (no JS, labelled focusable region) | 2 × 2                             | row of 4                                     |
-| Privacy              | phone below the text                                    | phone below the text              | phone beside the text (`1fr auto`)           |
-| Pricing              | stacked                                                 | stacked                           | side by side (`720fr 456fr`, Full then Free) |
-| FAQ                  | stacked                                                 | stacked                           | title column + 720 px questions              |
-| Download             | badge only                                              | badge + QR code                   | badge + QR code                              |
-| Sticky App Store bar | shown after the hero, hidden during the demo            | hidden                            | hidden                                       |
+| Section              | Phone (< 768)                                                    | Tablet (768 to 1279)              | Desktop (≥ 1280)                             |
+| -------------------- | ---------------------------------------------------------------- | --------------------------------- | -------------------------------------------- |
+| Nav                  | wordmark, Get the app                                            | + four section links              | same as tablet                               |
+| Hero                 | stacked; the App Store badge is the only button                  | same, larger                      | as Figma                                     |
+| Try the beat         | stacked                                                          | two columns from 1024 (`5fr 7fr`) | two columns                                  |
+| Modes                | one column of row cards                                          | 2 × 2                             | 4 in a row                                   |
+| Science              | scroll-snap carousel (no JS, labelled focusable region)          | 2 × 2                             | row of 4                                     |
+| Privacy              | phone below the text                                             | phone below the text              | phone beside the text (`1fr auto`)           |
+| Pricing              | stacked                                                          | stacked                           | side by side (`720fr 456fr`, Full then Free) |
+| FAQ                  | stacked                                                          | stacked                           | title column + 720 px questions              |
+| Download             | badge only                                                       | badge + QR code                   | badge + QR code                              |
+| Sticky App Store bar | after the hero; hidden during Try the beat and the final section | hidden                            | hidden                                       |
 
 - Hover only under `@media (hover: hover)`.
 
@@ -335,7 +335,7 @@ Each is one branch from `develop` (`feat/2a-tokens-components`, `feat/2b-section
 After 2c comes the launch pack (phase 3), then launch (phase 4). The motion system (phase 5) and the section animations (phase 6) come after launch, one section at a time on the live site.
 
 - **Phase 3a (Try the beat with real audio):** the Start button (hidden until the script runs), Web Audio tones, the earbud test, mode chips and the silent-mode hint. The demo gets labelled controls, full keyboard operation, and `aria-live="polite"` announcements for step and mode changes. Its waves stay static until phase 5. Built: `src/audio/binaural.ts` (engine) and `src/audio/demo-controller.ts` (steps, chips, switch, the step 5 glide to 10 Hz over 20 s with a "Now" label updated once a second, stop and fresh start on Stop, Escape, scrolling away, a hidden tab or an interruption). A small loader in `DemoCard` imports them when the card is within one screen of the viewport.
-- **Phase 3b (sticky App Store bar):** built hidden in 2c (`hidden` attribute, phone only); a small script removes `hidden` after the hero and puts it back while the demo or the final section is on screen, so it never covers the footer (IntersectionObserver, no GSAP).
+- **Phase 3b (sticky App Store bar):** built hidden in 2c (`hidden` attribute, phone only); a small script removes `hidden` after the hero and puts it back while the demo or the final section is on screen, so it never covers the footer (IntersectionObserver, no GSAP). Built: one IntersectionObserver on the hero, Try the beat, the final section and the footer; the bar shows on phone only when none of them is on screen (from the arc section to the FAQ). A temporary CSS opacity fade, to be replaced by the motion phase's blur-fade.
 - **Phase 3c (SEO/AEO):** titles and descriptions, the share image, `public/robots.txt` with the rules in CLAUDE.md §13, the sitemap, the Smart App Banner and the JSON-LD (§12) in `SeoHead`. App Store campaign tokens are filled in `appStoreUrl`.
 - **Phase 3d (checks):** Lighthouse, VoiceOver on iPhone, keyboard, Safari and Chrome on phone, iPad and desktop.
 - **Phase 3e (launch steps):** written out for Ana, for after Marie approves (domain to Vercel, GitHub Pages off).
