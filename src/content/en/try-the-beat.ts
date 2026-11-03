@@ -31,7 +31,7 @@ export const tryTheBeat = {
     },
     {
       title: 'The gap sets the pace.',
-      body: 'Same pitch, different rhythm. A small gap feels slow and heavy. A wider one feels quicker.',
+      body: 'Same pitch, different rhythm. A small gap feels slow and heavy. A wider one feels quicker. Focus and Energy are quick, more of a flutter than a wobble.',
     },
     {
       title: 'Why headphones matter.',
