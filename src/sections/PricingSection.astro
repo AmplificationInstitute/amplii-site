@@ -51,6 +51,7 @@ import { pricing } from '../content/en/pricing';
         <PlanCard plan="free" />
       </div>
     </CardGlow>
+    <p class="pricing__price-note">{pricing.priceNote}</p>
   </div>
 </Section>
 
@@ -158,6 +159,21 @@ import { pricing } from '../content/en/pricing';
 
   .pricing :global(.pricing__plans) {
     margin-top: var(--pricing-plans-gap);
+  }
+
+  /* Small, under the cards: left-aligned on phone, centered from 768 */
+  .pricing__price-note {
+    margin-top: 1rem;
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  @media (width >= 768px) {
+    .pricing__price-note {
+      margin: 1.5rem auto 0;
+      text-align: center;
+    }
   }
 
   .pricing__grid {
