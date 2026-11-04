@@ -17,11 +17,16 @@ const {
 } = Astro.props;
 
 const canonical = new URL(path, site.url).href;
+const image = new URL(site.shareImage.path, site.url).href;
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{/* From the app icon (app repo, icon-1024.png): 16 and 32 px in the .ico, 180 for iOS, 192 and 512 in the manifest */}
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 {noindex && <meta name="robots" content="noindex" />}
 
 <meta property="og:type" content="website" />
@@ -30,6 +35,16 @@ const canonical = new URL(path, site.url).href;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content={String(site.shareImage.width)} />
+<meta property="og:image:height" content={String(site.shareImage.height)} />
+<meta property="og:image:alt" content={site.shareImage.alt} />
+{/* Safari on iPhone shows its own "Open in the App Store" banner (CLAUDE.md §12) */}
+<meta name="apple-itunes-app" content={`app-id=${site.appStore.appId}`} />
+
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={site.shareImage.alt} />

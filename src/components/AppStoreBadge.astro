@@ -15,7 +15,7 @@ const { campaign, height = 56, eager = false, class: className } = Astro.props;
 const width = Math.round((badge.width / badge.height) * height);
 ---
 
-<!-- Apple's official badge, unmodified (App Store marketing guidelines) -->
+{/* Apple's official badge, unmodified (App Store marketing guidelines) */}
 <a href={appStoreUrl(campaign)} class:list={['app-store-badge', className]}>
   <img
     src={badge.src}

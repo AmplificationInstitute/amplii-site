@@ -3,13 +3,13 @@ import { stickyBar } from '../content/en/sticky-bar';
 import AppStoreBadge from './AppStoreBadge.astro';
 ---
 
-<!--
+{/*
   Phone only (Figma 202:519), with Apple's badge in place of Figma's custom
   button. Built hidden; the script below shows it once the hero is scrolled
   past, and hides it while Try the beat, the final section or the footer is
   on screen (so it never covers the demo or the footer). Without JS it never
   shows; the hero and the final section have their own badges.
--->
+*/}
 <aside class="sticky-app-bar" aria-label={stickyBar.label} hidden data-part="sticky-bar">
   <AppStoreBadge campaign="sticky-bar" height={52} />
 </aside>
@@ -25,7 +25,8 @@ import AppStoreBadge from './AppStoreBadge.astro';
     .map((selector) => document.querySelector(selector))
     .filter((zone) => zone !== null);
 
-  if (bar && zones.length > 0) {
+  /* Landing page only: other pages (the 404) have no hero */
+  if (bar && document.querySelector('[data-section="hero"]')) {
     const phone = window.matchMedia('(width < 768px)');
     const onScreen = new Set<Element>();
 

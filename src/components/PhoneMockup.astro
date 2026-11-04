@@ -13,13 +13,13 @@ const { screen, alt, class: className } = Astro.props;
 /* srcset w descriptors must be whole numbers (the 2x screen can be an odd width) */
 ---
 
-<!--
+{/*
   The phone frame is drawn in CSS from Figma "Phone · B5 Complete" (217:199):
   bezel, border, radius, shadow and Dynamic Island. Only the screen is an
   image, so the frame stays sharp and its shadow stays transparent over the
   glows. Sizes are in container units, so the whole phone scales with its
   width. Lazy: it is below the fold.
--->
+*/}
 <div class:list={['phone-mockup', className]}>
   <div class="phone-mockup__frame">
     <Picture

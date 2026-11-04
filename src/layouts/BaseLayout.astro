@@ -23,6 +23,7 @@ const seo = Astro.props;
     <Font cssVariable="--font-jost" preload={[{ weight: 600, style: 'normal', subset: 'latin' }]} />
     <Font cssVariable="--font-archivo" />
     <SeoHead {...seo} />
+    <slot name="head" />
   </head>
   <body>
     <a class="skip-link visually-hidden" href="#main">

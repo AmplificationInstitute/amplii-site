@@ -7,9 +7,19 @@ export const site = {
   description:
     'Binaural beats to meditate, focus, energize and sleep. An iPhone app by Amplification Institute, with no account and nothing leaving your phone.',
   contactEmail: 'contact@amplificationinstitute.com',
+  /** Open Graph and Twitter card image (Figma 268:157, exported at 1200 x 630). */
+  shareImage: {
+    path: '/og-image.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'Amplii: find your frequency. Soft blue waves over a glowing horizon.',
+  },
   appStore: {
     appId: '6811405143',
     url: 'https://apps.apple.com/app/id6811405143',
+    /** For JSON-LD (CLAUDE.md §2) */
+    operatingSystem: 'iOS 17.0 or later',
+    applicationCategory: 'HealthApplication',
   },
   organization: {
     name: 'Amplification Institute',

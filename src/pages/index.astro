@@ -9,10 +9,12 @@ import ModesSection from '../sections/ModesSection.astro';
 import PricingSection from '../sections/PricingSection.astro';
 import PrivacySection from '../sections/PrivacySection.astro';
 import ScienceSection from '../sections/ScienceSection.astro';
+import StructuredData from '../components/StructuredData.astro';
 import TryTheBeatSection from '../sections/TryTheBeatSection.astro';
 ---
 
 <BaseLayout path="/">
+  <StructuredData slot="head" />
   <HeroSection />
   <TryTheBeatSection />
   <ArcSection />
