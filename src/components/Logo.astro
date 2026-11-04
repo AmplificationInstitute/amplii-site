@@ -1,0 +1,14 @@
+---
+import LogoSvg from '../assets/logo.svg';
+
+interface Props {
+  /** Height in px; the width follows the logo's proportions. */
+  height?: number;
+  class?: string;
+}
+
+const { height = 30, class: className } = Astro.props;
+const width = Math.round((LogoSvg.width / LogoSvg.height) * height);
+---
+
+<LogoSvg width={width} height={height} role="img" aria-label="Amplii" class={className} />

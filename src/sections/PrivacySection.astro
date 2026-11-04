@@ -1,0 +1,242 @@
+---
+import completeScreen from '../assets/privacy-complete.png';
+import Glow from '../components/Glow.astro';
+import PhoneMockup from '../components/PhoneMockup.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { privacy } from '../content/en/privacy';
+---
+
+<Section name="privacy" id="privacy" labelledBy="privacy-title" class="privacy">
+  <Fragment slot="bleed">
+    <Glow
+      class="privacy__ambient"
+      tint="ambient"
+      intensity={0.22}
+      x="73.8%"
+      y="15.625rem"
+      width="28.75rem"
+      height="26.25rem"
+    />
+    <Glow
+      class="privacy__edge"
+      intensity={0.16}
+      x="4.6875%"
+      y="27.6rem"
+      width="var(--privacy-edge-w)"
+      height="var(--privacy-edge-h)"
+    />
+    <Glow
+      class="privacy__edge"
+      intensity={0.16}
+      x="95.3125%"
+      y="32.6rem"
+      width="var(--privacy-edge-w)"
+      height="var(--privacy-edge-h)"
+    />
+  </Fragment>
+
+  <div class="privacy__layout">
+    <div class="privacy__text">
+      <SectionHeader
+        id="privacy-title"
+        title={privacy.title}
+        lead={privacy.lead}
+        align="center-from-tablet"
+      />
+      <p class="privacy__note" data-reveal>
+        {privacy.note}
+      </p>
+    </div>
+    <div class="privacy__device" data-part="phone">
+      {/* Glows from the Figma frames, centered on the phone so they follow it */}
+      <Glow
+        class="privacy__glow"
+        intensity={0.3}
+        x="50%"
+        y="50%"
+        width="var(--privacy-glow-a)"
+        height="var(--privacy-glow-a)"
+      />
+      <Glow
+        class="privacy__glow privacy__glow--b"
+        intensity={0.22}
+        x="calc(50% + var(--privacy-glow-b-dx))"
+        y="calc(50% + var(--privacy-glow-b-dy))"
+        width="var(--privacy-glow-b-w)"
+        height="var(--privacy-glow-b-h)"
+      />
+      <PhoneMockup screen={completeScreen} alt={privacy.mockupAlt} class="privacy__phone" />
+    </div>
+  </div>
+</Section>
+
+<style>
+  /*
+   * Figma frames 393 / 1024 / 1440 / 1920, one linear segment between each
+   * pair. Phone: title, lead, phone, note. Tablet: title, lead and note
+   * centered, the phone below. From 1280: text on the left, the phone on the
+   * right. The text comes first in the HTML, so screen readers read it before
+   * the picture. The phone keeps its 1440 size at 1920; only the spacing
+   * follows that frame. No background strip.
+   */
+  .privacy {
+    --section-pad-top: clamp(4.5rem, 3.7993rem + 2.8526vw, 5.625rem); /* 72 to 90 */
+    --section-pad-bottom: clamp(4.5rem, 3.7993rem + 2.8526vw, 5.625rem); /* 72 to 90 */
+    --header-gap: clamp(1rem, 0.8443rem + 0.6339vw, 1.25rem); /* 16 to 20 */
+    --text-lead: clamp(1rem, 0.9221rem + 0.317vw, 1.125rem); /* 16 to 18 */
+    --lead-measure: 40rem; /* 640 */
+    --privacy-note-gap: 1.25rem; /* 20, tablet */
+    --privacy-lead-to-phone: clamp(1.25rem, 2.0614rem - 1.2678vw, 1.75rem); /* 28 to 20 */
+    --privacy-phone-to-note: clamp(1.5rem, 0.5658rem + 3.8035vw, 3rem); /* 24 to 48 */
+    --privacy-phone-w: clamp(12.5469rem, 10.9303rem + 6.5816vw, 15.1425rem); /* 201 to 242 */
+    --privacy-text-offset: 0rem;
+    --privacy-glow-a: clamp(26.25rem, 25.1601rem + 4.4374vw, 28rem); /* 420 to 448 */
+    --privacy-glow-b-w: 31rem; /* 496 */
+    --privacy-glow-b-h: 22rem; /* 352 */
+    --privacy-glow-b-dx: 0rem;
+    --privacy-glow-b-dy: 0rem;
+    --privacy-edge-w: 0rem;
+    --privacy-edge-h: 0rem;
+  }
+
+  @media (width >= 1024px) {
+    .privacy {
+      --section-pad-top: clamp(5rem, 7.1635rem - 2.4038vw, 5.625rem); /* 90 to 80 */
+      --section-pad-bottom: clamp(5rem, 7.1635rem - 2.4038vw, 5.625rem); /* 90 to 80 */
+      --header-gap: clamp(1.1875rem, 1.4038rem - 0.2404vw, 1.25rem); /* 20 to 19 */
+      --text-lead: clamp(1.125rem, 0.8173rem + 0.4808vw, 1.25rem); /* 18 to 20 */
+      --privacy-note-gap: clamp(1.25rem, 5.2885vw - 2.1346rem, 2.625rem); /* 20 to 42 */
+      --privacy-glow-a: clamp(28rem, 10.7692rem + 26.9231vw, 35rem); /* 448 to 560 */
+      --privacy-glow-b-w: clamp(31rem, 11.9231rem + 29.8077vw, 38.75rem); /* 496 to 620 */
+      --privacy-glow-b-h: clamp(22rem, 8.4615rem + 21.1538vw, 27.5rem); /* 352 to 440 */
+      --privacy-glow-b-dx: clamp(-4.3063rem, 10.6rem - 16.5625vw, 0rem); /* 0 to -69 */
+      --privacy-glow-b-dy: clamp(-2.2563rem, 5.5538rem - 8.6779vw, 0rem); /* 0 to -36 */
+    }
+  }
+
+  @media (width >= 1280px) {
+    .privacy {
+      --lead-measure: 30rem; /* 480 */
+      --privacy-text-offset: 4.375rem; /* 70 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .privacy {
+      --section-pad-top: clamp(5rem, 2rem + 3.3333vw, 6rem); /* 80 to 96 */
+      --section-pad-bottom: clamp(5rem, 2rem + 3.3333vw, 6rem); /* 80 to 96 */
+      --header-gap: clamp(1.1875rem, 0.625rem + 0.625vw, 1.375rem); /* 19 to 22 */
+      --text-lead: 1.25rem; /* 20 */
+      --privacy-note-gap: clamp(2.625rem, 1.3125rem + 1.4583vw, 3.0625rem); /* 42 to 49 */
+      --privacy-text-offset: clamp(4.375rem, 1.75rem + 2.9167vw, 5.25rem); /* 70 to 84 */
+      --privacy-glow-a: clamp(35rem, 14rem + 23.3333vw, 42rem); /* 560 to 672 */
+      --privacy-glow-b-w: clamp(38.75rem, 15.5rem + 25.8333vw, 46.5rem); /* 620 to 744 */
+      --privacy-glow-b-h: clamp(27.5rem, 11rem + 18.3333vw, 33rem); /* 440 to 528 */
+      --privacy-glow-b-dx: clamp(-5.1625rem, -1.7375rem - 2.8542vw, -4.3063rem); /* -69 to -83 */
+      --privacy-glow-b-dy: clamp(-2.7062rem, -0.9063rem - 1.5vw, -2.2563rem); /* -36 to -43 */
+      --privacy-edge-w: clamp(0rem, 145.8333vw - 131.25rem, 43.75rem); /* 0 to 700 */
+      --privacy-edge-h: calc(var(--privacy-edge-w) * 0.8);
+    }
+  }
+
+  /* Phone: one ambient glow behind the text, one glow on the phone */
+  .privacy :global(.privacy__edge),
+  .privacy :global(.privacy__glow--b) {
+    display: none;
+  }
+
+  @media (width >= 768px) {
+    .privacy :global(.privacy__ambient) {
+      display: none;
+    }
+
+    .privacy :global(.privacy__glow--b) {
+      display: block;
+    }
+  }
+
+  @media (width >= 1440px) {
+    /* As in the hero: the falloff grows from zero, so the edge glows fade in from 1440 */
+    .privacy :global(.glow.privacy__edge) {
+      --glow-spread: clamp(0rem, 25vw - 22.5rem, 7.5rem);
+
+      display: block;
+    }
+  }
+
+  .privacy :global(.privacy__glow) {
+    z-index: -1;
+  }
+
+  .privacy__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Phone: the note moves below the phone, as in Figma 202:37 */
+  .privacy__text {
+    display: contents;
+  }
+
+  .privacy__note {
+    order: 1;
+    margin-top: var(--privacy-phone-to-note);
+    color: var(--color-muted);
+    font-size: clamp(0.875rem, 0.8361rem + 0.1585vw, 0.9375rem); /* 14 to 15 */
+    line-height: 1.4;
+  }
+
+  .privacy__device {
+    position: relative;
+    justify-self: center;
+    margin-top: var(--privacy-lead-to-phone);
+  }
+
+  .privacy :global(.privacy__phone) {
+    width: var(--privacy-phone-w);
+  }
+
+  @media (width >= 768px) {
+    .privacy__text {
+      display: grid;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .privacy__note {
+      order: 0;
+      margin-top: var(--privacy-note-gap);
+    }
+
+    .privacy__device {
+      margin-top: var(--privacy-phone-to-note);
+    }
+  }
+
+  @media (width >= 1280px) {
+    .privacy__layout {
+      grid-template-columns: minmax(0, 32.5rem) minmax(0, 1fr); /* 520 text column */
+      align-items: start;
+    }
+
+    .privacy__text {
+      justify-items: start;
+      margin-top: var(--privacy-text-offset);
+      text-align: start;
+    }
+
+    /* The header is centered from tablet; on desktop it lines up on the left */
+    .privacy__text :global(.section-header) {
+      justify-items: start;
+      text-align: start;
+    }
+
+    /* Figma: the phone's right edge sits 60 px inside the column */
+    .privacy__device {
+      justify-self: end;
+      margin-top: 0;
+      margin-right: 3.75rem;
+    }
+  }
+</style>

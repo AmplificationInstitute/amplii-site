@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArcSection from '../sections/ArcSection.astro';
+import DownloadSection from '../sections/DownloadSection.astro';
+import FaqSection from '../sections/FaqSection.astro';
+import HeroSection from '../sections/HeroSection.astro';
+import MeditationsSection from '../sections/MeditationsSection.astro';
+import ModesSection from '../sections/ModesSection.astro';
+import PricingSection from '../sections/PricingSection.astro';
+import PrivacySection from '../sections/PrivacySection.astro';
+import ScienceSection from '../sections/ScienceSection.astro';
+import StructuredData from '../components/StructuredData.astro';
+import TryTheBeatSection from '../sections/TryTheBeatSection.astro';
+---
+
+<BaseLayout path="/">
+  <StructuredData slot="head" />
+  <HeroSection />
+  <TryTheBeatSection />
+  <ArcSection />
+  <ModesSection />
+  <MeditationsSection />
+  <ScienceSection />
+  <PrivacySection />
+  <PricingSection />
+  <FaqSection />
+  <DownloadSection />
+</BaseLayout>

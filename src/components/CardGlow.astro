@@ -1,0 +1,47 @@
+---
+import Glow from './Glow.astro';
+
+interface Props {
+  /** Peak opacity of the light behind the cards. */
+  intensity?: number;
+  class?: string;
+}
+
+const { intensity = 0.4, class: className } = Astro.props;
+---
+
+{/*
+  Wraps a card or a group of cards with a soft light behind it from 768, so
+  the glass blur has something to pick up (as the phone "Ambient" layers do).
+  The light follows the cards at every width.
+*/}
+<div class:list={['card-glow', className]}>
+  <Glow
+    class="card-glow__light"
+    tint="ambient"
+    intensity={intensity}
+    x="50%"
+    y="50%"
+    width="85%"
+    height="80%"
+  />
+  <slot />
+</div>
+
+<style>
+  .card-glow {
+    position: relative;
+  }
+
+  /* Behind the cards, above the section's own glows and waves */
+  .card-glow :global(.card-glow__light) {
+    display: none;
+    z-index: -1;
+  }
+
+  @media (width >= 768px) {
+    .card-glow :global(.card-glow__light) {
+      display: block;
+    }
+  }
+</style>

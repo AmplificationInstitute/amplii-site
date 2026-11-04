@@ -1,0 +1,39 @@
+---
+import type { ComponentProps } from 'astro/types';
+import { Font } from 'astro:assets';
+import SeoHead from '../components/SeoHead.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import StickyAppBar from '../components/StickyAppBar.astro';
+import { nav } from '../content/en/nav';
+import { site } from '../content/site';
+import '../styles/global.css';
+
+type Props = ComponentProps<typeof SeoHead>;
+
+const seo = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050B20" />
+    <Font cssVariable="--font-jost" preload={[{ weight: 600, style: 'normal', subset: 'latin' }]} />
+    <Font cssVariable="--font-archivo" />
+    <SeoHead {...seo} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link visually-hidden" href="#main">
+      {nav.skipLink}
+    </a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+    <StickyAppBar />
+  </body>
+</html>

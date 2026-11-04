@@ -1,0 +1,231 @@
+---
+import { footer } from '../content/en/footer';
+import { site } from '../content/site';
+import Glow from './Glow.astro';
+---
+
+<footer class="site-footer">
+  {/* The dawn (Figma "Dawn bloom", "Dawn core"), anchored to the bottom of the page */}
+  <div class="site-footer__dawn" aria-hidden="true" data-part="dawn">
+    <Glow
+      class="site-footer__bloom"
+      tint="dawn"
+      intensity={0.75}
+      x="50%"
+      y="calc(100% + var(--dawn-bloom-y))"
+      width="var(--dawn-bloom-w)"
+      height="var(--dawn-bloom-h)"
+    />
+    <Glow
+      class="site-footer__core"
+      tint="dawn-core"
+      intensity={0.55}
+      x="50%"
+      y="calc(100% + var(--dawn-core-y))"
+      width="var(--dawn-core-w)"
+      height="var(--dawn-core-h)"
+    />
+  </div>
+
+  <div class="container">
+    <div class="site-footer__inner">
+      <p class="site-footer__made-by">
+        {footer.madeBy.before} <a href={site.organization.url}>{footer.madeBy.link}</a>
+        {footer.madeBy.after}
+      </p>
+      <nav class="site-footer__nav" aria-label={footer.linksLabel}>
+        <ul class="site-footer__links">
+          <li>
+            <a href={site.legal.privacy}>{footer.links.privacy}</a>
+          </li>
+          <li>
+            <a href={site.legal.terms}>{footer.links.terms}</a>
+          </li>
+          <li>
+            <a href={site.legal.support}>{footer.links.support}</a>
+          </li>
+          <li class="site-footer__email">
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+          </li>
+        </ul>
+      </nav>
+      <p class="site-footer__copyright">{footer.copyright}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /*
+   * Footer of Figma 202:127 / 231:325 / 213:185 / 218:1276: dark text on the
+   * light of the dawn. Stacked and centered at every size: Figma's desktop
+   * row puts text at the edges, where the dawn is too dim for 4.5:1 contrast
+   * (and the longer "made by" line does not fit one row).
+   */
+  .site-footer {
+    --dawn-bloom-w: clamp(43.3125rem, 17.3487rem + 105.7052vw, 85rem); /* 693 to 1360 */
+    --dawn-bloom-h: clamp(32.5rem, 24.7147rem + 31.6957vw, 45rem); /* 520 to 720 */
+    --dawn-bloom-y: clamp(-7.3125rem, 18.542vw - 11.8669rem, 0rem); /* -117 to 0 */
+    --dawn-bloom-spread: clamp(
+      10.625rem,
+      7.5109rem + 12.6783vw,
+      15.625rem
+    ); /* 2 x blur 85 to 125 */
+    --dawn-core-w: clamp(18.75rem, 2.401rem + 66.561vw, 45rem); /* 300 to 720 */
+    --dawn-core-h: clamp(13.75rem, 10.4802rem + 13.3122vw, 19rem); /* 220 to 304 */
+    --dawn-core-y: clamp(-7.9375rem, 18.859vw - 12.5697rem, -0.5rem); /* -127 to -8 */
+    --dawn-core-spread: clamp(7.5rem, 3.6074rem + 15.8479vw, 13.75rem); /* 2 x blur 60 to 110 */
+    --footer-pad-bottom: clamp(2.5rem, 2.0718rem + 1.7433vw, 3.1875rem); /* 40 to 51 */
+    --footer-ink: #071a45;
+
+    position: relative;
+    padding-bottom: var(--footer-pad-bottom);
+    color: var(--footer-ink);
+  }
+
+  @media (width >= 1024px) {
+    .site-footer {
+      --dawn-bloom-w: clamp(85rem, 32.6923rem + 81.7308vw, 106.25rem); /* 1360 to 1700 */
+      --dawn-bloom-h: clamp(45rem, 17.3077rem + 43.2692vw, 56.25rem); /* 720 to 900 */
+      --dawn-bloom-y: clamp(0rem, 12.0192vw - 7.6923rem, 3.125rem); /* 0 to 50 */
+      --dawn-bloom-spread: 15.625rem; /* 2 x blur 125 */
+      --dawn-core-w: clamp(45rem, 17.3077rem + 43.2692vw, 56.25rem); /* 720 to 900 */
+      --dawn-core-h: clamp(19rem, 7.3077rem + 18.2692vw, 23.75rem); /* 304 to 380 */
+      --dawn-core-y: clamp(-0.625rem, -0.1923rem - 0.4808vw, -0.5rem); /* -8 to -10 */
+      --dawn-core-spread: 13.75rem; /* 2 x blur 110 */
+      --footer-pad-bottom: clamp(2.25rem, 5.4952rem - 3.6058vw, 3.1875rem); /* 51 to 36 */
+    }
+  }
+
+  @media (width >= 1440px) {
+    .site-footer {
+      --dawn-bloom-w: clamp(106.25rem, 42.5rem + 70.8333vw, 127.5rem); /* 1700 to 2040 */
+      --dawn-bloom-h: clamp(56.25rem, 22.5rem + 37.5vw, 67.5rem); /* 900 to 1080 */
+      --dawn-bloom-y: clamp(3.125rem, 1.25rem + 2.0833vw, 3.75rem); /* 50 to 60 */
+      --dawn-bloom-spread: clamp(
+        15.625rem,
+        6.25rem + 10.4167vw,
+        18.75rem
+      ); /* 2 x blur 125 to 150 */
+      --dawn-core-w: clamp(56.25rem, 22.5rem + 37.5vw, 67.5rem); /* 900 to 1080 */
+      --dawn-core-h: clamp(23.75rem, 9.5rem + 15.8333vw, 28.5rem); /* 380 to 456 */
+      --dawn-core-y: clamp(-0.75rem, -0.25rem - 0.4167vw, -0.625rem); /* -10 to -12 */
+      --dawn-core-spread: clamp(13.75rem, 5.5rem + 9.1667vw, 16.5rem); /* 2 x blur 110 to 132 */
+      --footer-pad-bottom: clamp(2.25rem, 0.9375rem + 1.4583vw, 2.6875rem); /* 36 to 43 */
+    }
+  }
+
+  /*
+   * Behind the final section and the footer. The page clips it at its bottom
+   * edge (body overflow: clip), so it adds no scroll.
+   */
+  .site-footer__dawn {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .site-footer :global(.glow.site-footer__bloom) {
+    --glow-spread: var(--dawn-bloom-spread);
+  }
+
+  .site-footer :global(.glow.site-footer__core) {
+    --glow-spread: var(--dawn-core-spread);
+  }
+
+  /* Phone (Figma 202:155): a line, 24 px, then four short lines 8 px apart */
+  .site-footer__inner {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(7 26 69 / 18%);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .site-footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-footer a:focus-visible {
+    outline-color: var(--footer-ink);
+  }
+
+  @media (hover: hover) {
+    .site-footer a:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  .site-footer__made-by {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+
+  .site-footer__made-by a {
+    text-decoration: underline;
+    text-decoration-color: rgb(7 26 69 / 40%);
+    text-underline-offset: 0.2em;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8125rem;
+    list-style: none;
+  }
+
+  /* Phone: "Privacy · Terms · Support", the email on its own line */
+  .site-footer__links li + li::before {
+    content: '·';
+    margin-inline: 0.3em;
+  }
+
+  .site-footer__links .site-footer__email {
+    flex-basis: 100%;
+  }
+
+  .site-footer__links li + li.site-footer__email::before {
+    content: none;
+  }
+
+  .site-footer__copyright {
+    font-size: 0.75rem;
+  }
+
+  /* Tablet (231:357): stacked, the links and email in one row, no gaps */
+  @media (width >= 768px) {
+    .site-footer__inner {
+      gap: 0;
+      border-top-color: rgb(7 26 69 / 20%);
+    }
+
+    .site-footer__made-by {
+      font-size: 0.9375rem;
+    }
+
+    .site-footer__links {
+      column-gap: 1.5rem;
+      font-size: var(--text-sm);
+    }
+
+    .site-footer__links li + li::before {
+      content: none;
+    }
+
+    .site-footer__links .site-footer__email {
+      flex-basis: auto;
+    }
+
+    .site-footer__copyright {
+      font-size: 0.8125rem;
+    }
+  }
+</style>

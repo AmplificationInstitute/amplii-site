@@ -1,0 +1,42 @@
+/*
+ * Night is the only theme at launch. A Day theme will be a second block that
+ * redefines these same properties (e.g. under [data-theme='day']).
+ */
+:root {
+  color-scheme: dark;
+
+  --color-background: #050b20;
+  --color-surface: #0b1738;
+  --color-ink: #eef3ff;
+  --color-ink-secondary: #b4c4e8;
+  --color-muted: #8fa2d0;
+  --color-accent: #bcd6ff;
+  --color-on-accent: #071a45;
+  --color-glow: #3f74ff;
+  --color-ambient: #1d46d8; /* phone "Ambient" glows */
+  --color-dawn: #5f8dff; /* final section: Figma "Dawn bloom" */
+  --color-dawn-core: #bcd6ff; /* final section: the dawn's center, a soft blue-white (Figma #E3EEFF, toned down for the dark theme) */
+  --color-wave-1: #5d8bff;
+  --color-wave-2: #a9c8ff;
+
+  /* Glass controls (secondary buttons), from the Figma buttons */
+  --glass-fill: rgb(255 255 255 / 5%);
+  --glass-stroke: rgb(255 255 255 / 14%);
+  --glass-stroke-soft: rgb(255 255 255 / 12%); /* phone demo card */
+  --glass-blur: 12px;
+
+  /* Cards (mode, fact, demo, plan), from the Figma cards */
+  --card-fill: rgb(14 29 72 / 60%);
+  --card-stroke: rgb(188 214 255 / 45%);
+  --card-stroke-strong: rgb(188 214 255 / 70%); /* the Amplii Full plan card */
+  --card-shadow: 0 14px 30px rgb(0 0 0 / 45%);
+  --card-blur: 12px;
+
+  /* Hero horizon, from the Figma "Horizon" layers */
+  --horizon-glow: #2b62ff;
+  --horizon-rim: #7fb0ff;
+  --horizon-line: rgb(156 194 255 / 90%);
+  --horizon-fill: #040a1c;
+
+  --color-focus: var(--color-accent);
+}

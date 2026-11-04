@@ -1,0 +1,73 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Picture } from 'astro:assets';
+
+interface Props {
+  /** The app screen, exported from Figma at 2x (231 x 501 at 1x). */
+  screen: ImageMetadata;
+  alt: string;
+  class?: string;
+}
+
+const { screen, alt, class: className } = Astro.props;
+/* srcset w descriptors must be whole numbers (the 2x screen can be an odd width) */
+---
+
+{/*
+  The phone frame is drawn in CSS from Figma "Phone · B5 Complete" (217:199):
+  bezel, border, radius, shadow and Dynamic Island. Only the screen is an
+  image, so the frame stays sharp and its shadow stays transparent over the
+  glows. Sizes are in container units, so the whole phone scales with its
+  width. Lazy: it is below the fold.
+*/}
+<div class:list={['phone-mockup', className]}>
+  <div class="phone-mockup__frame">
+    <Picture
+      src={screen}
+      alt={alt}
+      formats={['avif', 'webp']}
+      widths={[Math.round(screen.width / 2), screen.width]}
+      sizes="(width >= 1024px) 231px, 192px"
+      loading="lazy"
+      decoding="async"
+      class="phone-mockup__screen"
+    />
+    <span class="phone-mockup__island"></span>
+  </div>
+</div>
+
+<style>
+  /* 1cqw = 1% of the phone width (242.284 in Figma) */
+  .phone-mockup {
+    container-type: inline-size;
+  }
+
+  .phone-mockup__frame {
+    position: relative;
+    aspect-ratio: 242.284 / 512.176;
+    padding: 1.878cqw; /* 4.55 */
+    border: 0.4334cqw solid rgb(255 255 255 / 16%); /* 1.05 */
+    border-radius: 16.757cqw; /* 40.6 */
+    background: #03060f;
+    box-shadow: 0 8.667cqw 17.335cqw rgb(0 0 0 / 55%); /* 0 21 42 */
+  }
+
+  .phone-mockup :global(.phone-mockup__screen) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 14.446cqw; /* 35 */
+    object-fit: cover;
+  }
+
+  .phone-mockup__island {
+    position: absolute;
+    top: 4.767cqw; /* 11.55 */
+    left: 50%;
+    width: 28.892cqw; /* 70 */
+    height: 8.667cqw; /* 21 */
+    translate: -50% 0;
+    border-radius: 4.334cqw;
+    background: #000;
+  }
+</style>

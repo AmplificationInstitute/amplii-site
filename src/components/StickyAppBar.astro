@@ -1,0 +1,105 @@
+---
+import { stickyBar } from '../content/en/sticky-bar';
+import AppStoreBadge from './AppStoreBadge.astro';
+---
+
+{/*
+  Phone only (Figma 202:519), with Apple's badge in place of Figma's custom
+  button. Built hidden; the script below shows it once the hero is scrolled
+  past, and hides it while Try the beat, the final section or the footer is
+  on screen (so it never covers the demo or the footer). Without JS it never
+  shows; the hero and the final section have their own badges.
+*/}
+<aside class="sticky-app-bar" aria-label={stickyBar.label} hidden data-part="sticky-bar">
+  <AppStoreBadge campaign="sticky-bar" height={52} />
+</aside>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-part="sticky-bar"]');
+  const zones = [
+    '[data-section="hero"]',
+    '[data-section="try-the-beat"]',
+    '[data-section="download"]',
+    '.site-footer',
+  ]
+    .map((selector) => document.querySelector(selector))
+    .filter((zone) => zone !== null);
+
+  /* Landing page only: other pages (the 404) have no hero */
+  if (bar && document.querySelector('[data-section="hero"]')) {
+    const phone = window.matchMedia('(width < 768px)');
+    const onScreen = new Set<Element>();
+
+    const update = () => {
+      bar.dataset.visible = String(phone.matches && onScreen.size === 0);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) onScreen.add(entry.target);
+        else onScreen.delete(entry.target);
+      }
+      update();
+    });
+    for (const zone of zones) observer.observe(zone);
+
+    phone.addEventListener('change', update);
+    bar.dataset.visible = 'false';
+    bar.hidden = false;
+  }
+</script>
+
+<style>
+  /*
+   * Glass bar along the bottom: 12 px above the badge, and below it 12 px or
+   * the iPhone's safe area, whichever is larger (Figma draws 28 for the home
+   * indicator).
+   */
+  .sticky-app-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem var(--gutter) max(0.75rem, env(safe-area-inset-bottom));
+    border-top: 1px solid rgb(255 255 255 / 8%);
+    background: rgb(5 11 32 / 72%);
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+  }
+
+  .sticky-app-bar[hidden] {
+    display: none;
+  }
+
+  /*
+   * Out of view: invisible, so it can't be tabbed to and screen readers skip
+   * it. The opacity fade is temporary: the motion phase replaces these two
+   * transitions with its blur-fade (CLAUDE.md §6).
+   */
+  .sticky-app-bar[data-visible='false'] {
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity var(--duration-exit) var(--ease-in),
+      visibility 0s var(--duration-exit);
+  }
+
+  .sticky-app-bar[data-visible='true'] {
+    transition: opacity var(--duration-quick) var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-app-bar[data-visible] {
+      transition: none;
+    }
+  }
+
+  @media (width >= 768px) {
+    .sticky-app-bar {
+      display: none;
+    }
+  }
+</style>

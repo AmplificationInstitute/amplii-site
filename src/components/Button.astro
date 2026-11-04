@@ -1,0 +1,117 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = Omit<HTMLAttributes<'button'>, 'class' | 'type'> & {
+  /** Renders a link instead of a button. */
+  href?: string;
+  type?: 'button' | 'submit';
+  variant?: 'primary' | 'secondary';
+  /** sm 40 px (nav), md 52 px (demo), lg 56 px. */
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+};
+
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  size = 'lg',
+  class: className,
+  ...attrs
+} = Astro.props;
+const classes = ['button', `button--${variant}`, `button--${size}`, className];
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...attrs}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class:list={classes} {...attrs}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--button-size);
+    padding-inline: 1.75rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-capsule);
+    font-family: var(--font-text);
+    font-size: var(--text-md);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--duration-quick) var(--ease-out);
+  }
+
+  .button--sm {
+    --button-size: 40px;
+  }
+
+  .button--md {
+    --button-size: 52px;
+  }
+
+  .button--lg {
+    --button-size: var(--button-height);
+  }
+
+  /* The 40 px nav button keeps its look with a 44 px hit area */
+  .button--sm::before {
+    content: '';
+    position: absolute;
+    inset: calc((var(--button-size) - var(--touch-target)) / 2) 0;
+  }
+
+  .button--primary {
+    background: var(--color-ink);
+    color: var(--color-on-accent);
+  }
+
+  .button--secondary {
+    border-color: var(--glass-stroke);
+    background: var(--glass-fill);
+    color: var(--color-ink);
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+  }
+
+  /* The soft white wash on press */
+  .button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgb(255 255 255 / 14%);
+    opacity: 0;
+    transition: opacity var(--duration-press) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .button--primary::after {
+    background: var(--color-accent);
+    mix-blend-mode: multiply;
+  }
+
+  .button:active::after {
+    opacity: 1;
+  }
+
+  @media (hover: hover) {
+    .button--primary:hover {
+      background: var(--color-accent);
+    }
+
+    .button--secondary:hover {
+      background: rgb(255 255 255 / 10%);
+    }
+  }
+</style>
