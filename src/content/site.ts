@@ -5,7 +5,7 @@ export const site = {
   locale: 'en_US',
   title: 'Amplii: Binaural Beats for iPhone',
   description:
-    'Binaural beats to meditate, focus, energize and sleep. An iPhone app by Amplification Institute, with no account and nothing leaving your phone.',
+    'Binaural beats to meditate, focus, energize and sleep. An iPhone app by Amplification Institute, with no account. Your sessions stay on your phone.',
   contactEmail: 'contact@amplificationinstitute.com',
   /** Open Graph and Twitter card image (Figma 268:157, exported at 1200 x 630). */
   shareImage: {
