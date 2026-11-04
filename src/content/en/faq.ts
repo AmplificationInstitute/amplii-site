@@ -37,7 +37,7 @@ export const faq = {
     {
       question: 'What do you collect?',
       answer:
-        'Only what you choose to give us: if you add a recovery email after buying Amplii Full, we keep it to restore your purchase. Nothing about your sessions or settings ever leaves your phone. Purchases are handled by Apple.',
+        'Only what you choose to give us. If you back up your Amplii Full purchase with an email, we keep that email to restore it, and you can delete it anytime in Settings. Nothing about your sessions or settings ever leaves your phone. Purchases are handled by Apple.',
     },
     {
       question: 'Is there an Android version?',

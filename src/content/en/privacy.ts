@@ -1,6 +1,6 @@
 export const privacy = {
   title: 'Stays on your phone.',
-  lead: 'Amplii has no sign-in and no analytics, and nothing about your sessions leaves your phone. Purchases are handled by Apple, and an optional recovery email only restores Amplii Full.',
+  lead: "Amplii has no sign-in and no analytics, and nothing about your sessions leaves your phone. Purchases are handled by Apple. If you back up your purchase with an email, it's used only to restore Amplii Full.",
   note: 'And no streaks. There is no score to keep.',
   /** Describes the app screen in the phone mockup. */
   mockupAlt:
