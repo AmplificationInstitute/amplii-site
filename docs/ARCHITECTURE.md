@@ -338,7 +338,7 @@ After 2c comes the launch pack (phase 3), then launch (phase 4). The motion syst
 - **Phase 3b (sticky App Store bar):** built hidden in 2c (`hidden` attribute, phone only); a small script removes `hidden` after the hero and puts it back while the demo or the final section is on screen, so it never covers the footer (IntersectionObserver, no GSAP). Built: one IntersectionObserver on the hero, Try the beat, the final section and the footer; the bar shows on phone only when none of them is on screen (from the arc section to the FAQ). A temporary CSS opacity fade, to be replaced by the motion phase's blur-fade.
 - **Phase 3c (SEO/AEO):** titles and descriptions, the share image, `public/robots.txt` with the rules in CLAUDE.md §13, the sitemap, the Smart App Banner and the JSON-LD (§12) in `SeoHead`. App Store campaign tokens are filled in `appStoreUrl`.
 - **Phase 3d (checks):** Lighthouse, VoiceOver on iPhone, keyboard, Safari and Chrome on phone, iPad and desktop.
-- **Phase 3e (launch steps):** written out for Ana, for after Marie approves (domain to Vercel, GitHub Pages off).
+- **Phase 3e (launch steps):** in `docs/LAUNCH.md`, for after Marie approves (domain to Vercel, GitHub Pages off).
 
 ## 10. Known risks
 
