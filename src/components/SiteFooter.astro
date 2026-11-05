@@ -216,6 +216,13 @@ import Glow from './Glow.astro';
       font-size: var(--text-sm);
     }
 
+    /* 24 px tap areas (WCAG 2.5.8): the rows have no gap here, unlike on phone */
+    .site-footer__links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.5rem;
+    }
+
     .site-footer__links li + li::before {
       content: none;
     }
