@@ -23,8 +23,9 @@ const image = new URL(site.shareImage.path, site.url).href;
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-{/* From the app icon (app repo, icon-1024.png): 16 and 32 px in the .ico, 180 for iOS, 192 and 512 in the manifest */}
+{/* From the app icon (app repo, icon-1024.png): 16 and 32 px in the .ico, a 32 px PNG, 180 for iOS, 192 and 512 in the manifest */}
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/icon-32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
 {noindex && <meta name="robots" content="noindex" />}

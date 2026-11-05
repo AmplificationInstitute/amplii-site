@@ -31,9 +31,13 @@ export const faq = {
       answer: 'Yes. The sound is generated on your iPhone, so Amplii works without a connection.',
     },
     {
+      question: 'Is there a subscription?',
+      answer: 'No. The four modes are free for good, and Amplii Full is a one-time purchase.',
+    },
+    {
       question: 'What do you collect?',
       answer:
-        'Nothing. Amplii has no sign-in, no analytics and makes no network calls. Purchases are handled by Apple.',
+        'Only what you choose to give us. If you back up your Amplii Full purchase with an email, we keep that email to restore it, and you can delete it anytime in Settings. Nothing about your sessions or settings ever leaves your phone. Purchases are handled by Apple.',
     },
     {
       question: 'Is there an Android version?',
