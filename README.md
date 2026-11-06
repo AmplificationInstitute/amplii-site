@@ -1,6 +1,6 @@
 # Amplii site
 
-Landing page for [Amplii](https://apps.apple.com/app/id6811405143), the binaural beats app by Amplification Institute. Live at amplii.amplificationinstitute.com.
+Landing page for [Amplii](https://apps.apple.com/app/id6811405143), the binaural beats app by Amplification Institute. Live at https://amplii.app.
 
 Static site built with Astro and TypeScript, hosted on Vercel.
 
