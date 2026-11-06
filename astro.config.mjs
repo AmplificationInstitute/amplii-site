@@ -2,7 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://amplii.amplificationinstitute.com',
+  site: 'https://amplii.app',
   output: 'static',
   // Pages build to `name.html` and URLs have no trailing slash, matching the legacy
   // `/privacy.html` style. Extensionless forms are rewritten in vercel.json.

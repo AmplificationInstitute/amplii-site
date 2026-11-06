@@ -1,4 +1,4 @@
-# Amplii (amplii.amplificationinstitute.com)
+# Amplii (amplii.app)
 # Search engines and AI search: welcome. AI model training: no.
 
 User-agent: *
@@ -25,4 +25,4 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
-Sitemap: https://amplii.amplificationinstitute.com/sitemap.xml
+Sitemap: https://amplii.app/sitemap.xml
