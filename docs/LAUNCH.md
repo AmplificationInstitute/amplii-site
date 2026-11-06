@@ -1,91 +1,102 @@
-# Amplii landing: launch steps
+# Amplii landing: launch and domains
 
-How the site moves from GitHub Pages to Vercel on amplii.amplificationinstitute.com. Do this only after Marie approves.
+Where the site lives, how the old address redirects to it, and when the old GitHub Pages site can go.
+
+## What's live
+
+- **https://amplii.app** is the official address. The domain is registered at Porkbun, and the site is served by Vercel from `main`.
+- **www.amplii.app** also points to Vercel and redirects to https://amplii.app.
+- **amplii.amplificationinstitute.com** is a subdomain of amplificationinstitute.com, whose DNS is at GoDaddy. Until the redirect below is in place, its `amplii` CNAME points to `amplificiationinstitute.github.io` (that misspelling is what's in DNS), and GitHub Pages serves the frozen old site from the `legacy-pages` branch. App Store Connect still links to this address (`/privacy.html`, `/support.html` and `/`).
 
 **Who does what:**
 
-- **Ana:** GitHub, Vercel and App Store Connect.
-- **Whoever has the GoDaddy login for amplificationinstitute.com:** the DNS change. The domain's nameservers are `ns77/ns78.domaincontrol.com` (GoDaddy).
+- **Ana:** GitHub, Vercel, Porkbun and App Store Connect.
+- **Marie:** the one DNS change at GoDaddy for amplificationinstitute.com.
 
-**Why the order matters:** GitHub Pages publishes the root of `main` today. After the merge, `main`'s root has no `index.html`, so Pages would publish the README and `/privacy.html` would return 404. Step 4 moves Pages to a frozen copy of the old site first, so the App Store links never break, and that copy stays the way back until the very end.
+`legacy-pages` is the old site. Never push `main` (or anything else) to it: Pages would publish the new code's README and `/privacy.html` would return 404.
 
-## Before launch day
+## 1. amplii.app as the main domain in Vercel
 
-- [ ] Marie has approved the site, including the science sources.
-- [ ] Every open PR is merged into `develop`.
-- [ ] The App Store campaign links are in (`src/lib/app-store.ts`, still `[TODO]`), or Ana has decided to launch without them.
-- [ ] Checks (phase 3d) done: Lighthouse, keyboard, Chrome and Safari on Mac, Safari and Chrome on iPhone. Still to do on devices: VoiceOver on iPhone and Safari on iPad.
+Vercel → amplii-site → Settings → Domains:
 
-## The day before
+- `amplii.app`: serves the site (no redirect), Production.
+- `www.amplii.app`: **Redirect to** `amplii.app`, status **308**.
 
-1. **Vercel settings:**
-   - Project amplii-site → Settings → Git → **Production Branch** is `main`.
-   - Settings → **Deployment Protection** protects previews only, so the real domain stays public.
-2. **App Store Connect:** the support email shown anywhere in the app's details is contact@amplificationinstitute.com.
-3. **Lower the TTL in GoDaddy** (DNS person): DNS → the `amplii` CNAME → TTL **600 seconds**. It currently points to `amplificiationinstitute.github.io`. That misspelling is what's in DNS now; leave it, it gets replaced in step 8.
-
-## Launch
-
-4. **Freeze the old site on its own branch:**
-
-   ```
-   cd ~/Developer/Projects/amplii-site
-   git fetch origin
-   git push origin origin/main:refs/heads/legacy-pages
-   ```
-
-   Then GitHub → amplii-site → Settings → Pages → Branch: **legacy-pages**, folder **/ (root)** → Save. Wait for "Your site is live", and check that https://amplii.amplificationinstitute.com still shows the old page.
-
-5. **Merge develop into main:**
-
-   ```
-   gh pr create --base main --head develop --title "Release: Amplii landing page" --body "Launch, approved by Marie."
-   gh pr merge --merge
-   ```
-
-6. **Vercel builds production** from `main` on its own. In Vercel → Deployments, wait for the Production deployment to be **Ready**, then open its `.vercel.app` address and look through the page.
-7. **Add the domain in Vercel:** Settings → Domains → Add → `amplii.amplificationinstitute.com`. It will say "Invalid Configuration" and show the DNS record to set. Copy the CNAME value exactly as shown (either `cname.vercel-dns.com` or a project-specific address). If it also asks for a `_vercel` TXT record, note that too.
-8. **Change the DNS in GoDaddy** (DNS person): edit the `amplii` CNAME → **Points to** = the value from Vercel, TTL 600. Add the TXT record if Vercel asked for one. Don't touch any other record: the main domain and email stay as they are.
-9. **Wait for the switch:** `dig +short amplii.amplificationinstitute.com` shows the Vercel address, and Vercel → Domains says **Valid Configuration**. The HTTPS certificate is issued automatically. This usually takes minutes, up to an hour.
-
-## Checks
+Check:
 
 ```
-cd ~/Developer/Projects/amplii-site
-git fetch origin
-D=https://amplii.amplificationinstitute.com
-curl -sI $D/ | grep -iE '^(HTTP|server)'
-for p in / /privacy.html /support.html /terms.html /privacy /support /terms /robots.txt /sitemap.xml /favicon.ico /icon-32.png /apple-touch-icon.png /site.webmanifest /og-image.jpg; do curl -s -o /dev/null -w "%{http_code} %{redirect_url} $p\n" "$D$p"; done
-curl -s -o /dev/null -w "%{http_code} /a-missing-page\n" $D/a-missing-page
-for p in privacy support terms; do echo "$p: $(curl -s $D/$p.html | shasum | cut -c1-12) live, $(git show origin/main:public/$p.html | shasum | cut -c1-12) main"; done
-curl -sI http://amplii.amplificationinstitute.com/ | head -3
+curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" https://amplii.app/
+curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" https://www.amplii.app/privacy.html
+```
+
+Expect `200` for the first, and `308 https://amplii.app/privacy.html` for the second.
+
+## 2. Redirect amplii.amplificationinstitute.com to amplii.app
+
+Every path goes to the same path on amplii.app with a permanent 308: `/privacy.html` → `https://amplii.app/privacy.html`, `/support.html` → `https://amplii.app/support.html`, and so on. GitHub Pages and `legacy-pages` stay untouched until step 3 passes.
+
+**The day before (Marie, GoDaddy):** DNS → the `amplii` CNAME → TTL **600 seconds** (10 minutes), so the switch and any rollback take effect quickly.
+
+**In Vercel (Ana):**
+
+1. Settings → Domains → **Add Domain** → `amplii.amplificationinstitute.com`.
+2. Choose **Redirect to Another Domain** → `amplii.app`, status **308 Permanent Redirect**. Vercel keeps the path and query string.
+3. Vercel shows "Invalid Configuration" and the DNS record to set. Copy the CNAME value exactly as shown (`cname.vercel-dns.com` or a project-specific `…vercel-dns…` address). If it also asks for a TXT record on `_vercel.amplificationinstitute.com`, copy that too.
+
+**At GoDaddy (Marie), one record:**
+
+| Type  | Name     | Points to               | TTL |
+| ----- | -------- | ----------------------- | --- |
+| CNAME | `amplii` | the value Vercel showed | 600 |
+
+Edit the existing `amplii` record, don't add a second one. Add the `_vercel` TXT record only if Vercel asked for it. Don't touch any other record: the main domain and email stay as they are.
+
+**Wait:** `dig +short amplii.amplificationinstitute.com` shows the Vercel address, and Vercel → Domains says **Valid Configuration**. Vercel then issues the HTTPS certificate, usually within minutes. In that gap, https on the old address can show a certificate warning briefly; http keeps working.
+
+## 3. Check the redirect
+
+```
+O=https://amplii.amplificationinstitute.com
+curl -sI $O/ | grep -iE '^(HTTP|server|location)'
+for p in / /privacy.html /support.html /terms.html /privacy /support /terms "/?from=test"; do curl -s -o /dev/null -w "%{http_code} %{redirect_url}  $p\n" "$O$p"; done
+curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" http://amplii.amplificationinstitute.com/privacy.html
+curl -sL -o /dev/null -w "%{http_code} %{url_effective}\n" $O/privacy.html
 ```
 
 What you should see:
 
-- `server: Vercel` on the first line.
-- **200** with no redirect address for every path, including `/privacy.html` and `/support.html`, which the App Store uses.
-- **404** for the missing page.
-- The same two codes on each privacy / support / terms line: the live legal pages are exactly the ones in `main` (with the Purchase backup section, the icons and contact@).
-- A **308** from http to https.
+- `server: Vercel`.
+- **308** for every path, each to the same path on `https://amplii.app` (the query string kept).
+- The http address redirects too (to https, then to amplii.app).
+- The last line ends at **200 https://amplii.app/privacy.html**.
 
 Then by hand:
 
-- **App Store Connect:** open the app's Privacy Policy URL, Support URL and Marketing URL.
-- **iPhone, Safari:** the Smart App Banner shows, the demo plays, the sticky bar works, and the footer links open.
-- **Share preview:** send the link to yourself in Messages; the share image appears.
-- **Google's Rich Results Test** on the real URL: it finds the Organization data. The FAQ and app results won't show (Google only shows FAQ results for government and health sites, and app results need ratings, which we don't add).
+- **App Store Connect:** open the Privacy Policy URL, Support URL and Marketing URL. Each lands on the same page on amplii.app.
+- **iPhone, Safari:** open https://amplii.amplificationinstitute.com/support.html and check you land on the support page on amplii.app.
 
-## After everything passes (wait at least an hour)
+**If something goes wrong:** Marie points the `amplii` CNAME back to `amplificiationinstitute.github.io`. GitHub Pages is still serving `legacy-pages`, so the old site is back within about 10 minutes.
 
-10. **Turn GitHub Pages off:** Settings → Pages → remove the custom domain, then unpublish (Source: **None**). Keep the `legacy-pages` branch for a few weeks as a backup.
-11. **Cleanup PR:** remove `public/CNAME`, which only GitHub Pages used.
-12. **Phase 4:** add the site to Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`.
+## 4. App Store Connect
 
-## Later, with the app update that adds Purchase backup
+- Change the URLs to amplii.app directly, so they no longer depend on the redirect: `https://amplii.app/privacy.html`, `https://amplii.app/support.html` and `https://amplii.app/`. The Privacy Policy URL (App Privacy) can be changed at any time; the Support and Marketing URLs are part of the app version, so they change with the next version you submit.
+- Keep the redirect anyway: old links stay out there (search results, shared links, older app versions).
+- With the app update that adds Purchase backup: update the App Privacy label. It can no longer say "Data Not Collected". Declare the optional backup email as Contact Info → Email Address, used for App Functionality, not used for tracking. It's tied to a purchase, so it most likely counts as linked to the user.
 
-- **App Store Connect → App Privacy:** update the privacy label. It can no longer say "Data Not Collected". Declare the optional backup email as Contact Info → Email Address, used for App Functionality, not used for tracking. It's tied to a purchase, so it most likely counts as linked to the user.
+## 5. Turn GitHub Pages off, then delete legacy-pages
 
-## If something goes wrong after step 8
+Safe once all of this is true:
 
-Point the `amplii` CNAME back to `amplificiationinstitute.github.io`. Pages is still serving the frozen old site from `legacy-pages`, so it comes back within about 10 minutes. That's why turning Pages off is the very last step.
+- Step 3 passed, with `server: Vercel` on the old address.
+- At least 48 hours have passed since the DNS change, so no cache still sends people to GitHub.
+
+Then:
+
+1. GitHub → amplii-site → Settings → Pages → remove the custom domain, then unpublish (Source: **None**).
+2. Run the step 3 checks again: nothing should change.
+3. **A few weeks later**, once nothing has gone wrong, delete the branch: `git push origin --delete legacy-pages`.
+4. Cleanup PR: remove `public/CNAME`, which only GitHub Pages used.
+
+## 6. Search engines (phase 4)
+
+Add https://amplii.app to Google Search Console and Bing Webmaster Tools and submit `https://amplii.app/sitemap.xml`. Once the redirect works, also add the old address in Search Console and try **Change of Address** to amplii.app. If Search Console doesn't offer it for this subdomain, the 308 redirects alone move it over time.
