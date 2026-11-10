@@ -1,6 +1,6 @@
 export const site = {
   name: 'Amplii',
-  url: 'https://amplii.amplificationinstitute.com',
+  url: 'https://amplii.app',
   lang: 'en',
   locale: 'en_US',
   title: 'Amplii: Binaural Beats for iPhone',
